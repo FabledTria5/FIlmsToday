@@ -1,4 +1,4 @@
-package com.example.filmstoday.ui.main
+package com.example.filmstoday.fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,23 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.filmstoday.R
-import com.example.filmstoday.databinding.MainFragmentBinding
+import com.example.filmstoday.viewmodels.HomeViewModel
+import com.example.filmstoday.databinding.FragmentMoviesBinding
 
-class MainFragment : Fragment() {
+class MoviesFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
-    private var _binding: MainFragmentBinding? = null
+    private lateinit var viewModel: HomeViewModel
+    private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
