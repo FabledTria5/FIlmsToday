@@ -7,4 +7,8 @@
     <string name="profile">Profile</string>
     <string name="explore">Explore</string>
     <string name="movie_image">Movie Poster</string>
+    <string name="popular">Popular</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="top_rated">Top Rated</string>
 </resources>
