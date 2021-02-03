@@ -6,4 +6,5 @@
     <string name="search">Search</string>
     <string name="profile">Profile</string>
     <string name="explore">Explore</string>
+    <string name="movie_image">Movie Poster</string>
 </resources>

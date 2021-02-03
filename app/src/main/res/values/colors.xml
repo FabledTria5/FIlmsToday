@@ -13,5 +13,7 @@
     <color name="primary">#27272A</color>
     <color name="red">#FA7777</color>
     <color name="blue">#537ECC</color>
+    <color name="inactive">#676769</color>
+    <color name="ripple">#484848</color>
 
 </resources>

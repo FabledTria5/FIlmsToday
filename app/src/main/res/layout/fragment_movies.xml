@@ -9,6 +9,7 @@
     tools:context=".fragments.MoviesFragment">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
@@ -20,6 +21,65 @@
         android:textSize="@dimen/_30ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@color/main_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/red"
+        app:tabMode="scrollable"
+        app:tabRippleColor="@color/ripple"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/TabLayoutTextAppearance"
+        app:tabTextColor="@color/inactive">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popular" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now Playing" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Rated" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMoviesList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="@dimen/_25sdp"
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_25sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvMoviesList"
+        app:layout_constraintEnd_toEndOf="@id/rvMoviesList"
+        app:layout_constraintStart_toStartOf="@+id/rvMoviesList"
+        app:layout_constraintTop_toTopOf="@+id/rvMoviesList" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
