@@ -1,8 +1,7 @@
-package com.example.filmstoday.activity
+package com.example.filmstoday.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.filmstoday.BuildConfig

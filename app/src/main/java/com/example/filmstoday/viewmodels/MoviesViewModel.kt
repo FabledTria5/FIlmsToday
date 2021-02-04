@@ -1,14 +1,16 @@
 package com.example.filmstoday.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.filmstoday.repositories.MoviesRepository
+import com.example.filmstoday.responses.MoviesResponse
 
-class MoviesViewModel : ViewModel() {
+class MoviesViewModel: ViewModel() {
 
-    var selectedPosition = 0
+    private var moviesRepository = MoviesRepository()
 
-    fun selectItem(position: Int?) {
-        if (position != null) {
-            selectedPosition = position
-        }
+    fun getPopularMovies(apiKey: String) : LiveData<MoviesResponse> {
+        return moviesRepository.getPopularMovies(apiKey)
     }
+
 }

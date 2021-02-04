@@ -86,6 +86,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    // Moxy
+    def moxy_version = "1.5.5"
+    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
+    annotationProcessor "com.arello-mobile:moxy-compiler:$moxy_version"
+    kapt "com.arello-mobile:moxy-compiler:$moxy_version"
 }
