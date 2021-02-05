@@ -31,6 +31,10 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     override fun getItemCount() = movies.size
 
-    fun addItems(movies: List<Movie>) = this.movies.addAll(movies)
+    fun addItems(movies: List<Movie>?) {
+        if (movies != null) this.movies.addAll(movies)
+    }
+
+    fun clearItems() = this.movies.clear()
 
 }

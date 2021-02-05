@@ -1,16 +1,34 @@
 package com.example.filmstoday.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.filmstoday.repositories.MoviesRepository
 import com.example.filmstoday.responses.MoviesResponse
 
-class MoviesViewModel: ViewModel() {
+class MoviesViewModel : ViewModel(), LifecycleObserver {
 
     private var moviesRepository = MoviesRepository()
+    private var _currentPosition = 0
 
-    fun getPopularMovies(apiKey: String) : LiveData<MoviesResponse> {
-        return moviesRepository.getPopularMovies(apiKey)
+    private var _observingTabPosition = MutableLiveData<Int>()
+    private var _observingMovies = MutableLiveData<MoviesResponse>()
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun init() = changeTab(_currentPosition)
+
+    fun getObservedMovies() = _observingMovies
+
+    fun getPosition() = _observingTabPosition
+
+    fun changeTab(position: Int) {
+        if (position == _currentPosition && _observingMovies.value != null) return
+        when (position) {
+            0 -> moviesRepository.getPopularMovies(_observingMovies)
+            1 -> moviesRepository.getNowPlayingMovies(_observingMovies)
+            2 -> moviesRepository.getUpcomingMovies(_observingMovies)
+            3 -> moviesRepository.getTopMovies(_observingMovies)
+        }
+        _currentPosition = position
+        _observingTabPosition.value = position
     }
 
 }

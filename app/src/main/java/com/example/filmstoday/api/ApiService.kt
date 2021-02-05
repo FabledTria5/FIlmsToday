@@ -8,6 +8,15 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(value = "/3/movie/popular")
-    fun getPopular(@Query("api_key") key: String) : Call<MoviesResponse>
+    fun getPopular(@Query("api_key") key: String): Call<MoviesResponse>
+
+    @GET(value = "/3/movie/now_playing")
+    fun getNowPlaying(@Query("api_key") key: String): Call<MoviesResponse>
+
+    @GET(value = "/3/movie/upcoming")
+    fun getUpcoming(@Query("api_key") key: String): Call<MoviesResponse>
+
+    @GET(value = "/3/movie/top_rated")
+    fun getTop(@Query("api_key") key: String): Call<MoviesResponse>
 
 }
