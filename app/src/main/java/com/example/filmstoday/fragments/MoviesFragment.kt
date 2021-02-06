@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmstoday.R
-import com.example.filmstoday.adapters.MoviesAdapter
+import com.example.filmstoday.adapters.MainMoviesAdapter
 import com.example.filmstoday.databinding.FragmentMoviesBinding
-import com.example.filmstoday.models.Movie
-import com.example.filmstoday.responses.MoviesResponse
 import com.example.filmstoday.viewmodels.MoviesViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -21,14 +18,13 @@ class MoviesFragment : Fragment() {
 
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var binding: FragmentMoviesBinding
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var mainMoviesAdapter: MainMoviesAdapter
 
     private val TAG = "MoviesFragment"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies, container, false)
         moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
-        binding.viewModel = moviesViewModel
         return binding.root
     }
 
@@ -52,19 +48,19 @@ class MoviesFragment : Fragment() {
     }
 
     private fun doInitialization() {
-        moviesAdapter = MoviesAdapter()
+        mainMoviesAdapter = MainMoviesAdapter()
         binding.rvMoviesList.layoutManager = LinearLayoutManager(context)
-        binding.rvMoviesList.adapter = moviesAdapter
-        startObserve()
+        binding.rvMoviesList.adapter = mainMoviesAdapter
+        startObserving()
     }
 
-    private fun startObserve() {
+    private fun startObserving() {
         moviesViewModel.getObservedMovies().observe(viewLifecycleOwner, {
             binding.isLoading = true
             if (it != null) {
-                moviesAdapter.clearItems()
-                moviesAdapter.addItems(it.results)
-                moviesAdapter.notifyDataSetChanged()
+                mainMoviesAdapter.clearItems()
+                mainMoviesAdapter.addItems(it.results)
+                mainMoviesAdapter.notifyDataSetChanged()
                 binding.isLoading = false
             }
         })

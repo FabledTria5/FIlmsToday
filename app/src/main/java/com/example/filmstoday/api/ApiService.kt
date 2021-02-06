@@ -1,5 +1,6 @@
 package com.example.filmstoday.api
 
+import com.example.filmstoday.responses.ActorsResponse
 import com.example.filmstoday.responses.MoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -18,5 +19,11 @@ interface ApiService {
 
     @GET(value = "/3/movie/top_rated")
     fun getTop(@Query("api_key") key: String): Call<MoviesResponse>
+
+    @GET(value = "/3/search/movie")
+    fun searchMovie(@Query("api_key") key: String, @Query("query") query: String) : Call<MoviesResponse>
+
+    @GET(value = "/3/search/person")
+    fun searchActor(@Query("api_key") key: String, @Query("query") query: String) : Call<ActorsResponse>
 
 }

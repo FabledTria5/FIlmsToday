@@ -6,11 +6,11 @@
     <data>
 
         <variable
-            name="isMoviesLoading"
+            name="isMoviesEmpty"
             type="Boolean" />
 
         <variable
-            name="isPersonsLoading"
+            name="isActorsEmpty"
             type="Boolean" />
 
         <import type="android.view.View" />
@@ -94,6 +94,7 @@
                 android:padding="@dimen/_10sdp"
                 android:text="@string/movies"
                 android:textColor="@color/white"
+                android:visibility="invisible"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
@@ -111,17 +112,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sfprodisplay_regular"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/names"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvMoviesSearchResult" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvActorsSearchResults"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />

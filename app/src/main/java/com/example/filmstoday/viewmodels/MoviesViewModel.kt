@@ -16,7 +16,6 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
     fun init() = changeTab(_currentPosition)
 
     fun getObservedMovies() = _observingMovies
-
     fun getPosition() = _observingTabPosition
 
     fun changeTab(position: Int) {

@@ -16,5 +16,6 @@
     <color name="inactive">#676769</color>
     <color name="ripple">#484848</color>
     <color name="editTextBackground">#2f2e33</color>
+    <color name="grayText">#767678</color>
 
 </resources>
