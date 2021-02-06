@@ -59,13 +59,13 @@ class MoviesFragment : Fragment() {
     }
 
     private fun startObserve() {
-        binding.isLoading = true
         moviesViewModel.getObservedMovies().observe(viewLifecycleOwner, {
-            binding.isLoading = false
+            binding.isLoading = true
             if (it != null) {
                 moviesAdapter.clearItems()
                 moviesAdapter.addItems(it.results)
                 moviesAdapter.notifyDataSetChanged()
+                binding.isLoading = false
             }
         })
 
