@@ -11,11 +11,11 @@ import com.example.filmstoday.utils.Constants
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
-class ActorsAdapter: RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
+class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
 
     private val actorsList = arrayListOf<Actor>()
 
-    inner class ActorsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val actorPhoto = itemView.findViewById<RoundedImageView>(R.id.ivActorPhoto)
         private val actorName = itemView.findViewById<TextView>(R.id.tvActorName)
@@ -23,7 +23,8 @@ class ActorsAdapter: RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
         fun bindActor(actor: Actor) {
 
             if (actor.profile_path != null) {
-                Picasso.get().load("${Constants.POSTERS_BASE_URL}${actor.profile_path}").into(actorPhoto)
+                Picasso.get().load("${Constants.POSTERS_BASE_URL}${actor.profile_path}")
+                    .into(actorPhoto)
             } else {
                 actorPhoto.setImageResource(R.drawable.photo_placeholder)
             }

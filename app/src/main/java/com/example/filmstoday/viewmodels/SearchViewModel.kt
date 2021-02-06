@@ -17,13 +17,11 @@ class SearchViewModel : ViewModel(), LifecycleObserver {
     fun getMovies() = _observingMovies
     fun getActors() = _observingActors
 
-    fun textChanged(query: String?) {
-        if (query == null) {
-            _observingMovies.value = null
-            _observingActors.value = null
+    fun textChanged(query: String) {
+        if (query == "") {
+            return
         }
-
-        searchRepository.searchMovies(query = query!!, _observingMovies)
+        searchRepository.searchMovies(query = query, _observingMovies)
         searchRepository.searchActors(query = query, _observingActors)
     }
 

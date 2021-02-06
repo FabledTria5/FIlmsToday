@@ -14,27 +14,34 @@ class SearchRepository {
     private var apiService: ApiService = RetrofitInstance.api
 
     fun searchMovies(query: String, _observingMovies: MutableLiveData<MoviesResponse>) {
-        apiService.searchMovie(key = BuildConfig.MOVIES_API_KEY, query =  query).enqueue(object : retrofit2.Callback<MoviesResponse> {
-            override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
-                _observingMovies.value = response.body()
-            }
+        apiService.searchMovie(key = BuildConfig.MOVIES_API_KEY, query = query)
+            .enqueue(object : retrofit2.Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
+                ) {
+                    _observingMovies.value = response.body()
+                }
 
-            override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
 
-            }
-        })
+                }
+            })
     }
 
     fun searchActors(query: String, _observingActors: MutableLiveData<ActorsResponse>) {
-        apiService.searchActor(key = BuildConfig.MOVIES_API_KEY, query = query).enqueue(object : retrofit2.Callback<ActorsResponse> {
-            override fun onResponse(call: Call<ActorsResponse>, response: Response<ActorsResponse>) {
+        apiService.searchActor(key = BuildConfig.MOVIES_API_KEY, query = query).enqueue(object :
+            retrofit2.Callback<ActorsResponse> {
+            override fun onResponse(
+                call: Call<ActorsResponse>,
+                response: Response<ActorsResponse>
+            ) {
                 _observingActors.value = response.body()
             }
 
             override fun onFailure(call: Call<ActorsResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
 
+            }
         })
     }
 }

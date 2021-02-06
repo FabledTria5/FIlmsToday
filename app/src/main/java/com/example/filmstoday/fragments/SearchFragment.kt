@@ -20,14 +20,15 @@ import com.example.filmstoday.viewmodels.SearchViewModel
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding : FragmentSearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var searchMovieAdapter: SearchMovieAdapter
     private lateinit var actorsAdapter: ActorsAdapter
     private val TAG = "SearchFragment"
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         return binding.root
@@ -35,6 +36,11 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(searchViewModel)
+        setupSearch()
+        setupRecyclers()
+    }
+
+    private fun setupSearch() {
         binding.searchField.setOnFocusChangeListener { _, _ ->
             binding.appbar.setExpanded(false)
         }
@@ -42,12 +48,10 @@ class SearchFragment : Fragment() {
         binding.searchField.doAfterTextChanged {
             searchViewModel.textChanged(it.toString())
         }
-
-        doInitialization()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun doInitialization() {
+    private fun setupRecyclers() {
         searchMovieAdapter = SearchMovieAdapter()
         actorsAdapter = ActorsAdapter()
 
@@ -56,7 +60,12 @@ class SearchFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.separator, context?.theme))
+        dividerItemDecoration.setDrawable(
+            resources.getDrawable(
+                R.drawable.separator,
+                context?.theme
+            )
+        )
         binding.rvMoviesSearchResult.addItemDecoration(dividerItemDecoration)
 
         binding.rvActorsSearchResults.apply {
@@ -69,21 +78,18 @@ class SearchFragment : Fragment() {
 
     private fun startObserving() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
-            if (it != null) {
-                searchMovieAdapter.clearItems()
-                searchMovieAdapter.addItems(it.results)
-                searchMovieAdapter.notifyDataSetChanged()
-                binding.textView2.visibility = View.VISIBLE
-            }
+            searchMovieAdapter.clearItems()
+            searchMovieAdapter.addItems(it.results)
+            searchMovieAdapter.notifyDataSetChanged()
+            binding.textView2.visibility = View.VISIBLE
+
         })
 
         searchViewModel.getActors().observe(viewLifecycleOwner, {
-            if (it != null) {
-                actorsAdapter.clearItems()
-                actorsAdapter.addItems(it.results)
-                actorsAdapter.notifyDataSetChanged()
-                binding.textView3.visibility = View.VISIBLE
-            }
+            actorsAdapter.clearItems()
+            actorsAdapter.addItems(it.results)
+            actorsAdapter.notifyDataSetChanged()
+            binding.textView3.visibility = View.VISIBLE
         })
     }
 }

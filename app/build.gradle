@@ -91,4 +91,7 @@ dependencies {
     implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
     annotationProcessor "com.arello-mobile:moxy-compiler:$moxy_version"
     kapt "com.arello-mobile:moxy-compiler:$moxy_version"
+
+    implementation 'com.factor:bouncy:1.8'
+
 }

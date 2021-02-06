@@ -22,7 +22,11 @@ class MoviesFragment : Fragment() {
 
     private val TAG = "MoviesFragment"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies, container, false)
         moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         return binding.root
@@ -31,7 +35,10 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(moviesViewModel)
         doInitialization()
+        setupTabListener()
+    }
 
+    private fun setupTabListener() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 moviesViewModel.changeTab(position = tab!!.position)
@@ -57,12 +64,10 @@ class MoviesFragment : Fragment() {
     private fun startObserving() {
         moviesViewModel.getObservedMovies().observe(viewLifecycleOwner, {
             binding.isLoading = true
-            if (it != null) {
-                mainMoviesAdapter.clearItems()
-                mainMoviesAdapter.addItems(it.results)
-                mainMoviesAdapter.notifyDataSetChanged()
-                binding.isLoading = false
-            }
+            mainMoviesAdapter.clearItems()
+            mainMoviesAdapter.addItems(it.results)
+            mainMoviesAdapter.notifyDataSetChanged()
+            binding.isLoading = false
         })
 
         moviesViewModel.getPosition().observe(viewLifecycleOwner, {
