@@ -15,6 +15,11 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun init() = changeTab(_currentPosition)
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun orientationChanged() {
+        _observingTabPosition.value = _currentPosition
+    }
+
     fun getObservedMovies() = _observingMovies
     fun getPosition() = _observingTabPosition
 
@@ -27,7 +32,6 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
             3 -> moviesRepository.getTopMovies(_observingMovies)
         }
         _currentPosition = position
-        _observingTabPosition.value = position
     }
 
 }

@@ -1,8 +1,6 @@
 package com.example.filmstoday.viewmodels
 
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.filmstoday.repositories.SearchRepository
 import com.example.filmstoday.responses.ActorsResponse
 import com.example.filmstoday.responses.MoviesResponse

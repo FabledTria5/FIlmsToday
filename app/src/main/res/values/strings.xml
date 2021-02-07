@@ -11,6 +11,7 @@
     <string name="now_playing">Now Playing</string>
     <string name="upcoming">Upcoming</string>
     <string name="top_rated">Top Rated</string>
-    <string name="searchView_hint">Movies, Actors...</string>
+    <string name="searchView_hint">Movies, Actors…</string>
     <string name="names">Names</string>
+    <string name="work_in_progress">Work in progress…</string>
 </resources>

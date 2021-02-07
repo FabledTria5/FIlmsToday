@@ -36,17 +36,17 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(searchViewModel)
-        setupSearch()
+        setupSearchField()
         setupRecyclers()
     }
 
-    private fun setupSearch() {
+    private fun setupSearchField() {
         binding.searchField.setOnFocusChangeListener { _, _ ->
             binding.appbar.setExpanded(false)
         }
 
         binding.searchField.doAfterTextChanged {
-            searchViewModel.textChanged(it.toString())
+            searchViewModel.textChanged(query = it.toString())
         }
     }
 
@@ -79,15 +79,14 @@ class SearchFragment : Fragment() {
     private fun startObserving() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
             searchMovieAdapter.clearItems()
-            searchMovieAdapter.addItems(it.results)
+            searchMovieAdapter.addItems(movies = it.results)
             searchMovieAdapter.notifyDataSetChanged()
             binding.textView2.visibility = View.VISIBLE
-
         })
 
         searchViewModel.getActors().observe(viewLifecycleOwner, {
             actorsAdapter.clearItems()
-            actorsAdapter.addItems(it.results)
+            actorsAdapter.addItems(actors = it.results)
             actorsAdapter.notifyDataSetChanged()
             binding.textView3.visibility = View.VISIBLE
         })

@@ -65,14 +65,13 @@ class MoviesFragment : Fragment() {
         moviesViewModel.getObservedMovies().observe(viewLifecycleOwner, {
             binding.isLoading = true
             mainMoviesAdapter.clearItems()
-            mainMoviesAdapter.addItems(it.results)
+            mainMoviesAdapter.addItems(movies =  it.results)
             mainMoviesAdapter.notifyDataSetChanged()
             binding.isLoading = false
         })
 
         moviesViewModel.getPosition().observe(viewLifecycleOwner, {
-            val tab = binding.tabLayout.getTabAt(it)
-            tab?.select()
+            binding.tabLayout.getTabAt(it)?.select()
         })
     }
 }
