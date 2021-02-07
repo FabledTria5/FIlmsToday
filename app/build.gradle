@@ -92,6 +92,7 @@ dependencies {
     annotationProcessor "com.arello-mobile:moxy-compiler:$moxy_version"
     kapt "com.arello-mobile:moxy-compiler:$moxy_version"
 
+    // Bouncy Views
     implementation 'com.factor:bouncy:1.8'
 
 }
