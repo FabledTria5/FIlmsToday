@@ -15,13 +15,15 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesV
 
     private val moviesList = arrayListOf<Movie>()
 
-    inner class SearchMoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class SearchMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val poster: ImageView = itemView.findViewById(R.id.ivSearchMoviePoster)
 
         fun bindMovie(movie: Movie) {
             if (movie.poster_path != null) {
-                Picasso.get().load("$POSTERS_BASE_URL_SMALL${movie.poster_path}").into(poster)
+                Picasso.get().load("$POSTERS_BASE_URL_SMALL${movie.poster_path}")
+                    .placeholder(R.drawable.ic_poster_placeholder)
+                    .into(poster)
             } else {
                 poster.setImageResource(R.drawable.ic_poster_placeholder)
             }
@@ -30,9 +32,13 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesV
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =  SearchMoviesViewHolder(itemView = LayoutInflater.from(parent.context).inflate(R.layout.movies_search_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SearchMoviesViewHolder(
+        itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.movies_search_item, parent, false)
+    )
 
-    override fun onBindViewHolder(holder: SearchMoviesViewHolder, position: Int) = holder.bindMovie(moviesList[position])
+    override fun onBindViewHolder(holder: SearchMoviesViewHolder, position: Int) =
+        holder.bindMovie(moviesList[position])
 
     override fun getItemCount() = moviesList.count()
 

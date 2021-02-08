@@ -22,20 +22,20 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
 
         fun bindActor(actor: Actor) {
 
-            if (actor.profile_path != null) {
-                Picasso.get().load("${Constants.POSTERS_BASE_URL}${actor.profile_path}")
-                    .into(actorPhoto)
-            } else {
-                actorPhoto.setImageResource(R.drawable.photo_placeholder)
-            }
+            Picasso.get().load("${Constants.POSTERS_BASE_URL}${actor.profile_path}")
+                .placeholder(R.drawable.photo_placeholder)
+                .into(actorPhoto)
 
             actorName.text = actor.name.replace(" ", "\n")
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ActorsViewHolder(itemView = LayoutInflater.from(parent.context).inflate(R.layout.actors_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ActorsViewHolder(
+        itemView = LayoutInflater.from(parent.context).inflate(R.layout.actors_item, parent, false)
+    )
 
-    override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) = holder.bindActor(actor = actorsList[position])
+    override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) =
+        holder.bindActor(actor = actorsList[position])
 
     override fun getItemCount() = actorsList.count()
 
