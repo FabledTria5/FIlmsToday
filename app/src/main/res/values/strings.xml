@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">FIlms Today</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movies">Movies</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="explore">Explore</string>
+    <string name="movie_image">Movie Poster</string>
+    <string name="popular">Popular</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="searchView_hint">Movies, Actors…</string>
+    <string name="names">Names</string>
+    <string name="work_in_progress">Work in progress…</string>
 </resources>

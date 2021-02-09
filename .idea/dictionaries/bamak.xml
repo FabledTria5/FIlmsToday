@@ -2,6 +2,8 @@
   <dictionary name="bamak">
     <words>
       <w>gson</w>
+      <w>moxy</w>
+      <w>sfprodisplay</w>
     </words>
   </dictionary>
 </component>
