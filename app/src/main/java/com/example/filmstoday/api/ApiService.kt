@@ -1,9 +1,12 @@
 package com.example.filmstoday.api
 
+import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.responses.ActorsResponse
+import com.example.filmstoday.responses.CastResponse
 import com.example.filmstoday.responses.MoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -21,9 +24,27 @@ interface ApiService {
     fun getTop(@Query("api_key") key: String): Call<MoviesResponse>
 
     @GET(value = "/3/search/movie")
-    fun searchMovie(@Query("api_key") key: String, @Query("query") query: String) : Call<MoviesResponse>
+    fun searchMovie(
+        @Query("api_key") key: String,
+        @Query("query") query: String
+    ): Call<MoviesResponse>
 
     @GET(value = "/3/search/person")
-    fun searchActor(@Query("api_key") key: String, @Query("query") query: String) : Call<ActorsResponse>
+    fun searchActor(
+        @Query("api_key") key: String,
+        @Query("query") query: String
+    ): Call<ActorsResponse>
+
+    @GET(value = "/3/movie/{id}")
+    fun getDetails(
+        @Path("id") id: Int,
+        @Query("api_key") query: String
+    ): Call<MovieFullModel>
+
+    @GET(value = "/3/movie/{movie_id}/credits")
+    fun getCast(
+        @Path("movie_id") id: Int,
+        @Query("api_key") query: String
+    ) : Call<CastResponse>
 
 }

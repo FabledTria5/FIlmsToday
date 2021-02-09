@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
-import com.example.filmstoday.models.Movie
-import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL
+import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL_SMALL
 import com.squareup.picasso.Picasso
 

@@ -68,7 +68,7 @@
                     android:id="@+id/searchField"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/editTextBackground"
+                    android:background="@color/elementsColor"
                     android:textColor="@color/white"
                     android:textCursorDrawable="@drawable/color_cursor" />
 

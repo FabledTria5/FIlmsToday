@@ -9,15 +9,37 @@
         android:id="@+id/search_nav"
         android:name="com.example.filmstoday.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_search_nav_to_fullMovieFragment"
+            app:destination="@id/fullMovieFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profile_nav"
         android:name="com.example.filmstoday.fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_nav_to_fullMovieFragment"
+            app:destination="@id/fullMovieFragment" />
+    </fragment>
     <fragment
         android:id="@+id/movies_nav"
         android:name="com.example.filmstoday.fragments.MoviesFragment"
         android:label="fragment_movies"
-        tools:layout="@layout/fragment_movies" />
+        tools:layout="@layout/fragment_movies" >
+        <action
+            android:id="@+id/openMovie"
+            app:destination="@id/fullMovieFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullMovieFragment"
+        android:name="com.example.filmstoday.fragments.FullMovieFragment"
+        android:label="FullMovieFragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

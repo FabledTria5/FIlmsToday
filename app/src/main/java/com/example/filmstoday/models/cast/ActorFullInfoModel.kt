@@ -1,4 +1,4 @@
-package com.example.filmstoday.models
+package com.example.filmstoday.models.cast
 
 import com.google.gson.annotations.SerializedName
 

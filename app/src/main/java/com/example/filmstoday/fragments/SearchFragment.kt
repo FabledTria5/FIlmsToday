@@ -29,7 +29,8 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        binding = DataBindingUtil
+            .inflate(inflater, R.layout.fragment_search, container, false)
         searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         return binding.root
     }
@@ -57,7 +58,8 @@ class SearchFragment : Fragment() {
 
         binding.rvMoviesSearchResult.apply {
             adapter = searchMovieAdapter
-            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
         dividerItemDecoration.setDrawable(
@@ -70,7 +72,8 @@ class SearchFragment : Fragment() {
 
         binding.rvActorsSearchResults.apply {
             adapter = actorsAdapter
-            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
 
         startObserving()

@@ -6,24 +6,34 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
-import com.example.filmstoday.models.Movie
+import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL
 import com.squareup.picasso.Picasso
 
-class MainMoviesAdapter : RecyclerView.Adapter<MainMoviesAdapter.MoviesViewHolder>() {
+class MainMoviesAdapter(private var onItemViewClickListener: OnItemViewClickListener) :
+    RecyclerView.Adapter<MainMoviesAdapter.MoviesViewHolder>() {
 
     private val moviesList = arrayListOf<Movie>()
 
-    inner class MoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val poster: ImageView = itemView.findViewById(R.id.ivPoster)
 
-        fun bindMovie(movie: Movie) = Picasso.get().load("$POSTERS_BASE_URL${movie.poster_path}").into(poster)
+        fun bindMovie(movie: Movie) {
+            Picasso.get().load("$POSTERS_BASE_URL${movie.poster_path}").into(poster)
+            itemView.setOnClickListener {
+                onItemViewClickListener.onItemClick(movie = movie)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =  MoviesViewHolder(itemView = LayoutInflater.from(parent.context).inflate(R.layout.movies_list_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MoviesViewHolder(
+        itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.movies_list_item, parent, false)
+    )
 
-    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) = holder.bindMovie(moviesList[position])
+    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) =
+        holder.bindMovie(moviesList[position])
 
     override fun getItemCount() = moviesList.count()
 
