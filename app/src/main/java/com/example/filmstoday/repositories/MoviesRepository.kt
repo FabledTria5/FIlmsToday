@@ -14,7 +14,6 @@ class MoviesRepository {
     private var apiService: ApiService = RetrofitInstance.api
 
     fun getPopularMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
-
         apiService.getPopular(BuildConfig.MOVIES_API_KEY).enqueue(object :
             retrofit2.Callback<MoviesResponse> {
             override fun onResponse(call: Call<MoviesResponse>, @NonNull response: Response<MoviesResponse>) {
