@@ -26,7 +26,7 @@ class MoviesFragment : Fragment() {
 
     private val mainMoviesAdapter = MainMoviesAdapter(object : OnItemViewClickListener {
         override fun onItemClick(movie: Movie) {
-            val action = MoviesFragmentDirections.openMovie(movieId = movie.id)
+            val action = MoviesFragmentDirections.openMovie(movie.id)
             requireView().findNavController().navigate(action)
         }
     })

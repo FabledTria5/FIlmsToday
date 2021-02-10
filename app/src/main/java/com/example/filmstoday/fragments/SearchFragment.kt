@@ -31,7 +31,7 @@ class SearchFragment : Fragment() {
     private val searchMovieAdapter = SearchMovieAdapter(object : OnItemViewClickListener {
         override fun onItemClick(movie: Movie) {
             val action =
-                SearchFragmentDirections.openFullMovie(movieId = movie.id)
+                SearchFragmentDirections.openFullMovie(movie.id)
             requireView().findNavController().navigate(action)
         }
     })
