@@ -81,8 +81,8 @@ class FullMovieFragment : Fragment() {
             setCountry(name = fullMovieViewModel.getCountry(it.production_countries))
             setDescription(overview = fullMovieViewModel.getDescription(it.overview))
             setDuration(duration = fullMovieViewModel.getDuration(it.runtime))
-            setGenres(it.genres)
-            setRating(it.vote_average.toString())
+            setGenres(genres = it.genres)
+            setRating(rating = it.vote_average.toString())
         })
 
         fullMovieViewModel.getCast().observe(viewLifecycleOwner, {
