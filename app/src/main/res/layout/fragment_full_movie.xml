@@ -22,7 +22,7 @@
                 android:paddingStart="@dimen/_30sdp"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_30sdp"
-                android:paddingBottom="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_40sdp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
