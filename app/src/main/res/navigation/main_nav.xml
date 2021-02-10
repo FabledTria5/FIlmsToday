@@ -11,8 +11,10 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_search_nav_to_fullMovieFragment"
-            app:destination="@id/fullMovieFragment" />
+            android:id="@+id/openFullMovie"
+            app:destination="@id/fullMovieFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/profile_nav"

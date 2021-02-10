@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -47,8 +48,7 @@ class FullMovieFragment : Fragment() {
         startObserve()
         initRecyclerView()
     }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
+    
     private fun initRecyclerView() {
         actorsAdapter = ActorsAdapter()
         genresAdapter = GenresAdapter()
@@ -66,12 +66,11 @@ class FullMovieFragment : Fragment() {
         }
 
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-        dividerItemDecoration.setDrawable(
-            resources.getDrawable(
-                R.drawable.separator,
-                context?.theme
+        AppCompatResources.getDrawable(requireContext(), R.drawable.separator)?.let {
+            dividerItemDecoration.setDrawable(
+                it
             )
-        )
+        }
         binding.bottomSheet.rvGenres.addItemDecoration(dividerItemDecoration)
     }
 
@@ -84,6 +83,7 @@ class FullMovieFragment : Fragment() {
             setDescription(overview = fullMovieViewModel.getDescription(it.overview))
             setDuration(duration = fullMovieViewModel.getDuration(it.runtime))
             setGenres(it.genres)
+            setRating(it.vote_average.toString())
         })
 
         fullMovieViewModel.getCast().observe(viewLifecycleOwner, {
@@ -121,5 +121,9 @@ class FullMovieFragment : Fragment() {
     private fun setGenres(genres: List<Genres>) {
         genresAdapter.setGenres(genres = genres)
         genresAdapter.notifyDataSetChanged()
+    }
+
+    private fun setRating(rating: String) {
+        binding.bottomSheet.tvRating.text = rating
     }
 }

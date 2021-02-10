@@ -9,22 +9,32 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ActorsAdapter
+import com.example.filmstoday.adapters.OnItemViewClickListener
 import com.example.filmstoday.adapters.SearchMovieAdapter
 import com.example.filmstoday.databinding.FragmentSearchBinding
+import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.viewmodels.SearchViewModel
 
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var searchMovieAdapter: SearchMovieAdapter
     private lateinit var actorsAdapter: ActorsAdapter
     private val TAG = "SearchFragment"
+
+    private val searchMovieAdapter = SearchMovieAdapter(object : OnItemViewClickListener {
+        override fun onItemClick(movie: Movie) {
+            val action =
+                SearchFragmentDirections.openFullMovie(movieId = movie.id)
+            requireView().findNavController().navigate(action)
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -53,7 +63,6 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupRecyclers() {
-        searchMovieAdapter = SearchMovieAdapter()
         actorsAdapter = ActorsAdapter()
 
         binding.rvMoviesSearchResult.apply {

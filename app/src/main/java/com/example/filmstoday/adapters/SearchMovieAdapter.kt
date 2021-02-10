@@ -10,7 +10,8 @@ import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL_SMALL
 import com.squareup.picasso.Picasso
 
-class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesViewHolder>() {
+class SearchMovieAdapter(private val onItemViewClickListener: OnItemViewClickListener) :
+    RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesViewHolder>() {
 
     private val moviesList = arrayListOf<Movie>()
 
@@ -25,6 +26,10 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesV
                     .into(poster)
             } else {
                 poster.setImageResource(R.drawable.ic_poster_placeholder)
+            }
+
+            itemView.setOnClickListener {
+                onItemViewClickListener.onItemClick(movie = movie)
             }
 
         }
