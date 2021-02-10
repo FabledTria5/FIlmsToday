@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
             android:fontFamily="@font/sfprodisplay_medium"
-            android:text="7,2"
             android:textColor="@color/white"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tvMovieName"
@@ -79,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvMovieName" />
 
         <TextView
-            android:id="@+id/tv_duration"
+            android:id="@+id/tvDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
@@ -91,7 +90,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnWant"
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_marginTop="@dimen/_35sdp"
             android:fontFamily="@font/sfprodisplay_regular"
@@ -104,7 +103,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnWatched"
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/sfprodisplay_regular"
@@ -168,6 +167,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
