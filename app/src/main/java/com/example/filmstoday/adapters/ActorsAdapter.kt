@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
-import com.example.filmstoday.models.Actor
+import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.utils.Constants
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
@@ -31,7 +31,8 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ActorsViewHolder(
-        itemView = LayoutInflater.from(parent.context).inflate(R.layout.actors_item, parent, false)
+        itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.actors_item, parent, false)
     )
 
     override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) =

@@ -14,4 +14,10 @@
     <string name="searchView_hint">Movies, Actors…</string>
     <string name="names">Names</string>
     <string name="work_in_progress">Work in progress…</string>
+    <string name="cast_crew"><![CDATA[Cast & Crew]]></string>
+    <string name="no_description">No description</string>
+    <string name="want">Want</string>
+    <string name="watched">Watched</string>
+    <string name="unknown">Unknown</string>
+    <string name="genres">Genres</string>
 </resources>

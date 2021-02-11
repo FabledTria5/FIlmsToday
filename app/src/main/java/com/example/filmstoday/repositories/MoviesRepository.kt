@@ -8,6 +8,7 @@ import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.MoviesResponse
 import retrofit2.Call
 import retrofit2.Response
+import java.lang.RuntimeException
 
 class MoviesRepository {
 
@@ -16,45 +17,56 @@ class MoviesRepository {
     fun getPopularMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
         apiService.getPopular(BuildConfig.MOVIES_API_KEY).enqueue(object :
             retrofit2.Callback<MoviesResponse> {
-            override fun onResponse(call: Call<MoviesResponse>, @NonNull response: Response<MoviesResponse>) {
+            override fun onResponse(
+                call: Call<MoviesResponse>,
+                @NonNull response: Response<MoviesResponse>
+            ) {
                 _observingMovies.value = response.body()
             }
 
-            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-
-            }
+            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
         })
     }
 
     fun getNowPlayingMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
-        apiService.getNowPlaying(BuildConfig.MOVIES_API_KEY).enqueue(object : retrofit2.Callback<MoviesResponse> {
-            override fun onResponse(call: Call<MoviesResponse>, @NonNull response: Response<MoviesResponse>) {
-                _observingMovies.value = response.body()
-            }
-            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
+        apiService.getNowPlaying(BuildConfig.MOVIES_API_KEY)
+            .enqueue(object : retrofit2.Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    @NonNull response: Response<MoviesResponse>
+                ) {
+                    _observingMovies.value = response.body()
+                }
 
-            }
-        })
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
+            })
     }
 
-    fun getUpcomingMovies(_observingMovies: MutableLiveData<MoviesResponse>){
-        apiService.getUpcoming(BuildConfig.MOVIES_API_KEY).enqueue(object : retrofit2.Callback<MoviesResponse> {
-            override fun onResponse(call: Call<MoviesResponse>, @NonNull response: Response<MoviesResponse>) {
-                _observingMovies.value = response.body()
-            }
-            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-            }
-        })
+    fun getUpcomingMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
+        apiService.getUpcoming(BuildConfig.MOVIES_API_KEY)
+            .enqueue(object : retrofit2.Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    @NonNull response: Response<MoviesResponse>
+                ) {
+                    _observingMovies.value = response.body()
+                }
+
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
+            })
     }
 
     fun getTopMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
-        apiService.getTop(BuildConfig.MOVIES_API_KEY).enqueue(object : retrofit2.Callback<MoviesResponse> {
-            override fun onResponse(call: Call<MoviesResponse>, @NonNull response: Response<MoviesResponse>) {
-                _observingMovies.value = response.body()
-            }
-            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
+        apiService.getTop(BuildConfig.MOVIES_API_KEY)
+            .enqueue(object : retrofit2.Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    @NonNull response: Response<MoviesResponse>
+                ) {
+                    _observingMovies.value = response.body()
+                }
 
-            }
-        })
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
+            })
     }
 }
