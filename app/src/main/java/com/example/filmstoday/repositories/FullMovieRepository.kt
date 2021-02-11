@@ -22,9 +22,7 @@ class FullMovieRepository {
                 _observingMovie.value = response.body()
             }
 
-            override fun onFailure(call: Call<MovieFullModel>, t: Throwable) {
-
-            }
+            override fun onFailure(call: Call<MovieFullModel>, t: Throwable) = t.printStackTrace()
         })
     }
 
@@ -38,10 +36,7 @@ class FullMovieRepository {
                     _observingActors.value = response.body()
                 }
 
-                override fun onFailure(call: Call<CastResponse>, t: Throwable) {
-
-                }
-
+                override fun onFailure(call: Call<CastResponse>, t: Throwable) = t.printStackTrace()
             })
     }
 }

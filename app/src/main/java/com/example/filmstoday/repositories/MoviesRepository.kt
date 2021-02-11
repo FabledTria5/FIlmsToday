@@ -8,6 +8,7 @@ import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.MoviesResponse
 import retrofit2.Call
 import retrofit2.Response
+import java.lang.RuntimeException
 
 class MoviesRepository {
 
@@ -23,9 +24,7 @@ class MoviesRepository {
                 _observingMovies.value = response.body()
             }
 
-            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-
-            }
+            override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
         })
     }
 
@@ -39,9 +38,7 @@ class MoviesRepository {
                     _observingMovies.value = response.body()
                 }
 
-                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-
-                }
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
             })
     }
 
@@ -55,8 +52,7 @@ class MoviesRepository {
                     _observingMovies.value = response.body()
                 }
 
-                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-                }
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
             })
     }
 
@@ -70,9 +66,7 @@ class MoviesRepository {
                     _observingMovies.value = response.body()
                 }
 
-                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) {
-
-                }
+                override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
             })
     }
 }

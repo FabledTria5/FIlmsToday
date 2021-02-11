@@ -23,9 +23,7 @@ class SearchRepository {
                     _observingMovies.value = response.body()
                 }
 
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-
-                }
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) = t.printStackTrace()
             })
     }
 
@@ -39,9 +37,7 @@ class SearchRepository {
                 _observingActors.value = response.body()
             }
 
-            override fun onFailure(call: Call<ActorsResponse>, t: Throwable) {
-
-            }
+            override fun onFailure(call: Call<ActorsResponse>, t: Throwable) = t.printStackTrace()
         })
     }
 }
