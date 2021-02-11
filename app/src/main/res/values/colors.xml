@@ -20,5 +20,7 @@
     <color name="carViewBackground">#7f7e83</color>
     <color name="descriptionText">#838385</color>
     <color name="textOnButton">#8f8f91</color>
+    <color name="lightGray">#9c9c9c</color>
+    <color name="listIcon">#6b6a6f</color>
 
 </resources>

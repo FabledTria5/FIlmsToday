@@ -20,4 +20,6 @@
     <string name="watched">Watched</string>
     <string name="unknown">Unknown</string>
     <string name="genres">Genres</string>
+    <string name="people">People</string>
+    <string name="my_movies">My Movies</string>
 </resources>
