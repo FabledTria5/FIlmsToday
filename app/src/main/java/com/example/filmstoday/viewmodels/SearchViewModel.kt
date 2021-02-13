@@ -22,5 +22,4 @@ class SearchViewModel : ViewModel(), LifecycleObserver {
         searchRepository.searchMovies(query = query, _observingMovies)
         searchRepository.searchActors(query = query, _observingActors)
     }
-
 }

@@ -51,7 +51,7 @@ class MoviesFragment : Fragment() {
     private fun setupTabListener() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                moviesViewModel.changeTab(position = tab!!.position)
+                tab?.let { moviesViewModel.changeTab(position = it.position) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -65,8 +65,10 @@ class MoviesFragment : Fragment() {
     }
 
     private fun doInitialization() {
-        binding.rvMoviesList.layoutManager = LinearLayoutManager(context)
-        binding.rvMoviesList.adapter = mainMoviesAdapter
+        binding.rvMoviesList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = mainMoviesAdapter
+        }
         startObserving()
     }
 

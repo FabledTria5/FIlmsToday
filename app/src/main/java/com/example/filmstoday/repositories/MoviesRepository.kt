@@ -8,7 +8,6 @@ import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.MoviesResponse
 import retrofit2.Call
 import retrofit2.Response
-import java.lang.RuntimeException
 
 class MoviesRepository {
 

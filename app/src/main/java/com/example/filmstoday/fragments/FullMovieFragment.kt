@@ -1,10 +1,14 @@
 package com.example.filmstoday.fragments
 
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -18,7 +22,9 @@ import com.example.filmstoday.databinding.FragmentFullMovieBinding
 import com.example.filmstoday.interactors.StringInteractorImpl
 import com.example.filmstoday.models.movie.Genres
 import com.example.filmstoday.utils.Constants
+import com.example.filmstoday.utils.showSnackBar
 import com.example.filmstoday.viewmodels.FullMovieViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class FullMovieFragment : Fragment() {
@@ -44,8 +50,9 @@ class FullMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(fullMovieViewModel)
         fullMovieViewModel.getReceivedMovieInfo(args.movieId)
-        startObserve()
+        Handler(Looper.getMainLooper()).postDelayed({startObserve()}, 300)
         initRecyclerView()
+        addListeners()
     }
 
     private fun initRecyclerView() {
@@ -62,15 +69,16 @@ class FullMovieFragment : Fragment() {
             adapter = genresAdapter
             layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        }.run {
+            val dividerItemDecoration =
+                DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
+            AppCompatResources.getDrawable(requireContext(), R.drawable.separator)?.let {
+                dividerItemDecoration.setDrawable(
+                    it
+                )
+            }
+            this.addItemDecoration(dividerItemDecoration)
         }
-
-        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-        AppCompatResources.getDrawable(requireContext(), R.drawable.separator)?.let {
-            dividerItemDecoration.setDrawable(
-                it
-            )
-        }
-        binding.bottomSheet.rvGenres.addItemDecoration(dividerItemDecoration)
     }
 
     private fun startObserve() {
@@ -86,9 +94,27 @@ class FullMovieFragment : Fragment() {
         })
 
         fullMovieViewModel.getCast().observe(viewLifecycleOwner, {
-            actorsAdapter.addItems(it.cast)
-            actorsAdapter.notifyDataSetChanged()
+            actorsAdapter.apply {
+                addItems(it.cast)
+                notifyDataSetChanged()
+            }
         })
+    }
+
+    private fun addListeners() {
+        binding.bottomSheet.btnWant.setOnClickListener {
+            it.apply {
+                showSnackBar(R.string.added_to_wanted, Snackbar.LENGTH_SHORT)
+                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
+            }
+        }
+
+        binding.bottomSheet.btnWatched.setOnClickListener {
+            it.apply {
+                showSnackBar(R.string.added_to_watched, Snackbar.LENGTH_SHORT)
+                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
+            }
+        }
     }
 
     private fun setPoster(posterPath: String) {
@@ -118,8 +144,10 @@ class FullMovieFragment : Fragment() {
     }
 
     private fun setGenres(genres: List<Genres>) {
-        genresAdapter.setGenres(genres = genres)
-        genresAdapter.notifyDataSetChanged()
+        genresAdapter.apply {
+            setGenres(genres = genres)
+            notifyDataSetChanged()
+        }
     }
 
     private fun setRating(rating: String) {

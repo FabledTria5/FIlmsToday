@@ -21,12 +21,11 @@ class ProfileFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.
             inflate(inflater, R.layout.fragment_profile, container, false)
-
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        lifecycle.addObserver(profileViewModel)
     }
 }
