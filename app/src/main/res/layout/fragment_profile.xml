@@ -73,6 +73,8 @@
                 app:tabIndicatorColor="@color/red"
                 app:tabIndicatorFullWidth="false"
                 app:tabMode="scrollable"
+                app:tabPaddingEnd="30dp"
+                app:tabPaddingStart="30dp"
                 app:tabRippleColor="@color/ripple"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextAppearance="@style/ProfileTabLayoutTextAppearance"
