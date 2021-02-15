@@ -24,13 +24,11 @@ class FullMovieViewModel(private val stringInteractor: StringInteractor) : ViewM
         }
     }
 
-    fun convertDate(date: String) = date.substring(0, 4)
+    fun convertDate(date: String) = date.take(4)
 
     fun getCountry(productionCountries: List<ProductionCountries>): String {
-        return when (productionCountries.isEmpty()) {
-            true -> stringInteractor.textUnknown
-            else -> productionCountries[0].name
-        }
+        if (productionCountries.isEmpty()) return stringInteractor.textUnknown
+        return productionCountries.first().name
     }
 
     fun getDescription(description: String?): String {
