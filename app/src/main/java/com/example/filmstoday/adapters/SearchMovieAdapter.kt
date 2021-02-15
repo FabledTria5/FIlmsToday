@@ -20,20 +20,14 @@ class SearchMovieAdapter(private val onItemViewClickListener: OnItemViewClickLis
         private val poster: ImageView = itemView.findViewById(R.id.ivSearchMoviePoster)
 
         fun bindMovie(movie: Movie) {
-            if (movie.poster_path != null) {
-                Picasso.get().load("$POSTERS_BASE_URL_SMALL${movie.poster_path}")
-                    .placeholder(R.drawable.ic_poster_placeholder)
-                    .into(poster)
-            } else {
-                poster.setImageResource(R.drawable.ic_poster_placeholder)
-            }
+            Picasso.get().load("$POSTERS_BASE_URL_SMALL${movie.poster_path}")
+                .placeholder(R.drawable.ic_poster_placeholder)
+                .into(poster)
 
             itemView.setOnClickListener {
                 onItemViewClickListener.onItemClick(movie = movie)
             }
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SearchMoviesViewHolder(

@@ -1,6 +1,6 @@
 package com.example.filmstoday.viewmodels
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel : ViewModel(), LifecycleObserver {
 }
