@@ -23,9 +23,13 @@ import com.example.filmstoday.viewmodels.SearchViewModel
 
 class SearchFragment : Fragment() {
 
+    private val searchViewModel: SearchViewModel by lazy {
+        ViewModelProvider(this).get(SearchViewModel::class.java)
+    }
+
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var searchViewModel: SearchViewModel
     private lateinit var actorsAdapter: ActorsAdapter
+
     private val TAG = "SearchFragment"
 
     private val searchMovieAdapter = SearchMovieAdapter(object : OnItemViewClickListener {
@@ -41,7 +45,6 @@ class SearchFragment : Fragment() {
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_search, container, false)
-        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         return binding.root
     }
 

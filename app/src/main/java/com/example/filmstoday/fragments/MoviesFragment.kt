@@ -19,7 +19,10 @@ import com.google.android.material.tabs.TabLayout
 
 class MoviesFragment : Fragment() {
 
-    private lateinit var moviesViewModel: MoviesViewModel
+    private val moviesViewModel: MoviesViewModel by lazy {
+        ViewModelProvider(this).get(MoviesViewModel::class.java)
+    }
+
     private lateinit var binding: FragmentMoviesBinding
 
     private val TAG = "MoviesFragment"
@@ -38,7 +41,6 @@ class MoviesFragment : Fragment() {
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movies, container, false)
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         return binding.root
     }
 

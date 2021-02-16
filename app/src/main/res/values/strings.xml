@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FIlms Today</string>
+    <string name="app_name">Films Today</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movies">Movies</string>
@@ -24,4 +24,16 @@
     <string name="my_movies">My Movies</string>
     <string name="added_to_wanted">Added to wanted</string>
     <string name="added_to_watched">Added to watched</string>
+    <string name="welcome">Welcome!</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or">or</string>
+    <string name="facebook">Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="google">Google</string>
+    <string name="skip">Skip</string>
 </resources>

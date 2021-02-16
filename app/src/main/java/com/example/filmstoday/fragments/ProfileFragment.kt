@@ -13,15 +13,17 @@ import com.example.filmstoday.viewmodels.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
+    private val profileViewModel: ProfileViewModel by lazy {
+        ViewModelProvider(this).get(ProfileViewModel::class.java)
+    }
+
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.
             inflate(inflater, R.layout.fragment_profile, container, false)
-        profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         return binding.root
     }
 

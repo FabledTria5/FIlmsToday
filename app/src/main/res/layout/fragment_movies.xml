@@ -64,7 +64,7 @@
                 app:tabMode="scrollable"
                 app:tabRippleColor="@color/ripple"
                 app:tabSelectedTextColor="@color/white"
-                app:tabTextAppearance="@style/TabLayoutTextAppearance"
+                app:tabTextAppearance="@style/MoviesTabLayoutTextAppearance"
                 app:tabTextColor="@color/inactive">
 
                 <com.google.android.material.tabs.TabItem
