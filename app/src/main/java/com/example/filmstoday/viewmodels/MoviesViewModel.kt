@@ -26,10 +26,10 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
     fun changeTab(position: Int) {
         if (position == currentPosition && _observingMovies.value != null) return
         when (position) {
-            0 -> moviesRepository.getPopularMovies(_observingMovies)
-            1 -> moviesRepository.getNowPlayingMovies(_observingMovies)
-            2 -> moviesRepository.getUpcomingMovies(_observingMovies)
-            3 -> moviesRepository.getTopMovies(_observingMovies)
+            0 -> moviesRepository.getPopularMovies(observer = _observingMovies)
+            1 -> moviesRepository.getNowPlayingMovies(observer = _observingMovies)
+            2 -> moviesRepository.getUpcomingMovies(observer = _observingMovies)
+            3 -> moviesRepository.getTopMovies(observer = _observingMovies)
         }
         currentPosition = position
     }

@@ -13,56 +13,56 @@ class MoviesRepository {
 
     private var apiService: ApiService = RetrofitInstance.api
 
-    fun getPopularMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
+    fun getPopularMovies(observer: MutableLiveData<MoviesResponse>) {
         apiService.getPopular(BuildConfig.MOVIES_API_KEY).enqueue(object :
             retrofit2.Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 @NonNull response: Response<MoviesResponse>
             ) {
-                _observingMovies.value = response.body()
+                observer.value = response.body()
             }
 
             override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
         })
     }
 
-    fun getNowPlayingMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
+    fun getNowPlayingMovies(observer: MutableLiveData<MoviesResponse>) {
         apiService.getNowPlaying(BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
                     @NonNull response: Response<MoviesResponse>
                 ) {
-                    _observingMovies.value = response.body()
+                    observer.value = response.body()
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
             })
     }
 
-    fun getUpcomingMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
+    fun getUpcomingMovies(observer: MutableLiveData<MoviesResponse>) {
         apiService.getUpcoming(BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
                     @NonNull response: Response<MoviesResponse>
                 ) {
-                    _observingMovies.value = response.body()
+                    observer.value = response.body()
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
             })
     }
 
-    fun getTopMovies(_observingMovies: MutableLiveData<MoviesResponse>) {
+    fun getTopMovies(observer: MutableLiveData<MoviesResponse>) {
         apiService.getTop(BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
                     @NonNull response: Response<MoviesResponse>
                 ) {
-                    _observingMovies.value = response.body()
+                    observer.value = response.body()
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, @NonNull t: Throwable) = t.printStackTrace()
