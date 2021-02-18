@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         setupConnectionListener()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(networkReceiver)
+    }
+
     private fun setupNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
