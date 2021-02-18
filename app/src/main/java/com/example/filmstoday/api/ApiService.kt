@@ -1,5 +1,6 @@
 package com.example.filmstoday.api
 
+import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.responses.ActorsResponse
 import com.example.filmstoday.responses.CastResponse
@@ -46,5 +47,11 @@ interface ApiService {
         @Path("movie_id") id: Int,
         @Query("api_key") query: String
     ) : Call<CastResponse>
+
+    @GET(value = "/3/person/{person_id}")
+    fun getActor(
+        @Path("person_id") id: Int,
+        @Query("api_key") query: String
+    ) : Call<ActorFullInfoModel>
 
 }

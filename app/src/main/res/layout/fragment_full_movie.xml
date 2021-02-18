@@ -27,7 +27,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/bottomSheet"
+                android:id="@+id/movieBottomSheet"
             layout="@layout/movie_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

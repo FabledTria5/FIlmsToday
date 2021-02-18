@@ -3,6 +3,7 @@ package com.example.filmstoday.repositories
 import androidx.lifecycle.MutableLiveData
 import com.example.filmstoday.BuildConfig
 import com.example.filmstoday.api.ApiService
+import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.CastResponse
@@ -37,6 +38,22 @@ class FullMovieRepository {
                 }
 
                 override fun onFailure(call: Call<CastResponse>, t: Throwable) = t.printStackTrace()
+            })
+    }
+
+    fun getActorInfo(actorId: Int, observer: MutableLiveData<ActorFullInfoModel>) {
+        apiService.getActor(actorId, BuildConfig.MOVIES_API_KEY)
+            .enqueue(object : retrofit2.Callback<ActorFullInfoModel> {
+                override fun onResponse(
+                    call: Call<ActorFullInfoModel>,
+                    response: Response<ActorFullInfoModel>
+                ) {
+                    observer.value = response.body()
+                }
+
+                override fun onFailure(call: Call<ActorFullInfoModel>, t: Throwable) {
+                    t.printStackTrace()
+                }
             })
     }
 }

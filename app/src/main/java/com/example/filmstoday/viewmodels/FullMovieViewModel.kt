@@ -2,6 +2,7 @@ package com.example.filmstoday.viewmodels
 
 import androidx.lifecycle.*
 import com.example.filmstoday.interactors.StringInteractor
+import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.models.movie.ProductionCountries
 import com.example.filmstoday.repositories.FullMovieRepository
@@ -12,10 +13,12 @@ class FullMovieViewModel(private val stringInteractor: StringInteractor) : ViewM
 
     private val _observingMovie = MutableLiveData<MovieFullModel>()
     private val _observingCast = MutableLiveData<CastResponse>()
+    private val _observingActor = MutableLiveData<ActorFullInfoModel>()
     private val fullMovieRepository = FullMovieRepository()
 
     fun getObservedMovie() = _observingMovie
     fun getCast() = _observingCast
+    fun getObservingActor() = _observingActor
 
     fun getReceivedMovieInfo(movieId: Int) {
         fullMovieRepository.apply {
@@ -41,5 +44,9 @@ class FullMovieViewModel(private val stringInteractor: StringInteractor) : ViewM
             val minutes = it % 60
             return String.format("%dh %02dmin", hours, minutes)
         } ?: return stringInteractor.textUnknown
+    }
+
+    fun getActorInfo(actorId: Int) {
+        fullMovieRepository.getActorInfo(actorId = actorId, observer = _observingActor)
     }
 }

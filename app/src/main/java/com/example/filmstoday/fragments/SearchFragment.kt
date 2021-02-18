@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ActorsAdapter
-import com.example.filmstoday.adapters.OnItemViewClickListener
+import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.adapters.SearchMovieAdapter
 import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.movie.Movie
@@ -43,7 +43,7 @@ class SearchFragment : Fragment() {
         ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
-    private val searchMovieAdapter = SearchMovieAdapter(object : OnItemViewClickListener {
+    private val searchMovieAdapter = SearchMovieAdapter(object : OnMovieClickListener {
         override fun onItemClick(movie: Movie) {
             val action =
                 SearchFragmentDirections.openFullMovie(movie.id)
@@ -98,7 +98,7 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupRecyclers() {
-        actorsAdapter = ActorsAdapter()
+//        actorsAdapter = ActorsAdapter()
 
         binding.rvMoviesSearchResult.apply {
             adapter = searchMovieAdapter
