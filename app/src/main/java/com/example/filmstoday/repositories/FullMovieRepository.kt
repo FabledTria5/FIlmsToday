@@ -14,7 +14,7 @@ class FullMovieRepository {
     private var apiService: ApiService = RetrofitInstance.api
 
     fun getMovieInfo(_observingMovie: MutableLiveData<MovieFullModel>, id: Int) {
-        apiService.getDetails(id = id, BuildConfig.MOVIES_API_KEY).enqueue(object :
+        apiService.getMovieDetails(id = id, BuildConfig.MOVIES_API_KEY).enqueue(object :
             retrofit2.Callback<MovieFullModel> {
             override fun onResponse(
                 call: Call<MovieFullModel>,
@@ -28,7 +28,7 @@ class FullMovieRepository {
     }
 
     fun getCast(_observingActors: MutableLiveData<CastResponse>, id: Int) {
-        apiService.getCast(id = id, BuildConfig.MOVIES_API_KEY)
+        apiService.getMovieCast(id = id, BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<CastResponse> {
                 override fun onResponse(
                     call: Call<CastResponse>,

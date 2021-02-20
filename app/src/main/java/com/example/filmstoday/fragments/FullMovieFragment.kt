@@ -24,28 +24,19 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.Genres
 import com.example.filmstoday.models.movie.MovieFullModel
+import com.example.filmstoday.utils.ActorsBottomSheetBinder
 import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.showSnackBar
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class FullMovieFragment : Fragment() {
 
     private val actorsAdapter = ActorsAdapter(object : OnActorCLickListener {
         override fun onItemCLick(actor: Actor) {
-            val actorsBottomSheetBehavior = BottomSheetBehavior.from(actorsBottomSheet)
-            val moviesBottomSheetBehavior = BottomSheetBehavior.from(moviesBottomSheet)
-
-            moviesBottomSheetBehavior.isDraggable = false
-            actorsBottomSheetBehavior.isDraggable = false
-            actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            fullMovieViewModel.getActorInfo(actorId = actor.id)
-
+            enableActorBottomSheet(actor)
             binding.movieBottomSheet.actorBottomSheet.btnCLose.setOnClickListener {
-                actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                moviesBottomSheetBehavior.isDraggable = true
+                disableActorBottomSheet()
             }
         }
     })
@@ -55,6 +46,10 @@ class FullMovieFragment : Fragment() {
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var actorsBottomSheet: View
     private lateinit var moviesBottomSheet: View
+    private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var moviesBottomSheetBehavior: BottomSheetBehavior<View>
+
+    private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
     private val args: FullMovieFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -72,11 +67,17 @@ class FullMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(fullMovieViewModel)
         fullMovieViewModel.getReceivedMovieInfo(args.movieId)
-        Handler(Looper.getMainLooper()).postDelayed({startObserve()}, 300)
+        Handler(Looper.getMainLooper()).postDelayed({ startObserve() }, 500)
+        initBottomSheets(view)
         initRecyclerView()
         addListeners()
+    }
+
+    private fun initBottomSheets(view: View) {
         actorsBottomSheet = view.findViewById(R.id.actorBottomSheet)
         moviesBottomSheet = view.findViewById(R.id.movieBottomSheet)
+        actorsBottomSheetBehavior = BottomSheetBehavior.from(actorsBottomSheet)
+        moviesBottomSheetBehavior = BottomSheetBehavior.from(moviesBottomSheet)
     }
 
     private fun initRecyclerView() {
@@ -104,54 +105,64 @@ class FullMovieFragment : Fragment() {
         }
     }
 
+    private fun disableActorBottomSheet() {
+        actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        moviesBottomSheetBehavior.isDraggable = true
+    }
+
+    private fun enableActorBottomSheet(actor: Actor) {
+        moviesBottomSheetBehavior.isDraggable = false
+        actorsBottomSheetBehavior.isDraggable = false
+        fullMovieViewModel.getActorInfo(actorId = actor.id)
+    }
+
     private fun startObserve() {
         fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner, {
-            fillMovieInfo(it)
+            fillMovieInfo(movie = it)
         })
 
         fullMovieViewModel.getCast().observe(viewLifecycleOwner, {
             actorsAdapter.apply {
-                addItems(it.cast)
+                addItems(actors = it.cast)
                 notifyDataSetChanged()
             }
         })
 
         fullMovieViewModel.getObservingActor().observe(viewLifecycleOwner, {
-            fillActorInfo(it)
+            fillActorInfo(actor = it)
+            actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
     }
 
     private fun addListeners() {
         binding.movieBottomSheet.btnWant.setOnClickListener {
-            it.apply {
-                showSnackBar(R.string.added_to_wanted, Snackbar.LENGTH_SHORT)
-                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
-            }
+            it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
 
         binding.movieBottomSheet.btnWatched.setOnClickListener {
-            it.apply {
-                showSnackBar(R.string.added_to_watched, Snackbar.LENGTH_SHORT)
-                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
-            }
+            it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
     }
 
-    private fun fillActorInfo(it: ActorFullInfoModel) {
-        binding.movieBottomSheet.actorBottomSheet.tvActorFullName.text = it.name
-        binding.movieBottomSheet.actorBottomSheet.tvActorBiography.text = it.biography
-        binding.movieBottomSheet.actorBottomSheet.tvBirthday.text = it.birthday
+    private fun fillActorInfo(actor: ActorFullInfoModel) {
+        actorsBottomSheetBinder.bindActor(
+            actorBottomSheet = binding.movieBottomSheet.actorBottomSheet,
+            actor = actor
+        )
     }
 
-    private fun fillMovieInfo(it: MovieFullModel) {
-        setPoster(posterPath = it.poster_path)
-        setTitle(title = it.title)
-        setDate(date = it.release_date)
-        setCountry(name = fullMovieViewModel.getCountry(it.production_countries))
-        setDescription(overview = fullMovieViewModel.getDescription(it.overview))
-        setDuration(duration = fullMovieViewModel.getDuration(it.runtime))
-        setGenres(genres = it.genres)
-        setRating(rating = it.vote_average.toString())
+    private fun fillMovieInfo(movie: MovieFullModel) {
+        setPoster(posterPath = movie.poster_path)
+        binding.movieBottomSheet.tvMovieName.text = movie.title
+        binding.movieBottomSheet.tvReleaseYear.text =
+            fullMovieViewModel.convertDate(date = movie.release_date)
+        binding.movieBottomSheet.tvReleaseCountry.text =
+            fullMovieViewModel.getCountry(productionCountries = movie.production_countries)
+        binding.movieBottomSheet.tvOverView.text = movie.overview
+        binding.movieBottomSheet.tvDuration.text =
+            fullMovieViewModel.getDuration(runtime = movie.runtime)
+        binding.movieBottomSheet.tvRating.text = movie.vote_average.toString()
+        setGenres(genres = movie.genres)
     }
 
     private fun setPoster(posterPath: String) {
@@ -160,34 +171,10 @@ class FullMovieFragment : Fragment() {
             .into(binding.ivPosterFull)
     }
 
-    private fun setTitle(title: String) {
-        binding.movieBottomSheet.tvMovieName.text = title
-    }
-
-    private fun setDate(date: String) {
-        binding.movieBottomSheet.tvReleaseYear.text = fullMovieViewModel.convertDate(date)
-    }
-
-    private fun setCountry(name: String) {
-        binding.movieBottomSheet.tvReleaseCountry.text = name
-    }
-
-    private fun setDescription(overview: String) {
-        binding.movieBottomSheet.tvOverView.text = overview
-    }
-
-    private fun setDuration(duration: String) {
-        binding.movieBottomSheet.tvDuration.text = duration
-    }
-
     private fun setGenres(genres: List<Genres>) {
         genresAdapter.apply {
             setGenres(genres = genres)
             notifyDataSetChanged()
         }
-    }
-
-    private fun setRating(rating: String) {
-        binding.movieBottomSheet.tvRating.text = rating
     }
 }
