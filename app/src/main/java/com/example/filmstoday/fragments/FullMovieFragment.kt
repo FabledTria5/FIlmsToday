@@ -3,6 +3,7 @@ package com.example.filmstoday.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,10 +68,11 @@ class FullMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(fullMovieViewModel)
         fullMovieViewModel.getReceivedMovieInfo(args.movieId)
-        Handler(Looper.getMainLooper()).postDelayed({ startObserve() }, 500)
+        startObserve()
         initBottomSheets(view)
         initRecyclerView()
         addListeners()
+        setBackButtonBehavior(view)
     }
 
     private fun initBottomSheets(view: View) {
@@ -144,6 +146,23 @@ class FullMovieFragment : Fragment() {
         }
     }
 
+    private fun setBackButtonBehavior(view: View) {
+        view.apply {
+            isFocusableInTouchMode = true
+            requestFocus()
+            setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        this.requestFocus()
+                        return@OnKeyListener true
+                    }
+                }
+                return@OnKeyListener false
+            })
+        }
+    }
+
     private fun fillActorInfo(actor: ActorFullInfoModel) {
         actorsBottomSheetBinder.bindActor(
             actorBottomSheet = binding.movieBottomSheet.actorBottomSheet,
@@ -158,7 +177,7 @@ class FullMovieFragment : Fragment() {
             fullMovieViewModel.convertDate(date = movie.release_date)
         binding.movieBottomSheet.tvReleaseCountry.text =
             fullMovieViewModel.getCountry(productionCountries = movie.production_countries)
-        binding.movieBottomSheet.tvOverView.text = movie.overview
+        binding.movieBottomSheet.tvOverView.text = fullMovieViewModel.getDescription(movie.overview)
         binding.movieBottomSheet.tvDuration.text =
             fullMovieViewModel.getDuration(runtime = movie.runtime)
         binding.movieBottomSheet.tvRating.text = movie.vote_average.toString()

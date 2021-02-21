@@ -2,6 +2,7 @@ package com.example.filmstoday.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.Movie
+import com.example.filmstoday.responses.Response
 import com.example.filmstoday.utils.ActorsBottomSheetBinder
 import com.example.filmstoday.viewmodels.SearchViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -69,6 +71,21 @@ class SearchFragment : Fragment() {
         setupSearchField()
         setupRecyclers()
         startObserving()
+
+        view.apply {
+            isFocusableInTouchMode = true
+            requestFocus()
+            setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        this.requestFocus()
+                        return@OnKeyListener true
+                    }
+                }
+                return@OnKeyListener false
+            })
+        }
     }
 
     private fun initBottomSheets(view: View) {
@@ -115,26 +132,39 @@ class SearchFragment : Fragment() {
 
     private fun startObserving() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
-            searchMovieAdapter.clearItems()
-            searchMovieAdapter.addItems(movies = it.results)
-            searchMovieAdapter.notifyDataSetChanged()
+            searchMovieAdapter.apply {
+                clearItems()
+                addItems(movies = it.results)
+                notifyDataSetChanged()
+            }
             binding.textView2.visibility = View.VISIBLE
         })
 
         searchViewModel.getActors().observe(viewLifecycleOwner, {
-            actorsAdapter.clearItems()
-            actorsAdapter.addItems(actors = it.results)
-            actorsAdapter.notifyDataSetChanged()
+            actorsAdapter.apply {
+                clearItems()
+                addItems(actors = it.results)
+                notifyDataSetChanged()
+            }
             binding.textView3.visibility = View.VISIBLE
         })
 
         searchViewModel.getActor().observe(viewLifecycleOwner, {
             fillActorInfo(actor = it)
+            removeFocus(binding.searchField)
             actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
     }
 
+    private fun removeFocus(view: View) {
+        view.clearFocus()
+        requireView().requestFocus()
+    }
+
     private fun fillActorInfo(actor: ActorFullInfoModel) {
-        actorsBottomSheetBinder.bindActor(actorBottomSheet = binding.actorBottomSheet, actor = actor)
+        actorsBottomSheetBinder.bindActor(
+            actorBottomSheet = binding.actorBottomSheet,
+            actor = actor
+        )
     }
 }
