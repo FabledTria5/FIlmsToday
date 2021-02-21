@@ -22,7 +22,7 @@
             android:fontFamily="@font/karla_bold"
             android:letterSpacing="0.05"
             android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_30sdp"
+            android:paddingTop="@dimen/_20sdp"
             android:text="@string/welcome"
             android:textColor="@color/white"
             android:textSize="@dimen/_30ssp"
@@ -39,6 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:tabGravity="start"
+            app:tabIndicatorHeight="0dp"
             app:tabPaddingEnd="@dimen/_30sdp"
             app:tabRippleColor="@color/ripple"
             app:tabSelectedTextColor="@color/white"
@@ -249,17 +250,20 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/btnSkip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/sfprodisplay_medium"
-            android:padding="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_20sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:text="@string/skip"
             android:textColor="@color/inactive"
             android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/faceBookLogin" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

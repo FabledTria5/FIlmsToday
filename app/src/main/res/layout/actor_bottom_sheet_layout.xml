@@ -33,7 +33,7 @@
                 android:src="@drawable/ic_baseline_close_24"
                 app:layout_constraintEnd_toEndOf="@+id/ivActorFullPhoto"
                 app:layout_constraintTop_toTopOf="@+id/ivActorFullPhoto"
-                app:tint="@color/inactive" />
+                app:tint="@color/lightGray" />
 
             <TextView
                 android:id="@+id/tvActorFullName"
