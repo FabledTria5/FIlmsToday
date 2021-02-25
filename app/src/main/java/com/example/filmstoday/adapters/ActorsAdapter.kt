@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.adapters.listeners.OnActorCLickListener
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.utils.Constants
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
-class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
+class ActorsAdapter(private val onActorCLickListener: OnActorCLickListener) :
+    RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
 
     private val actorsList = arrayListOf<Actor>()
 
@@ -27,6 +29,9 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
                 .into(actorPhoto)
 
             actorName.text = actor.name.replace(" ", "\n")
+            itemView.setOnClickListener {
+                onActorCLickListener.onItemCLick(actor = actor)
+            }
         }
     }
 

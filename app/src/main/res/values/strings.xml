@@ -37,4 +37,6 @@
     <string name="google">Google</string>
     <string name="skip">Skip</string>
     <string name="connection_lost">Connection lost</string>
+    <string name="known_for">Known for</string>
+    <string name="added_to_favorite">Added to favorite</string>
 </resources>

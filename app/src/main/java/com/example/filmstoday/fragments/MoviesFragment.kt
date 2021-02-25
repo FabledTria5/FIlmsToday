@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.MainMoviesAdapter
-import com.example.filmstoday.adapters.OnItemViewClickListener
+import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentMoviesBinding
 import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.viewmodels.MoviesViewModel
@@ -27,7 +27,7 @@ class MoviesFragment : Fragment() {
 
     private val TAG = "MoviesFragment"
 
-    private val mainMoviesAdapter = MainMoviesAdapter(object : OnItemViewClickListener {
+    private val mainMoviesAdapter = MainMoviesAdapter(object : OnMovieClickListener {
         override fun onItemClick(movie: Movie) {
             val action = MoviesFragmentDirections.openMovie(movie.id)
             requireView().findNavController().navigate(action)

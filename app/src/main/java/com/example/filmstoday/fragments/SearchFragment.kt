@@ -1,11 +1,8 @@
 package com.example.filmstoday.fragments
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,37 +10,31 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ActorsAdapter
-import com.example.filmstoday.adapters.OnItemViewClickListener
 import com.example.filmstoday.adapters.SearchMovieAdapter
+import com.example.filmstoday.adapters.listeners.OnActorCLickListener
+import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentSearchBinding
+import com.example.filmstoday.models.cast.Actor
+import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.Movie
-import com.example.filmstoday.responses.ActorsResponse
-import com.example.filmstoday.service.ActorsService
+import com.example.filmstoday.responses.Response
+import com.example.filmstoday.utils.ActorsBottomSheetBinder
 import com.example.filmstoday.viewmodels.SearchViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class SearchFragment : Fragment() {
-
-    private val loadActorsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val actorsResponse = intent?.getSerializableExtra("actorsResponse") as ActorsResponse
-            actorsAdapter.clearItems()
-            actorsAdapter.addItems(actors = actorsResponse.results)
-            actorsAdapter.notifyDataSetChanged()
-        }
-    }
 
     private val searchViewModel: SearchViewModel by lazy {
         ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
-    private val searchMovieAdapter = SearchMovieAdapter(object : OnItemViewClickListener {
+    private val searchMovieAdapter = SearchMovieAdapter(object : OnMovieClickListener {
         override fun onItemClick(movie: Movie) {
             val action =
                 SearchFragmentDirections.openFullMovie(movie.id)
@@ -51,16 +42,20 @@ class SearchFragment : Fragment() {
         }
     })
 
-    private lateinit var binding: FragmentSearchBinding
-    private lateinit var actorsAdapter: ActorsAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.let {
-            LocalBroadcastManager.getInstance(it)
-                .registerReceiver(loadActorsReceiver, IntentFilter("DETAILS INTENT FILTER"))
+    private val actorsAdapter = ActorsAdapter(object : OnActorCLickListener {
+        override fun onItemCLick(actor: Actor) {
+            enableActorBottomSheet(actor = actor)
+            binding.actorBottomSheet.btnCLose.setOnClickListener {
+                actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
         }
-    }
+    })
+
+    private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
+
+    private lateinit var binding: FragmentSearchBinding
+    private lateinit var actorsBottomSheet: View
+    private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -72,34 +67,44 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(searchViewModel)
+        initBottomSheets(view = view)
         setupSearchField()
         setupRecyclers()
+        startObserving()
+
+        view.apply {
+            isFocusableInTouchMode = true
+            requestFocus()
+            setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        this.requestFocus()
+                        return@OnKeyListener true
+                    }
+                }
+                return@OnKeyListener false
+            })
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    private fun initBottomSheets(view: View) {
+        actorsBottomSheet = view.findViewById(R.id.actorBottomSheet)
+        actorsBottomSheetBehavior = BottomSheetBehavior.from(actorsBottomSheet)
     }
 
     private fun setupSearchField() {
         binding.searchField.setOnFocusChangeListener { _, _ ->
-            binding.appbar.setExpanded(false)
+            binding.searching = true
         }
 
         binding.searchField.doAfterTextChanged { editable ->
             searchViewModel.textChanged(editable.toString())
-            context?.let { context ->
-                context.startService(Intent(context, ActorsService::class.java).apply {
-                    putExtra("ActorName", this@SearchFragment.binding.searchField.text.toString())
-                })
-            }
         }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupRecyclers() {
-        actorsAdapter = ActorsAdapter()
-
         binding.rvMoviesSearchResult.apply {
             adapter = searchMovieAdapter
             layoutManager =
@@ -119,16 +124,47 @@ class SearchFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
+    }
 
-        startObserving()
+    private fun enableActorBottomSheet(actor: Actor) {
+        searchViewModel.searchActor(id = actor.id)
     }
 
     private fun startObserving() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
-            searchMovieAdapter.clearItems()
-            searchMovieAdapter.addItems(movies = it.results)
-            searchMovieAdapter.notifyDataSetChanged()
+            searchMovieAdapter.apply {
+                clearItems()
+                addItems(movies = it.results)
+                notifyDataSetChanged()
+            }
             binding.textView2.visibility = View.VISIBLE
         })
+
+        searchViewModel.getActors().observe(viewLifecycleOwner, {
+            actorsAdapter.apply {
+                clearItems()
+                addItems(actors = it.results)
+                notifyDataSetChanged()
+            }
+            binding.textView3.visibility = View.VISIBLE
+        })
+
+        searchViewModel.getActor().observe(viewLifecycleOwner, {
+            fillActorInfo(actor = it)
+            removeFocus(binding.searchField)
+            actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        })
+    }
+
+    private fun removeFocus(view: View) {
+        view.clearFocus()
+        requireView().requestFocus()
+    }
+
+    private fun fillActorInfo(actor: ActorFullInfoModel) {
+        actorsBottomSheetBinder.bindActor(
+            actorBottomSheet = binding.actorBottomSheet,
+            actor = actor
+        )
     }
 }

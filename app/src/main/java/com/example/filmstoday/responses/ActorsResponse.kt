@@ -11,4 +11,4 @@ data class ActorsResponse(
     @SerializedName("total_results") val total_results : Int,
     @SerializedName("total_pages") val total_pages : Int
 
-) : Serializable
+) : Response(), Serializable

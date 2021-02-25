@@ -1,7 +1,7 @@
-package com.example.filmstoday.adapters
+package com.example.filmstoday.adapters.listeners
 
 import com.example.filmstoday.models.movie.Movie
 
-interface OnItemViewClickListener {
+interface OnMovieClickListener {
     fun onItemClick(movie: Movie)
 }

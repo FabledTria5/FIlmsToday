@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL
 import com.squareup.picasso.Picasso
 
-class MainMoviesAdapter(private var onItemViewClickListener: OnItemViewClickListener) :
+class MainMoviesAdapter(private var OnMovieClickListener: OnMovieClickListener) :
     RecyclerView.Adapter<MainMoviesAdapter.MoviesViewHolder>() {
 
     private val moviesList = arrayListOf<Movie>()
@@ -22,7 +23,7 @@ class MainMoviesAdapter(private var onItemViewClickListener: OnItemViewClickList
         fun bindMovie(movie: Movie) {
             Picasso.get().load("$POSTERS_BASE_URL${movie.poster_path}").into(poster)
             itemView.setOnClickListener {
-                onItemViewClickListener.onItemClick(movie = movie)
+                OnMovieClickListener.onItemClick(movie = movie)
             }
         }
     }

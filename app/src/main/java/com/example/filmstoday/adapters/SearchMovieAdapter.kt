@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.models.movie.Movie
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL_SMALL
 import com.squareup.picasso.Picasso
 
-class SearchMovieAdapter(private val onItemViewClickListener: OnItemViewClickListener) :
+class SearchMovieAdapter(private val OnMovieClickListener: OnMovieClickListener) :
     RecyclerView.Adapter<SearchMovieAdapter.SearchMoviesViewHolder>() {
 
     private val moviesList = arrayListOf<Movie>()
@@ -25,7 +26,7 @@ class SearchMovieAdapter(private val onItemViewClickListener: OnItemViewClickLis
                 .into(poster)
 
             itemView.setOnClickListener {
-                onItemViewClickListener.onItemClick(movie = movie)
+                OnMovieClickListener.onItemClick(movie = movie)
             }
         }
     }
