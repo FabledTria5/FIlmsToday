@@ -117,7 +117,7 @@
 
         <include
             android:id="@+id/actorBottomSheet"
-            layout="@layout/actor_bottom_sheet_layout" />
+            layout="@layout/actor_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

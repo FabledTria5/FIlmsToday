@@ -39,4 +39,15 @@
     <string name="connection_lost">Connection lost</string>
     <string name="known_for">Known for</string>
     <string name="added_to_favorite">Added to favorite</string>
+    <string name="language">Language</string>
+    <string name="adult_content">Adult content</string>
+    <string name="about">About</string>
+    <string name="choose_language">Choose language</string>
+    <string name="save_settings">Save Settings</string>
+    <string name="change_name">Change name</string>
+
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
 </resources>

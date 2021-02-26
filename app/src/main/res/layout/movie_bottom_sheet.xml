@@ -16,7 +16,7 @@
             android:id="@+id/cardView"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_7sdp"
             app:cardBackgroundColor="@color/carViewBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +174,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/actor_bottom_sheet_layout"
+    <include layout="@layout/actor_bottom_sheet"
         android:id="@+id/actorBottomSheet"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

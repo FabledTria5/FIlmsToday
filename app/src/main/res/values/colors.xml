@@ -23,5 +23,6 @@
     <color name="lightGray">#9c9c9c</color>
     <color name="listIcon">#6b6a6f</color>
     <color name="facebookBackground">#3c78e6</color>
+    <color name="iconColor">#807f84</color>
 
 </resources>
