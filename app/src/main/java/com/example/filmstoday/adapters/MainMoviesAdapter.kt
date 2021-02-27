@@ -7,23 +7,23 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
-import com.example.filmstoday.models.movie.Movie
+import com.example.filmstoday.models.movie.MovieModel
 import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL
 import com.squareup.picasso.Picasso
 
 class MainMoviesAdapter(private var OnMovieClickListener: OnMovieClickListener) :
     RecyclerView.Adapter<MainMoviesAdapter.MoviesViewHolder>() {
 
-    private val moviesList = arrayListOf<Movie>()
+    private val moviesList = arrayListOf<MovieModel>()
 
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val poster: ImageView = itemView.findViewById(R.id.ivPoster)
 
-        fun bindMovie(movie: Movie) {
-            Picasso.get().load("$POSTERS_BASE_URL${movie.poster_path}").into(poster)
+        fun bindMovie(movieModel: MovieModel) {
+            Picasso.get().load("$POSTERS_BASE_URL${movieModel.poster_path}").into(poster)
             itemView.setOnClickListener {
-                OnMovieClickListener.onItemClick(movie = movie)
+                OnMovieClickListener.onItemClick(movieModel = movieModel)
             }
         }
     }
@@ -38,7 +38,7 @@ class MainMoviesAdapter(private var OnMovieClickListener: OnMovieClickListener) 
 
     override fun getItemCount() = moviesList.count()
 
-    fun addItems(movies: List<Movie>) = this.moviesList.addAll(movies)
+    fun addItems(movieModels: List<MovieModel>) = this.moviesList.addAll(movieModels)
 
     fun clearItems() = this.moviesList.clear()
 

@@ -9,115 +9,127 @@
         android:background="@color/main_background"
         tools:context=".fragments.ProfileFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sfprodisplay_medium"
-                android:letterSpacing="0.05"
-                android:padding="@dimen/_10sdp"
-                android:text="@string/my_movies"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_30ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="RtlSymmetry" />
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/btnProfileImage"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:src="@drawable/ic_profile"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/main_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:tabGravity="center"
-                app:tabIndicatorColor="@color/red"
-                app:tabIndicatorFullWidth="false"
-                app:tabMode="scrollable"
-                app:tabPaddingEnd="30dp"
-                app:tabPaddingStart="30dp"
-                app:tabRippleColor="@color/ripple"
-                app:tabSelectedTextColor="@color/white"
-                app:tabTextAppearance="@style/ProfileTabLayoutTextAppearance"
-                app:tabTextColor="@color/inactive">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.tabs.TabItem
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/want" />
+                    android:fontFamily="@font/sfprodisplay_medium"
+                    android:letterSpacing="0.05"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/my_movies"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_30ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlSymmetry" />
 
-                <com.google.android.material.tabs.TabItem
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/btnProfileImage"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:tabGravity="center"
+                    app:tabIndicatorColor="@color/red"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabMode="scrollable"
+                    app:tabPaddingEnd="30dp"
+                    app:tabPaddingStart="30dp"
+                    app:tabRippleColor="@color/ripple"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextAppearance="@style/ProfileTabLayoutTextAppearance"
+                    app:tabTextColor="@color/inactive">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/want" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/watched" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/people" />
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <TextView
+                    android:id="@+id/tvMoviesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/watched" />
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/_15ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
-                <com.google.android.material.tabs.TabItem
+                <TextView
+                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/people" />
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="@string/movies"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/_15ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMoviesCount"
+                    app:layout_constraintStart_toEndOf="@id/tvMoviesCount"
+                    app:layout_constraintTop_toTopOf="@+id/tvMoviesCount" />
 
-            </com.google.android.material.tabs.TabLayout>
+                <ImageView
+                    android:id="@+id/btnChangeRecyclerViewLayout"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_list"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMoviesCount"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvMoviesCount" />
 
-            <TextView
-                android:id="@+id/tvMoviesCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:textColor="@color/lightGray"
-                android:textSize="@dimen/_15ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/moviesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:text="@string/movies"
-                android:textColor="@color/lightGray"
-                android:textSize="@dimen/_15ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/tvMoviesCount"
-                app:layout_constraintStart_toEndOf="@id/tvMoviesCount"
-                app:layout_constraintTop_toTopOf="@+id/tvMoviesCount" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:src="@drawable/ic_list"
-                app:layout_constraintBottom_toBottomOf="@+id/tvMoviesCount"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvMoviesCount" />
+        </ScrollView>
 
-            <com.factor.bouncy.BouncyRecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include layout="@layout/profile_bottom_sheet"
-            android:id="@+id/profileBottomSheet"/>
+        <include
+            android:id="@+id/profileBottomSheet"
+            layout="@layout/profile_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

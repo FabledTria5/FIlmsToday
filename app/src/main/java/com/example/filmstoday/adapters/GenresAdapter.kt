@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
-import com.example.filmstoday.models.movie.Genres
+import com.example.filmstoday.models.movie.GenresModel
 
 class GenresAdapter : RecyclerView.Adapter<GenresAdapter.GenresViewHolder>() {
 
-    private val genresList = arrayListOf<Genres>()
+    private val genresList = arrayListOf<GenresModel>()
 
     inner class GenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(genre: Genres) {
+        fun bind(genre: GenresModel) {
             itemView.findViewById<TextView>(R.id.genreName).text = genre.name
         }
     }
@@ -29,6 +29,6 @@ class GenresAdapter : RecyclerView.Adapter<GenresAdapter.GenresViewHolder>() {
 
     override fun getItemCount() = genresList.count()
 
-    fun setGenres(genres: List<Genres>) = genresList.addAll(genres)
+    fun setGenres(genres: List<GenresModel>) = genresList.addAll(genres)
 
 }

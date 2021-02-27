@@ -24,7 +24,7 @@ import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
-import com.example.filmstoday.models.movie.Movie
+import com.example.filmstoday.models.movie.MovieModel
 import com.example.filmstoday.utils.ActorsBottomSheetBinder
 import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.viewmodels.SearchViewModel
@@ -37,9 +37,9 @@ class SearchFragment : Fragment() {
     }
 
     private val searchMovieAdapter = SearchMovieAdapter(object : OnMovieClickListener {
-        override fun onItemClick(movie: Movie) {
+        override fun onItemClick(movieModel: MovieModel) {
             val action =
-                SearchFragmentDirections.openFullMovie(movie.id)
+                SearchFragmentDirections.openFullMovie(movieModel.id)
             requireView().findNavController().navigate(action)
         }
     })
@@ -146,7 +146,7 @@ class SearchFragment : Fragment() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
             searchMovieAdapter.apply {
                 clearItems()
-                addItems(movies = it.results)
+                addItems(movieModels = it.results)
                 notifyDataSetChanged()
             }
             binding.textView2.visibility = View.VISIBLE

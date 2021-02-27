@@ -17,6 +17,4 @@ class MainActivityRepository {
     fun addDataSource(liveData: MutableLiveData<Boolean>) =
         mediatorLiveData.addSource(liveData, mediatorLiveData::setValue)
 
-    fun removeDataSource(liveData: MutableLiveData<Boolean>) =
-        mediatorLiveData.removeSource(liveData)
 }
