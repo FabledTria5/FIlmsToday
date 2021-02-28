@@ -7,14 +7,11 @@
 
     <color name="main_background">#111112</color>
     <color name="accent">#1C1C1E</color>
-    <color name="primary">#27272A</color>
     <color name="red">#f97475</color>
-    <color name="blue">#537ECC</color>
     <color name="inactive">#676769</color>
     <color name="ripple">#484848</color>
     <color name="elementsColor">#2f2e33</color>
     <color name="grayText">#767678</color>
-    <color name="actorBiographyText">#5e5e60</color>
     <color name="actorBirthText">#4a4a4c</color>
     <color name="bottomSheetBackground">#161618</color>
     <color name="carViewBackground">#7f7e83</color>
@@ -22,7 +19,6 @@
     <color name="textOnButton">#8f8f91</color>
     <color name="lightGray">#9c9c9c</color>
     <color name="listIcon">#6b6a6f</color>
-    <color name="facebookBackground">#3c78e6</color>
     <color name="iconColor">#807f84</color>
 
 </resources>

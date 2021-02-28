@@ -19,6 +19,11 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     suspend fun isMovieInWatched(id: Int) = movieDao.isMovieInWatched(id = id)
 
+    fun getCommentary(id: Int) = movieDao.getCommentary(movieId = id)
+
+    suspend fun saveComment(id: Int, text: String) =
+        movieDao.saveComment(Commentary(0, movieId = id, text = text))
+
     private fun covertToWantMovie(movieFull: MovieFullModel) =
         WantMovie(
             0,
@@ -32,13 +37,15 @@ class MovieRepository(private val movieDao: MovieDao) {
         )
 
     private fun covertToWatchedMovie(movieFull: MovieFullModel) =
-        WatchedMovie(0,
+        WatchedMovie(
+            0,
             movieId = movieFull.id,
             posterPath = movieFull.poster_path,
             movieTitle = movieFull.title,
             movieRuntime = movieFull.runtime,
             movieReleaseCountry = movieFull.production_countries.first().name,
             movieReleaseDate = movieFull.release_date,
-            movieRating = movieFull.vote_average)
+            movieRating = movieFull.vote_average
+        )
 
 }

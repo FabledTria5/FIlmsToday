@@ -15,6 +15,9 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addMovieToWatched(watchedMovie: WatchedMovie)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveComment(commentary: Commentary)
+
     @Query("SELECT * FROM want_table ORDER BY id ASC")
     fun readWantMovies(): LiveData<List<WantMovie>>
 
@@ -26,5 +29,8 @@ interface MovieDao {
 
     @Query("SELECT EXISTS (SELECT * FROM watched_table WHERE movieId = :id)")
     suspend fun isMovieInWatched(id: Int): Boolean
+
+    @Query("SELECT * FROM comments_table WHERE movieId = :movieId")
+    fun getCommentary(movieId: Int): LiveData<Commentary>
 
 }

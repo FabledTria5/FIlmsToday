@@ -10,8 +10,8 @@ import com.example.filmstoday.data.WatchedMovie
 class ProfileViewModel(application: Application) : AndroidViewModel(application),
     LifecycleObserver {
 
-    val readWantMovies: LiveData<List<WantMovie>>
-    val readWatchMovies: LiveData<List<WatchedMovie>>
+    var readWantMovies: LiveData<List<WantMovie>>
+    var readWatchMovies: LiveData<List<WatchedMovie>>
     private val repository: MovieRepository
 
     init {

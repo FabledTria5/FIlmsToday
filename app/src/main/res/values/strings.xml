@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Films Today</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movies">Movies</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
@@ -13,7 +12,6 @@
     <string name="top_rated">Top Rated</string>
     <string name="searchView_hint">Movies, Actors…</string>
     <string name="names">Names</string>
-    <string name="work_in_progress">Work in progress…</string>
     <string name="cast_crew"><![CDATA[Cast & Crew]]></string>
     <string name="no_description">No description</string>
     <string name="want">Want</string>
@@ -22,29 +20,18 @@
     <string name="genres">Genres</string>
     <string name="people">People</string>
     <string name="my_movies">My Movies</string>
-    <string name="added_to_wanted">Added to wanted</string>
-    <string name="added_to_watched">Added to watched</string>
-    <string name="welcome">Welcome!</string>
-    <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="name">Name</string>
-    <string name="e_mail">E-Mail</string>
-    <string name="password">Password</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="or">or</string>
-    <string name="facebook">Facebook</string>
-    <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="google">Google</string>
-    <string name="skip">Skip</string>
     <string name="connection_lost">Connection lost</string>
-    <string name="known_for">Known for</string>
-    <string name="added_to_favorite">Added to favorite</string>
     <string name="language">Language</string>
     <string name="adult_content">Adult content</string>
     <string name="about">About</string>
     <string name="choose_language">Choose language</string>
     <string name="save_settings">Save Settings</string>
     <string name="change_name">Change name</string>
+    <string name="no_comments">No comments</string>
+    <string name="commentary">My Comment</string>
+    <string name="leave_a_comment">Leave a comment</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
     <string-array name="Languages">
         <item>English</item>

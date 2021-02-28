@@ -1,10 +1,7 @@
 package com.example.filmstoday.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.filmstoday.data.MovieRepository
 import com.example.filmstoday.data.MoviesDatabase
 import com.example.filmstoday.interactors.StringInteractor
@@ -22,42 +19,43 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
     private val _observingMovie = MutableLiveData<MovieFullModel>()
     private val _observingCast = MutableLiveData<CastResponse>()
     private val _observingActor = MutableLiveData<ActorFullInfoModel>()
-    private val fullMovieRepository = FullMovieRepository()
+    private val fullMovieRepository: FullMovieRepository
     private val movieRepository: MovieRepository
 
     init {
         val movieDao = MoviesDatabase.getDatabase(application).movieDao()
         movieRepository = MovieRepository(movieDao = movieDao)
+        fullMovieRepository = FullMovieRepository()
     }
 
     fun getObservedMovie() = _observingMovie
     fun getCast() = _observingCast
     fun getObservingActor() = _observingActor
 
-    fun getReceivedMovieInfo(movieId: Int) {
-        fullMovieRepository.apply {
-            getMovieInfo(_observingMovie = _observingMovie, id = movieId)
-            getCast(_observingActors = _observingCast, id = movieId)
-        }
+    fun getReceivedMovieInfo(movieId: Int) = fullMovieRepository.apply {
+        getMovieInfo(_observingMovie = _observingMovie, id = movieId)
+        getCast(_observingActors = _observingCast, id = movieId)
     }
 
-    fun addMovieToWant(movieFullModel: MovieFullModel) {
-        viewModelScope.launch {
-            movieRepository.addMovieToWant(movieFullModel = movieFullModel)
-        }
+    fun getComment(movieId: Int) = movieRepository.getCommentary(movieId)
+
+    fun addMovieToWant(movieFullModel: MovieFullModel) = viewModelScope.launch {
+        movieRepository.addMovieToWant(movieFullModel = movieFullModel)
     }
 
-    fun addMovieToWatched(movieFullModel: MovieFullModel) {
-        viewModelScope.launch {
-            movieRepository.addMovieToWatched(movieFullModel = movieFullModel)
-        }
+    fun addMovieToWatched(movieFullModel: MovieFullModel) = viewModelScope.launch {
+        movieRepository.addMovieToWatched(movieFullModel = movieFullModel)
     }
 
-    fun checkWantBtn(id: Int): Boolean = runBlocking {
+    fun saveComment(id: Int, text: String) = viewModelScope.launch {
+        movieRepository.saveComment(id = id, text = text)
+    }
+
+    fun checkWantBtn(id: Int) = runBlocking {
         movieRepository.isMovieInWant(id = id)
     }
 
-    fun checkWatchedBtn(id: Int): Boolean = runBlocking {
+    fun checkWatchedBtn(id: Int) = runBlocking {
         movieRepository.isMovieInWatched(id = id)
     }
 
@@ -65,7 +63,6 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
         description?.let { return description } ?: return stringInteractor.textNoDescription
     }
 
-    fun getActorInfo(actorId: Int) {
+    fun getActorInfo(actorId: Int) =
         fullMovieRepository.getActorInfo(actorId = actorId, observer = _observingActor)
-    }
 }

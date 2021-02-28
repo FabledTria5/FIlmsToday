@@ -1,5 +1,6 @@
 package com.example.filmstoday.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -28,7 +29,9 @@ import com.example.filmstoday.utils.ActorsBottomSheetBinder
 import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.utils.getDuration
 import com.example.filmstoday.viewmodels.FullMovieViewModel
+import com.example.filmstoday.viewmodels.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 
 class FullMovieFragment : Fragment() {
@@ -141,6 +144,13 @@ class FullMovieFragment : Fragment() {
             fillActorInfo(actor = it)
             actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
+
+        fullMovieViewModel.getComment(args.movieId).observe(viewLifecycleOwner, {
+            it?.let {
+                binding.movieBottomSheet.tvComment.text = it.text
+                binding.movieBottomSheet.btnAddComment.visibility = View.INVISIBLE
+            }
+        })
     }
 
     private fun checkButtons(id: Int) {
@@ -173,6 +183,33 @@ class FullMovieFragment : Fragment() {
             fullMovieViewModel.addMovieToWatched(currentMovie)
             it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
+
+        binding.movieBottomSheet.btnAddComment.setOnClickListener {
+            openDialog()
+        }
+    }
+
+    private fun openDialog() {
+        val customView = layoutInflater.inflate(R.layout.custom_dialog_layout, null)
+        val builder =
+            AlertDialog.Builder(context, R.style.MaterialAlertDialog_MaterialComponents_Title_Icon)
+                .setView(customView)
+                .setCancelable(false)
+                .setTitle(R.string.leave_a_comment)
+                .setPositiveButton(getString(R.string.save)) { _, _ ->
+                    run {
+                        val editText = customView.findViewById<TextInputEditText>(R.id.commentField)
+                        fullMovieViewModel.saveComment(currentMovie.id, editText.text.toString())
+                    }
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     private fun setBackButtonBehavior(view: View) {

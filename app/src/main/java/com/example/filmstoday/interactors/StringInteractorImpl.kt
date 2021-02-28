@@ -8,4 +8,6 @@ class StringInteractorImpl(private val context: Context): StringInteractor {
         get() = context.getString(R.string.unknown)
     override val textNoDescription: String
         get() = context.getString(R.string.no_description)
+    override val textNoComments: String
+        get() = context.getString(R.string.no_comments)
 }

@@ -14,13 +14,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ProfileMoviesAdapter
+import com.example.filmstoday.data.WantMovie
+import com.example.filmstoday.data.WatchedMovie
 import com.example.filmstoday.databinding.FragmentProfileBinding
+import com.example.filmstoday.models.movie.SimpleMovie
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
 import com.example.filmstoday.utils.convertWantToMovie
 import com.example.filmstoday.utils.convertWatchedToMovie
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.tabs.TabLayout
 
 class ProfileFragment : Fragment() {
 
@@ -29,6 +33,8 @@ class ProfileFragment : Fragment() {
     }
 
     private var listLayoutManager: GridLayoutManager? = null
+    private lateinit var wantMovies: List<WantMovie>
+    private lateinit var watchedMovies: List<WatchedMovie>
 
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
     private lateinit var binding: FragmentProfileBinding
@@ -105,22 +111,45 @@ class ProfileFragment : Fragment() {
                     .notifyItemRangeChanged(0, profileMoviesAdapter.itemCount)
             }
         }
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> selectMovies(convertWantToMovie(wantMovies))
+                    1 -> selectMovies(convertWatchedToMovie(watchedMovies))
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
     }
 
     private fun startObserve() {
         profileViewModel.readWantMovies.observe(viewLifecycleOwner, {
-            profileMoviesAdapter.apply {
-                addMovies(convertWantToMovie(it))
-                notifyDataSetChanged()
-            }
+            wantMovies = it
+            selectMovies(convertWantToMovie(it))
         })
 
-//        profileViewModel.readWatchMovies.observe(viewLifecycleOwner, {
-//            profileMoviesAdapter.apply {
-//                addMovies(convertWatchedToMovie(it))
-//                notifyDataSetChanged()
-//            }
-//        })
+        profileViewModel.readWatchMovies.observe(viewLifecycleOwner, {
+            profileMoviesAdapter.apply {
+                watchedMovies = it
+            }
+        })
+    }
+
+    private fun selectMovies(moviesList: List<SimpleMovie>) {
+        profileMoviesAdapter.apply {
+            clearMovies()
+            addMovies(movies = moviesList)
+            notifyDataSetChanged()
+        }
+        binding.tvMoviesCount.text = moviesList.count().toString()
     }
 
     private fun saveAdultContentSetting() {

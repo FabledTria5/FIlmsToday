@@ -48,4 +48,6 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
 
     fun addMovies(movies: List<SimpleMovie>) = moviesList.addAll(movies)
 
+    fun clearMovies() = moviesList.clear()
+
 }

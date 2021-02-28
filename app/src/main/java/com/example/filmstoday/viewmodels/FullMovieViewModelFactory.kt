@@ -1,10 +1,9 @@
-package com.example.filmstoday.fragments
+package com.example.filmstoday.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.filmstoday.interactors.StringInteractor
-import com.example.filmstoday.viewmodels.FullMovieViewModel
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
@@ -17,8 +16,7 @@ class FullMovieViewModelFactory(
         if (modelClass.isAssignableFrom(FullMovieViewModel::class.java)) {
             return FullMovieViewModel(
                 stringInteractor = stringInteractor,
-                application = application
-            ) as T
+                application = application) as T
         }
         throw IllegalArgumentException("ViewModel not found")
     }

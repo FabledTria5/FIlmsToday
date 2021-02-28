@@ -8,10 +8,8 @@
         android:id="@+id/ivPoster"
         android:layout_width="@dimen/_130sdp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/_7sdp"
         android:paddingTop="@dimen/_10sdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/poster"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +22,6 @@
         android:fontFamily="@font/sfprodisplay_medium"
         android:maxWidth="@dimen/_150sdp"
         android:layout_marginStart="@dimen/_15sdp"
-        android:text="A Girl Who Walks Home Alone at Night"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
         app:layout_constraintStart_toEndOf="@+id/ivPoster"
@@ -35,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="2015"
         android:textColor="@color/grayText"
         app:layout_constraintStart_toStartOf="@+id/tvMovieName"
         app:layout_constraintTop_toBottomOf="@+id/tvMovieName" />
@@ -45,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="USA"
         android:textColor="@color/grayText"
         app:layout_constraintStart_toStartOf="@+id/tvReleaseYear"
         app:layout_constraintTop_toBottomOf="@+id/tvReleaseYear" />
@@ -55,7 +50,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="1h 41min"
         android:textColor="@color/grayText"
         app:layout_constraintStart_toStartOf="@+id/tvReleaseYear"
         app:layout_constraintTop_toBottomOf="@+id/tvReleaseCountry" />
@@ -84,7 +78,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sfprodisplay_medium"
-        android:text="9"
         android:textColor="@color/white"
         android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"
