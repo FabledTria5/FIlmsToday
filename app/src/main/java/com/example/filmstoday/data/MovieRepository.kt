@@ -2,6 +2,7 @@ package com.example.filmstoday.data
 
 import androidx.lifecycle.LiveData
 import com.example.filmstoday.models.movie.MovieFullModel
+import com.example.filmstoday.utils.getCountry
 
 class MovieRepository(private val movieDao: MovieDao) {
 
@@ -31,7 +32,7 @@ class MovieRepository(private val movieDao: MovieDao) {
             posterPath = movieFull.poster_path,
             movieTitle = movieFull.title,
             movieRuntime = movieFull.runtime,
-            movieReleaseCountry = movieFull.production_countries.first().name,
+            movieReleaseCountry = getCountry(movieFull.production_countries),
             movieReleaseDate = movieFull.release_date,
             movieRating = movieFull.vote_average
         )
@@ -43,7 +44,7 @@ class MovieRepository(private val movieDao: MovieDao) {
             posterPath = movieFull.poster_path,
             movieTitle = movieFull.title,
             movieRuntime = movieFull.runtime,
-            movieReleaseCountry = movieFull.production_countries.first().name,
+            movieReleaseCountry = getCountry(movieFull.production_countries),
             movieReleaseDate = movieFull.release_date,
             movieRating = movieFull.vote_average
         )

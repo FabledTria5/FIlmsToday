@@ -240,7 +240,8 @@ class FullMovieFragment : Fragment() {
         setPoster(posterPath = movie.poster_path)
         binding.movieBottomSheet.tvMovieName.text = movie.title
         binding.movieBottomSheet.tvReleaseYear.text = movie.release_date.take(4)
-        binding.movieBottomSheet.tvReleaseCountry.text = movie.production_countries.first().name
+        binding.movieBottomSheet.tvReleaseCountry.text =
+            fullMovieViewModel.getCountry(movie.production_countries)
         binding.movieBottomSheet.tvOverView.text = fullMovieViewModel.getDescription(movie.overview)
         binding.movieBottomSheet.tvDuration.text = getDuration(movie.runtime)
         binding.movieBottomSheet.tvRating.text = movie.vote_average.toString()

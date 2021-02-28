@@ -7,6 +7,7 @@ import com.example.filmstoday.data.MoviesDatabase
 import com.example.filmstoday.interactors.StringInteractor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
+import com.example.filmstoday.models.movie.ProductionCountries
 import com.example.filmstoday.repositories.FullMovieRepository
 import com.example.filmstoday.responses.CastResponse
 import kotlinx.coroutines.launch
@@ -65,4 +66,9 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
 
     fun getActorInfo(actorId: Int) =
         fullMovieRepository.getActorInfo(actorId = actorId, observer = _observingActor)
+
+    fun getCountry(countries: List<ProductionCountries>): String {
+        if (countries.count() == 0) return stringInteractor.textUnknown
+        return countries.first().name
+    }
 }
