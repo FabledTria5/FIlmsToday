@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FIlmsToday" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.FilmsToday" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/elementsColor</item>
         <item name="colorPrimaryVariant">@color/accent</item>

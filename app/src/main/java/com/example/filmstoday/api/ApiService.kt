@@ -27,7 +27,8 @@ interface ApiService {
     @GET(value = "/3/search/movie")
     fun searchMoviesByName(
         @Query("api_key") key: String,
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("include_adult") include_adult: Boolean
     ): Call<MoviesResponse>
 
     @GET(value = "/3/search/person")

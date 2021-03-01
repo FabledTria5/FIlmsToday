@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="searching"
             type="Boolean" />
-
+        
         <import type="android.view.View" />
     </data>
 
@@ -43,8 +42,7 @@
                 android:hint="@string/searchView_hint"
                 android:padding="@dimen/_10sdp"
                 android:textColorHint="@color/white"
-                app:endIconDrawable="@drawable/ic_delete"
-                app:hintTextColor="@color/white"
+                app:hintTextColor="@color/grayText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -111,7 +109,7 @@
 
         <include
             android:id="@+id/actorBottomSheet"
-            layout="@layout/actor_bottom_sheet_layout" />
+            layout="@layout/actor_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

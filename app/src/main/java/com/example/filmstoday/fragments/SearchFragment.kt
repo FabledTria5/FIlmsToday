@@ -1,6 +1,8 @@
 package com.example.filmstoday.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -22,9 +24,9 @@ import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
-import com.example.filmstoday.models.movie.Movie
-import com.example.filmstoday.responses.Response
+import com.example.filmstoday.models.movie.MovieModel
 import com.example.filmstoday.utils.ActorsBottomSheetBinder
+import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.viewmodels.SearchViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
@@ -35,9 +37,9 @@ class SearchFragment : Fragment() {
     }
 
     private val searchMovieAdapter = SearchMovieAdapter(object : OnMovieClickListener {
-        override fun onItemClick(movie: Movie) {
+        override fun onItemClick(movieModel: MovieModel) {
             val action =
-                SearchFragmentDirections.openFullMovie(movie.id)
+                SearchFragmentDirections.openFullMovie(movieModel.id)
             requireView().findNavController().navigate(action)
         }
     })
@@ -56,6 +58,13 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var actorsBottomSheet: View
     private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var mSettings: SharedPreferences
+    private var searchAdultContent: Boolean = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mSettings = requireActivity().getSharedPreferences(Constants.APP_PREFERENCE, Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -86,6 +95,8 @@ class SearchFragment : Fragment() {
                 return@OnKeyListener false
             })
         }
+
+        mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, false)
     }
 
     private fun initBottomSheets(view: View) {
@@ -99,7 +110,8 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchField.doAfterTextChanged { editable ->
-            searchViewModel.textChanged(editable.toString())
+            searchAdultContent = mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, true)
+            searchViewModel.textChanged(editable.toString(), searchAdultContent)
         }
     }
 
@@ -134,7 +146,7 @@ class SearchFragment : Fragment() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
             searchMovieAdapter.apply {
                 clearItems()
-                addItems(movies = it.results)
+                addItems(movieModels = it.results)
                 notifyDataSetChanged()
             }
             binding.textView2.visibility = View.VISIBLE

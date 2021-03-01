@@ -13,7 +13,7 @@ import com.example.filmstoday.R
 import com.example.filmstoday.adapters.MainMoviesAdapter
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentMoviesBinding
-import com.example.filmstoday.models.movie.Movie
+import com.example.filmstoday.models.movie.MovieModel
 import com.example.filmstoday.viewmodels.MoviesViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -25,11 +25,9 @@ class MoviesFragment : Fragment() {
 
     private lateinit var binding: FragmentMoviesBinding
 
-    private val TAG = "MoviesFragment"
-
     private val mainMoviesAdapter = MainMoviesAdapter(object : OnMovieClickListener {
-        override fun onItemClick(movie: Movie) {
-            val action = MoviesFragmentDirections.openMovie(movie.id)
+        override fun onItemClick(movieModel: MovieModel) {
+            val action = MoviesFragmentDirections.openMovie(movieModel.id)
             requireView().findNavController().navigate(action)
         }
     })
@@ -78,7 +76,7 @@ class MoviesFragment : Fragment() {
         moviesViewModel.getObservedMovies().observe(viewLifecycleOwner, {
             binding.isLoading = true
             mainMoviesAdapter.clearItems()
-            mainMoviesAdapter.addItems(movies = it.results)
+            mainMoviesAdapter.addItems(movieModels = it.results)
             mainMoviesAdapter.notifyDataSetChanged()
             binding.isLoading = false
         })

@@ -20,11 +20,11 @@ class SearchViewModel : ViewModel(), LifecycleObserver {
     fun getActors() = _observingActors
     fun getActor() = _observingActor
 
-    fun textChanged(query: String) {
+    fun textChanged(query: String, searchAdultContent: Boolean) {
         if (query == "") {
             return
         }
-        searchRepository.searchMovies(query = query, observer = _observingMovies)
+        searchRepository.searchMovies(query = query, observer = _observingMovies, searchAdultContent)
         searchRepository.searchActors(query = query, observer = _observingActors)
     }
 

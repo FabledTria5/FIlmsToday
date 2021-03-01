@@ -1,52 +1,74 @@
 package com.example.filmstoday.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.*
+import com.example.filmstoday.data.MovieRepository
+import com.example.filmstoday.data.MoviesDatabase
 import com.example.filmstoday.interactors.StringInteractor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.models.movie.ProductionCountries
 import com.example.filmstoday.repositories.FullMovieRepository
 import com.example.filmstoday.responses.CastResponse
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class FullMovieViewModel(private val stringInteractor: StringInteractor) : ViewModel(),
+class FullMovieViewModel(application: Application, private val stringInteractor: StringInteractor) :
+    AndroidViewModel(application),
     LifecycleObserver {
 
     private val _observingMovie = MutableLiveData<MovieFullModel>()
     private val _observingCast = MutableLiveData<CastResponse>()
     private val _observingActor = MutableLiveData<ActorFullInfoModel>()
-    private val fullMovieRepository = FullMovieRepository()
+    private val fullMovieRepository: FullMovieRepository
+    private val movieRepository: MovieRepository
+
+    init {
+        val movieDao = MoviesDatabase.getDatabase(application).movieDao()
+        movieRepository = MovieRepository(movieDao = movieDao)
+        fullMovieRepository = FullMovieRepository()
+    }
 
     fun getObservedMovie() = _observingMovie
     fun getCast() = _observingCast
     fun getObservingActor() = _observingActor
 
-    fun getReceivedMovieInfo(movieId: Int) {
-        fullMovieRepository.apply {
-            getMovieInfo(_observingMovie = _observingMovie, id = movieId)
-            getCast(_observingActors = _observingCast, id = movieId)
-        }
+    fun getReceivedMovieInfo(movieId: Int) = fullMovieRepository.apply {
+        getMovieInfo(_observingMovie = _observingMovie, id = movieId)
+        getCast(_observingActors = _observingCast, id = movieId)
     }
 
-    fun convertDate(date: String) = date.take(4)
+    fun getComment(movieId: Int) = movieRepository.getCommentary(movieId)
 
-    fun getCountry(productionCountries: List<ProductionCountries>): String {
-        if (productionCountries.isEmpty()) return stringInteractor.textUnknown
-        return productionCountries.first().name
+    fun addMovieToWant(movieFullModel: MovieFullModel) = viewModelScope.launch {
+        movieRepository.addMovieToWant(movieFullModel = movieFullModel)
+    }
+
+    fun addMovieToWatched(movieFullModel: MovieFullModel) = viewModelScope.launch {
+        movieRepository.addMovieToWatched(movieFullModel = movieFullModel)
+    }
+
+    fun saveComment(id: Int, text: String) = viewModelScope.launch {
+        movieRepository.saveComment(id = id, text = text)
+    }
+
+    fun checkWantBtn(id: Int) = runBlocking {
+        movieRepository.isMovieInWant(id = id)
+    }
+
+    fun checkWatchedBtn(id: Int) = runBlocking {
+        movieRepository.isMovieInWatched(id = id)
     }
 
     fun getDescription(description: String?): String {
         description?.let { return description } ?: return stringInteractor.textNoDescription
     }
 
-    fun getDuration(runtime: Int?): String {
-        runtime?.let {
-            val hours = it / 60
-            val minutes = it % 60
-            return String.format("%dh %02dmin", hours, minutes)
-        } ?: return stringInteractor.textUnknown
-    }
-
-    fun getActorInfo(actorId: Int) {
+    fun getActorInfo(actorId: Int) =
         fullMovieRepository.getActorInfo(actorId = actorId, observer = _observingActor)
+
+    fun getCountry(countries: List<ProductionCountries>): String {
+        if (countries.count() == 0) return stringInteractor.textUnknown
+        return countries.first().name
     }
 }

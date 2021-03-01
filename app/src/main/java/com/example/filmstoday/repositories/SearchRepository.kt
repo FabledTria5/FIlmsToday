@@ -14,8 +14,12 @@ class SearchRepository {
 
     private var apiService: ApiService = RetrofitInstance.api
 
-    fun searchMovies(query: String, observer: MutableLiveData<MoviesResponse>) {
-        apiService.searchMoviesByName(key = BuildConfig.MOVIES_API_KEY, query = query)
+    fun searchMovies(
+        query: String,
+        observer: MutableLiveData<MoviesResponse>,
+        searchAdultContent: Boolean
+    ) {
+        apiService.searchMoviesByName(key = BuildConfig.MOVIES_API_KEY, query = query, searchAdultContent)
             .enqueue(object : retrofit2.Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
