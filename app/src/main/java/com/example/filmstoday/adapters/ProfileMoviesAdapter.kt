@@ -46,8 +46,15 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
         }
     }
 
+    fun getItemItemAt(position: Int) = moviesList[position]
+
     fun addMovies(movies: List<SimpleMovie>) = moviesList.addAll(movies)
 
     fun clearMovies() = moviesList.clear()
+
+    fun deleteItem(position: Int) {
+        moviesList.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
 }

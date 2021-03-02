@@ -2,16 +2,21 @@ package com.example.filmstoday.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Canvas
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ProfileMoviesAdapter
 import com.example.filmstoday.data.WantMovie
@@ -25,6 +30,7 @@ import com.example.filmstoday.utils.convertWatchedToMovie
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 class ProfileFragment : Fragment() {
 
@@ -55,6 +61,7 @@ class ProfileFragment : Fragment() {
         doInitialization(view)
         setupBottomSheets()
         setupRecyclerView()
+        setupTouchHelper()
         setupListeners()
         startObserve()
     }
@@ -90,6 +97,63 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun setupTouchHelper() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewHolder.adapterPosition.apply {
+                    profileViewModel.deleteMovie(profileMoviesAdapter.getItemItemAt(this))
+                    profileMoviesAdapter.deleteItem(this)
+                }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                RecyclerViewSwipeDecorator.Builder(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                ).addBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.deleteBackground
+                    )
+                ).addSwipeLeftLabel(getString(R.string.delete))
+                    .setSwipeLeftLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    .setSwipeLeftLabelTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f)
+                    .create()
+                    .decorate()
+            }
+        }).attachToRecyclerView(binding.moviesList)
+    }
+
     private fun setupListeners() {
         binding.btnChangeRecyclerViewLayout.setOnClickListener {
             listLayoutManager?.let { manager ->
@@ -112,7 +176,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> selectMovies(convertWantToMovie(wantMovies))
