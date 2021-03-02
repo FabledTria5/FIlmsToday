@@ -13,4 +13,9 @@
         android:id="@+id/profile_nav"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile" />
+
+    <item
+        android:id="@+id/contacts_nav"
+        android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
+        android:title="@string/contacts"/>
 </menu>
