@@ -43,8 +43,4 @@
             android:name="movieId"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/contacts_nav"
-        android:name="com.example.filmstoday.fragments.ContactsFragment"
-        android:label="ContactsFragment" />
 </navigation>
