@@ -36,6 +36,20 @@ class ContactsFragment : Fragment() {
         checkPermissions()
     }
 
+    private fun checkPermissions() {
+        context?.let {
+            if (ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                getContacts()
+            } else {
+                requestPermission()
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -59,20 +73,6 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private fun checkPermissions() {
-        context?.let {
-            if (ContextCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.READ_CONTACTS
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                getContacts()
-            } else {
-                requestPermission()
-            }
-        }
-    }
-
     private fun requestPermission() {
         requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
     }
@@ -91,11 +91,9 @@ class ContactsFragment : Fragment() {
             cursor?.let {
                 for (i in 0..cursor.count) {
                     if (cursor.moveToPosition(i)) {
-                        val number =
-                            cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         val name =
-                            cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                        contactsList.add("$name: $number")
+                            cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        contactsList.add(name.toString())
                     }
                 }
                 cursor.close()
@@ -105,8 +103,7 @@ class ContactsFragment : Fragment() {
     }
 
     private fun setNumbers() {
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, contactsList)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, contactsList)
         binding.contactsList.adapter = adapter
     }
 
