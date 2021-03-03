@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tvDataType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -112,12 +112,11 @@
                 android:id="@+id/moviesList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/tvDataType" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

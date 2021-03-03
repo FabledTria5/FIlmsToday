@@ -19,14 +19,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ProfileMoviesAdapter
+import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.data.WantMovie
 import com.example.filmstoday.data.WatchedMovie
 import com.example.filmstoday.databinding.FragmentProfileBinding
-import com.example.filmstoday.models.movie.SimpleMovie
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
 import com.example.filmstoday.utils.convertWantToMovie
 import com.example.filmstoday.utils.convertWatchedToMovie
+import com.example.filmstoday.utils.hide
+import com.example.filmstoday.utils.show
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -41,6 +43,7 @@ class ProfileFragment : Fragment() {
     private var listLayoutManager: GridLayoutManager? = null
     private lateinit var wantMovies: List<WantMovie>
     private lateinit var watchedMovies: List<WatchedMovie>
+    private lateinit var favoriteActors: List<FavoriteActor>
 
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
     private lateinit var binding: FragmentProfileBinding
@@ -109,7 +112,7 @@ class ProfileFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.apply {
-                    profileViewModel.deleteMovie(profileMoviesAdapter.getItemItemAt(this))
+//                    profileViewModel.deleteMovie(profileMoviesAdapter.getItemItemAt(this))
                     profileMoviesAdapter.deleteItem(this)
                 }
             }
@@ -179,8 +182,22 @@ class ProfileFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> selectMovies(convertWantToMovie(wantMovies))
-                    1 -> selectMovies(convertWatchedToMovie(watchedMovies))
+                    0 -> {
+                        selectItems(convertWantToMovie(wantMovies))
+                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.tvDataType.text = getString(R.string.movies)
+                    }
+                    1 -> {
+                        selectItems(convertWatchedToMovie(watchedMovies))
+                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.tvDataType.text = getString(R.string.movies)
+                    }
+                    2 -> {
+                        listLayoutManager?.spanCount = 1
+                        selectItems(favoriteActors)
+                        binding.btnChangeRecyclerViewLayout.hide()
+                        binding.tvDataType.text = getString(R.string.persons)
+                    }
                 }
             }
 
@@ -197,23 +214,25 @@ class ProfileFragment : Fragment() {
     private fun startObserve() {
         profileViewModel.readWantMovies.observe(viewLifecycleOwner, {
             wantMovies = it
-            selectMovies(convertWantToMovie(it))
+            selectItems(convertWantToMovie(it))
         })
 
         profileViewModel.readWatchMovies.observe(viewLifecycleOwner, {
-            profileMoviesAdapter.apply {
-                watchedMovies = it
-            }
+            watchedMovies = it
+        })
+
+        profileViewModel.readFavoriteActors.observe(viewLifecycleOwner, {
+            favoriteActors = it
         })
     }
 
-    private fun selectMovies(moviesList: List<SimpleMovie>) {
+    private fun selectItems(itemsList: List<Any>) {
         profileMoviesAdapter.apply {
             clearMovies()
-            addMovies(movies = moviesList)
+            addItems(items = itemsList)
             notifyDataSetChanged()
         }
-        binding.tvMoviesCount.text = moviesList.count().toString()
+        binding.tvMoviesCount.text = itemsList.count().toString()
     }
 
     private fun saveAdultContentSetting() {
