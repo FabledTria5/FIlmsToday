@@ -38,7 +38,9 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
         getCast(_observingActors = _observingCast, id = movieId)
     }
 
-    fun getComment(movieId: Int) = movieRepository.getCommentary(movieId)
+    fun getComment(movieId: Int) = movieRepository.getCommentary(id = movieId)
+
+    fun getFavorite(actorId: Int) = movieRepository.getFavorite(actorId = actorId)
 
     fun addMovieToWant(movieFullModel: MovieFullModel) = viewModelScope.launch {
         movieRepository.addMovieToWant(movieFullModel = movieFullModel)
@@ -50,6 +52,10 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
 
     fun saveComment(id: Int, text: String) = viewModelScope.launch {
         movieRepository.saveComment(id = id, text = text)
+    }
+
+    fun addActorToFavorite(actorFullInfoModel: ActorFullInfoModel) = viewModelScope.launch {
+        movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
     }
 
     fun checkWantBtn(id: Int) = runBlocking {

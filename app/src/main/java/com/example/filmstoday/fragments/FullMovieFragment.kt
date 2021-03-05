@@ -59,6 +59,7 @@ class FullMovieFragment : Fragment() {
     private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var moviesBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var currentMovie: MovieFullModel
+    private lateinit var currentActor: ActorFullInfoModel
 
     private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
     private val args: FullMovieFragmentArgs by navArgs()
@@ -141,6 +142,8 @@ class FullMovieFragment : Fragment() {
         })
 
         fullMovieViewModel.getObservingActor().observe(viewLifecycleOwner, {
+            currentActor = it
+            observeFavoriteActor()
             fillActorInfo(actor = it)
             actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
@@ -187,6 +190,22 @@ class FullMovieFragment : Fragment() {
         binding.movieBottomSheet.btnAddComment.setOnClickListener {
             openDialog()
         }
+
+        binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.setOnClickListener {
+            fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+        }
+    }
+
+    private fun observeFavoriteActor() {
+        fullMovieViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
+            binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.apply {
+                if (favorite) {
+                    setImageResource(R.drawable.ic_favorite)
+                } else {
+                    setImageResource(R.drawable.ic_add_to_favorite)
+                }
+            }
+        })
     }
 
     private fun openDialog() {

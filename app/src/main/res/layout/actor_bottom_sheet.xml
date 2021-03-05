@@ -75,13 +75,12 @@
                 tools:ignore="RtlSymmetry" />
 
             <ImageView
-                android:id="@+id/ivAddToFavorite"
+                android:id="@+id/btnAddToFavorite"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_add_to_favorite"
                 app:layout_constraintBottom_toBottomOf="@+id/tvBirthday"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvActorFullName" />

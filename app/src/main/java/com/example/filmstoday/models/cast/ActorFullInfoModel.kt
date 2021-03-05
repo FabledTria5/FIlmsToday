@@ -3,6 +3,7 @@ package com.example.filmstoday.models.cast
 import com.google.gson.annotations.SerializedName
 
 data class ActorFullInfoModel(
+    @SerializedName(value = "id") val id: Int,
     @SerializedName(value = "birthday") val birthday: String?,
     @SerializedName(value = "name") val name: String,
     @SerializedName(value = "biography") val biography: String,

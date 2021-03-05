@@ -32,6 +32,8 @@
     <string name="leave_a_comment">Leave a comment</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="persons">Persons</string>
 
     <string-array name="Languages">
         <item>English</item>
