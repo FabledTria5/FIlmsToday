@@ -1,6 +1,8 @@
 package com.example.filmstoday.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.adapters.ActorsAdapter
 import com.example.filmstoday.adapters.GenresAdapter
 import com.example.filmstoday.adapters.listeners.OnActorCLickListener
@@ -193,6 +196,19 @@ class FullMovieFragment : Fragment() {
 
         binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.setOnClickListener {
             fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+        }
+
+        binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth.apply {
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            setOnClickListener {
+                this.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                Intent(activity, MapsActivity::class.java).also {
+                    it.putExtra("ActorPlaceOfBirth", currentActor.placeOfBirth)
+                    it.putExtra("ActorName", currentActor.name)
+                    it.putExtra("PhotoPath", currentActor.photo)
+                    context.startActivity(it)
+                }
+            }
         }
     }
 
