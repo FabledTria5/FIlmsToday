@@ -2,6 +2,7 @@ package com.example.filmstoday.utils
 
 import android.content.Context
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.filmstoday.R
@@ -33,3 +34,12 @@ fun selectMapLink(textView: TextView, context: Context) =
 
 fun unselectedMapLink(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.actorBirthText))
+
+fun observeFavorite(imageView: ImageView, favorite: Boolean) {
+    imageView.apply {
+        when {
+            favorite -> setImageResource(R.drawable.ic_favorite)
+            else -> setImageResource(R.drawable.ic_add_to_favorite)
+        }
+    }
+}

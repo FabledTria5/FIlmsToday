@@ -219,13 +219,7 @@ class FullMovieFragment : Fragment() {
 
     private fun observeFavoriteActor() {
         fullMovieViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
-            binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.apply {
-                if (favorite) {
-                    setImageResource(R.drawable.ic_favorite)
-                } else {
-                    setImageResource(R.drawable.ic_add_to_favorite)
-                }
-            }
+            observeFavorite(binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }
 

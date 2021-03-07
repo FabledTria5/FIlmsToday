@@ -30,10 +30,7 @@ import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieModel
-import com.example.filmstoday.utils.ActorsBottomSheetBinder
-import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.selectMapLink
-import com.example.filmstoday.utils.unselectedMapLink
+import com.example.filmstoday.utils.*
 import com.example.filmstoday.viewmodels.SearchViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
@@ -108,6 +105,10 @@ class SearchFragment : Fragment() {
                 }
             }
         }
+
+        binding.actorBottomSheet.btnAddToFavorite.setOnClickListener {
+            searchViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+        }
     }
 
     private fun initBottomSheets(view: View) {
@@ -174,9 +175,16 @@ class SearchFragment : Fragment() {
 
         searchViewModel.getActor().observe(viewLifecycleOwner, {
             setCurrentActor(it)
+            observeFavoriteActor()
             fillActorInfo(actor = it)
             removeFocus(binding.searchField)
             actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        })
+    }
+
+    private fun observeFavoriteActor() {
+        searchViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
+            observeFavorite(binding.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }
 
