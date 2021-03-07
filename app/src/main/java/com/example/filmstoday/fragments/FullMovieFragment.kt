@@ -28,9 +28,7 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
-import com.example.filmstoday.utils.ActorsBottomSheetBinder
-import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.getDuration
+import com.example.filmstoday.utils.*
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.example.filmstoday.viewmodels.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -122,6 +120,10 @@ class FullMovieFragment : Fragment() {
     private fun disableActorBottomSheet() {
         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         moviesBottomSheetBehavior.isDraggable = true
+        unselectedMapLink(
+            binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+            requireContext()
+        )
     }
 
     private fun enableActorBottomSheet(actor: Actor) {
@@ -201,11 +203,14 @@ class FullMovieFragment : Fragment() {
         binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth.apply {
             paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener {
-                this.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                selectMapLink(
+                    binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+                    requireContext()
+                )
                 Intent(activity, MapsActivity::class.java).also {
-                    it.putExtra("ActorPlaceOfBirth", currentActor.placeOfBirth)
-                    it.putExtra("ActorName", currentActor.name)
-                    it.putExtra("PhotoPath", currentActor.photo)
+                    it.putExtra(Constants.ACTOR_PLACE_OF_BIRTH, currentActor.placeOfBirth)
+                    it.putExtra(Constants.ACTOR_NAME, currentActor.name)
+                    it.putExtra(Constants.ACTOR_PHOTO, currentActor.photo)
                     context.startActivity(it)
                 }
             }
@@ -255,6 +260,10 @@ class FullMovieFragment : Fragment() {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        unselectedMapLink(
+                            binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+                            requireContext()
+                        )
                         this.requestFocus()
                         return@OnKeyListener true
                     }

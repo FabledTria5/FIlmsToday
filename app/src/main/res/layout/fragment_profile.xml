@@ -32,7 +32,7 @@
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
                 android:src="@drawable/ic_profile"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"

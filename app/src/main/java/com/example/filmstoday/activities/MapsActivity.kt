@@ -4,16 +4,19 @@ import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.filmstoday.R
+import com.example.filmstoday.utils.Constants
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val MAX_ADDRESSES = 5
+    private val MAX_ADDRESSES = 1
+    private val ZOOM = 5.0f
 
     private val coder: Geocoder by lazy { Geocoder(this) }
 
@@ -28,13 +31,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
-            val location = getLocationFromAddress(intent.getStringExtra("ActorPlaceOfBirth"))
+            val location =
+                getLocationFromAddress(intent.getStringExtra(Constants.ACTOR_PLACE_OF_BIRTH))
             addMarker(
                 MarkerOptions()
                     .position(location)
-                    .title(intent.getStringExtra("ActorName"))
+                    .title(intent.getStringExtra(Constants.ACTOR_NAME))
             )
-            moveCamera(CameraUpdateFactory.newLatLng(location))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM))
         }
     }
 
