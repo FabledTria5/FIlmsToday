@@ -21,5 +21,6 @@
     <color name="lightGray">#9c9c9c</color>
     <color name="listIcon">#6b6a6f</color>
     <color name="iconColor">#807f84</color>
+    <color name="arrowLight">#dbdbdb</color>
 
 </resources>

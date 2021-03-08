@@ -99,14 +99,35 @@
 
             <ImageView
                 android:id="@+id/btnChangeRecyclerViewLayout"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:padding="@dimen/_5sdp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:layout_marginEnd="@dimen/_90sdp"
                 android:src="@drawable/ic_list"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMoviesCount"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvMoviesCount" />
+
+            <ImageView
+                android:id="@+id/btnRevertList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_down"
+                app:layout_constraintBottom_toBottomOf="@+id/btnChangeRecyclerViewLayout"
+                app:layout_constraintEnd_toStartOf="@+id/btnFilter"
+                app:layout_constraintStart_toEndOf="@+id/btnChangeRecyclerViewLayout"
+                app:layout_constraintTop_toTopOf="@+id/btnChangeRecyclerViewLayout" />
+
+            <ImageView
+                android:id="@+id/btnFilter"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_filter"
+                app:layout_constraintBottom_toBottomOf="@+id/btnChangeRecyclerViewLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnChangeRecyclerViewLayout" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/moviesList"
