@@ -8,8 +8,10 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,6 +24,7 @@ import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.adapters.ActorsAdapter
 import com.example.filmstoday.adapters.GenresAdapter
 import com.example.filmstoday.adapters.listeners.OnActorCLickListener
+import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.databinding.FragmentFullMovieBinding
 import com.example.filmstoday.interactors.StringInteractorImpl
 import com.example.filmstoday.models.cast.Actor
@@ -61,6 +64,8 @@ class FullMovieFragment : Fragment() {
     private lateinit var moviesBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var currentMovie: MovieFullModel
     private lateinit var currentActor: ActorFullInfoModel
+
+    private var isFavoriteActor: Boolean = false
 
     private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
     private val args: FullMovieFragmentArgs by navArgs()
@@ -197,7 +202,10 @@ class FullMovieFragment : Fragment() {
         }
 
         binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.setOnClickListener {
-            fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            when {
+                isFavoriteActor -> fullMovieViewModel.removeActorFromFavorite(actorId = currentActor.id)
+                else -> fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            }
         }
 
         binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth.apply {
@@ -219,6 +227,7 @@ class FullMovieFragment : Fragment() {
 
     private fun observeFavoriteActor() {
         fullMovieViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
+            isFavoriteActor = favorite
             observeFavorite(binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }

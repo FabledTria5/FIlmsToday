@@ -33,6 +33,8 @@ class MovieRepository(private val movieDao: MovieDao) {
     suspend fun saveActor(actorFullInfoModel: ActorFullInfoModel) =
         movieDao.saveActor(convertFullActorToFavorite(actorFullInfoModel = actorFullInfoModel))
 
+    suspend fun removeActor(actorId: Int) = movieDao.removeActor(actorId = actorId)
+
     fun getFavorite(actorId: Int) = movieDao.getFavorite(actorId = actorId)
 
 }

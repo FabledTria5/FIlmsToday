@@ -39,4 +39,6 @@ interface MovieDao {
     @Query(value = "SELECT EXISTS (SELECT * FROM favorite_actors WHERE actorId = :actorId)")
     fun getFavorite(actorId: Int): LiveData<Boolean>
 
+    @Query(value = "DELETE FROM favorite_actors WHERE actorId = :actorId")
+    suspend fun removeActor(actorId: Int)
 }

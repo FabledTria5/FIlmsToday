@@ -48,4 +48,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
     fun addActorToFavorite(actorFullInfoModel: ActorFullInfoModel) = viewModelScope.launch {
         movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
     }
+
+    fun removeActorFromFavorite(actorId: Int) = viewModelScope.launch {
+        movieRepository.removeActor(actorId = actorId)
+    }
 }

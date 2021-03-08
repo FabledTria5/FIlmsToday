@@ -59,6 +59,10 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
         movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
     }
 
+    fun removeActorFromFavorite(actorId: Int) = viewModelScope.launch {
+        movieRepository.removeActor(actorId = actorId)
+    }
+
     fun checkWantBtn(id: Int) = runBlocking {
         movieRepository.isMovieInWant(id = id)
     }

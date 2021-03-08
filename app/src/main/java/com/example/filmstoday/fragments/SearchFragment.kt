@@ -64,6 +64,8 @@ class SearchFragment : Fragment() {
     private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
     private lateinit var currentActor: ActorFullInfoModel
+
+    private var isFavoriteActor: Boolean = false
     private var searchAdultContent: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +109,10 @@ class SearchFragment : Fragment() {
         }
 
         binding.actorBottomSheet.btnAddToFavorite.setOnClickListener {
-            searchViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            when {
+                isFavoriteActor -> searchViewModel.removeActorFromFavorite(currentActor.id)
+                else -> searchViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            }
         }
     }
 
@@ -184,6 +189,7 @@ class SearchFragment : Fragment() {
 
     private fun observeFavoriteActor() {
         searchViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
+            isFavoriteActor = favorite
             observeFavorite(binding.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }
