@@ -1,6 +1,8 @@
 package com.example.filmstoday.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.adapters.ActorsAdapter
 import com.example.filmstoday.adapters.GenresAdapter
 import com.example.filmstoday.adapters.listeners.OnActorCLickListener
@@ -25,9 +28,7 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
-import com.example.filmstoday.utils.ActorsBottomSheetBinder
-import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.getDuration
+import com.example.filmstoday.utils.*
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.example.filmstoday.viewmodels.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -60,6 +61,8 @@ class FullMovieFragment : Fragment() {
     private lateinit var moviesBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var currentMovie: MovieFullModel
     private lateinit var currentActor: ActorFullInfoModel
+
+    private var isFavoriteActor: Boolean = false
 
     private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
     private val args: FullMovieFragmentArgs by navArgs()
@@ -119,6 +122,10 @@ class FullMovieFragment : Fragment() {
     private fun disableActorBottomSheet() {
         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         moviesBottomSheetBehavior.isDraggable = true
+        unselectedMapLink(
+            binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+            requireContext()
+        )
     }
 
     private fun enableActorBottomSheet(actor: Actor) {
@@ -192,19 +199,33 @@ class FullMovieFragment : Fragment() {
         }
 
         binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.setOnClickListener {
-            fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            when {
+                isFavoriteActor -> fullMovieViewModel.removeActorFromFavorite(actorId = currentActor.id)
+                else -> fullMovieViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
+            }
+        }
+
+        binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth.apply {
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            setOnClickListener {
+                selectMapLink(
+                    binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+                    requireContext()
+                )
+                Intent(activity, MapsActivity::class.java).also {
+                    it.putExtra(Constants.ACTOR_PLACE_OF_BIRTH, currentActor.placeOfBirth)
+                    it.putExtra(Constants.ACTOR_NAME, currentActor.name)
+                    it.putExtra(Constants.ACTOR_PHOTO, currentActor.photo)
+                    context.startActivity(it)
+                }
+            }
         }
     }
 
     private fun observeFavoriteActor() {
         fullMovieViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
-            binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite.apply {
-                if (favorite) {
-                    setImageResource(R.drawable.ic_favorite)
-                } else {
-                    setImageResource(R.drawable.ic_add_to_favorite)
-                }
-            }
+            isFavoriteActor = favorite
+            observeFavorite(binding.movieBottomSheet.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }
 
@@ -239,6 +260,10 @@ class FullMovieFragment : Fragment() {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        unselectedMapLink(
+                            binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
+                            requireContext()
+                        )
                         this.requestFocus()
                         return@OnKeyListener true
                     }

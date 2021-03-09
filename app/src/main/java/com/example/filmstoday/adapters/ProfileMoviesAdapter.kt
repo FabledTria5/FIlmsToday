@@ -13,6 +13,8 @@ import com.example.filmstoday.models.movie.SimpleMovie
 class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var isReverted = false
+
     enum class ViewType {
         SMALL,
         MEDIUM,
@@ -22,7 +24,7 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
 
     private val itemsList = arrayListOf<Any>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.SMALL.ordinal -> SimpleItemViewHolder(parent = parent)
             ViewType.MEDIUM.ordinal -> DoubleGridViewHolder(parent = parent)
@@ -66,5 +68,13 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
         itemsList.removeAt(position)
         notifyItemRemoved(position)
     }
+
+    fun revertList() = itemsList.apply {
+        reverse()
+        notifyItemRangeChanged(0, count())
+        isReverted = !isReverted
+    }
+
+    fun isReverted() = isReverted
 
 }

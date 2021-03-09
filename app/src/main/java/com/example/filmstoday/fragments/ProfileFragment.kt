@@ -209,6 +209,16 @@ class ProfileFragment : Fragment() {
 
             }
         })
+
+        binding.btnRevertList.setOnClickListener {
+            profileMoviesAdapter.apply {
+                revertList()
+                when {
+                    isReverted() -> (it as ImageView).setImageResource(R.drawable.ic_arrow_up)
+                    else -> (it as ImageView).setImageResource(R.drawable.ic_arrow_down)
+                }
+            }
+        }
     }
 
     private fun startObserve() {

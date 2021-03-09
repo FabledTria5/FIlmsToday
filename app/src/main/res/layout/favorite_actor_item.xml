@@ -20,14 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:fontFamily="@font/sfprodisplay_medium"
         android:textColor="@color/white"
         android:textSize="@dimen/_14ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rivActorPhoto"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/rivActorPhoto" />
 
     <TextView
         android:id="@+id/tvActorPlaceOfBirth"
@@ -35,9 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:maxWidth="@dimen/_120sdp"
+        android:textAlignment="center"
         android:textColor="@color/lightGray"
         android:textSize="@dimen/_12ssp"
-        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/tvActorName"
         app:layout_constraintStart_toStartOf="@+id/tvActorName"
         app:layout_constraintTop_toBottomOf="@+id/tvActorName" />

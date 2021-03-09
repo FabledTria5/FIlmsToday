@@ -1,6 +1,11 @@
 package com.example.filmstoday.utils
 
+import android.content.Context
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.example.filmstoday.R
 import com.example.filmstoday.models.movie.ProductionCountries
 
 fun getDuration(runtime: Int?): String {
@@ -22,4 +27,19 @@ fun View.show() {
 
 fun View.hide() {
     visibility = View.INVISIBLE
+}
+
+fun selectMapLink(textView: TextView, context: Context) =
+    textView.setTextColor(ContextCompat.getColor(context, R.color.white))
+
+fun unselectedMapLink(textView: TextView, context: Context) =
+    textView.setTextColor(ContextCompat.getColor(context, R.color.actorBirthText))
+
+fun observeFavorite(imageView: ImageView, favorite: Boolean) {
+    imageView.apply {
+        when {
+            favorite -> setImageResource(R.drawable.ic_favorite)
+            else -> setImageResource(R.drawable.ic_add_to_favorite)
+        }
+    }
 }
