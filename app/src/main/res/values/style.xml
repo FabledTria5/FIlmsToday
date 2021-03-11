@@ -16,4 +16,10 @@
         <item name="android:textSize">@dimen/_19ssp</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- Fill the screen -->
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

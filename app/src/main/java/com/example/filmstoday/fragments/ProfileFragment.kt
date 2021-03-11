@@ -1,13 +1,12 @@
 package com.example.filmstoday.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -219,6 +218,10 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        binding.btnFilter.setOnClickListener {
+            showFilerDialog()
+        }
     }
 
     private fun startObserve() {
@@ -234,6 +237,43 @@ class ProfileFragment : Fragment() {
         profileViewModel.readFavoriteActors.observe(viewLifecycleOwner, {
             favoriteActors = it
         })
+    }
+
+    private fun showFilerDialog() {
+        val builder = AlertDialog.Builder(
+            requireContext(),
+            R.style.MyDialogTheme
+        )
+        val view = layoutInflater.inflate(R.layout.filter_dialog, null).also { view ->
+            builder.setView(view)
+            view.setOnClickListener {
+                when (it.id) {
+                    R.id.btnAlphabetOrder -> Toast.makeText(
+                        requireContext(),
+                        "alphabetOrderBtn",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    R.id.btnDateAddedOrder -> Toast.makeText(
+                        requireContext(),
+                        "dateAddedOrder",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    R.id.btnReleaseDateOrder -> Toast.makeText(
+                        requireContext(),
+                        "releaseDateOrder",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    R.id.btnRatingOrder -> Toast.makeText(
+                        requireContext(),
+                        "ratingOrder",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun selectItems(itemsList: List<Any>) {

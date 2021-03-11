@@ -40,4 +40,8 @@
         <item>Russian</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="a_b">A - B</string>
+    <string name="release_date">Release Date</string>
+    <string name="tmdb_rating">TMDB Rating</string>
+    <string name="date_added">Date Added</string>
 </resources>
