@@ -16,12 +16,4 @@
         <item name="android:textSize">@dimen/_19ssp</item>
     </style>
 
-    <style name="FullWidth.Dialog" parent="Theme.AppCompat.DayNight.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
 </resources>

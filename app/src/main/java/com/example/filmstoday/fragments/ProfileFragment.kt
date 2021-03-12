@@ -1,12 +1,13 @@
 package com.example.filmstoday.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -269,35 +270,43 @@ class ProfileFragment : Fragment() {
 
     private fun addListListener(arrayAdapter: ArrayAdapter<String>) {
         binding.filterBottomSheet.optionList.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { parent, view, position, _ ->
                 run {
                     when (position) {
-                        0 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
-                        1 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
-                        2 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
-                        3 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                        0 -> profileMoviesAdapter.alphabetFiler()
+                        1 -> profileMoviesAdapter.releaseFilter()
+                        2 -> profileMoviesAdapter.ratingFilter()
+                        3 -> profileMoviesAdapter.dateFilter()
                     }
                     view.findViewById<CheckBox>(R.id.checkBox).apply {
-                        when (isChecked) {
-                            true -> {
-                                isChecked = false
-                                view.findViewById<TextView>(R.id.filterItem).setTextColor(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.lightGray
-                                    )
-                                )
-                            }
-                            else -> {
-                                isChecked = true
-                                view.findViewById<TextView>(R.id.filterItem)
-                                    .setTextColor(ContextCompat.getColor(context, R.color.white))
-                            }
-                        }
+                        if (!isChecked) selectFilterOption(position, view, parent, this)
                     }
                     arrayAdapter.notifyDataSetChanged()
                 }
             }
+    }
+
+    private fun selectFilterOption(
+        option: Int,
+        view: View,
+        parent: AdapterView<*>,
+        checkBox: CheckBox
+    ) {
+        checkBox.isChecked = true
+        view.findViewById<TextView>(R.id.filterItem)
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        for (i in 0 until parent.count) {
+            if (i == option) continue
+            parent.getChildAt(i).apply {
+                findViewById<TextView>(R.id.filterItem).setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.lightGray
+                    )
+                )
+                findViewById<CheckBox>(R.id.checkBox).isChecked = false
+            }
+        }
     }
 
     private fun selectItems(itemsList: List<Any>) {
