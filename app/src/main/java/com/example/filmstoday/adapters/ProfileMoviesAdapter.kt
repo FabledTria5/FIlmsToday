@@ -9,7 +9,6 @@ import com.example.filmstoday.adapters.viewholders.SimpleItemViewHolder
 import com.example.filmstoday.adapters.viewholders.TripleGridViewHolder
 import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.models.movie.SimpleMovie
-import java.util.*
 
 class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -113,5 +112,4 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
             notifyItemRangeChanged(0, count())
         }
     }
-
 }
