@@ -9,6 +9,7 @@ import com.example.filmstoday.adapters.viewholders.SimpleItemViewHolder
 import com.example.filmstoday.adapters.viewholders.TripleGridViewHolder
 import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.models.movie.SimpleMovie
+import java.util.*
 
 class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -87,7 +88,12 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
     }
 
     fun releaseFilter() {
-
+        itemsList.apply {
+            sortWith { item1, item2 ->
+                ((item1 as SimpleMovie).movieReleaseDate.compareTo((item2 as SimpleMovie).movieReleaseDate))
+            }
+            notifyItemRangeChanged(0, count())
+        }
     }
 
     fun ratingFilter() {

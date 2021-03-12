@@ -22,12 +22,11 @@ import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.data.WantMovie
 import com.example.filmstoday.data.WatchedMovie
 import com.example.filmstoday.databinding.FragmentProfileBinding
+import com.example.filmstoday.utils.*
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
-import com.example.filmstoday.utils.convertWantToMovie
-import com.example.filmstoday.utils.convertWatchedToMovie
-import com.example.filmstoday.utils.hide
-import com.example.filmstoday.utils.show
+import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_FILTERING_OPTION
+import com.example.filmstoday.utils.Constants.Companion.STANDARD_FILTER_OPTION
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -264,7 +263,6 @@ class ProfileFragment : Fragment() {
             1 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.watched_title)
             2 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.actors_title)
         }
-
         filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
@@ -272,29 +270,18 @@ class ProfileFragment : Fragment() {
         binding.filterBottomSheet.optionList.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, _ ->
                 run {
-                    when (position) {
-                        0 -> profileMoviesAdapter.alphabetFiler()
-                        1 -> profileMoviesAdapter.releaseFilter()
-                        2 -> profileMoviesAdapter.ratingFilter()
-                        3 -> profileMoviesAdapter.dateFilter()
-                    }
-                    view.findViewById<CheckBox>(R.id.checkBox).apply {
-                        if (!isChecked) selectFilterOption(position, view, parent, this)
-                    }
+                    selectFilterOption(option = position)
+                    saveFilterSetting(position)
+                    unselectOptions(option = position, parent = parent)
                     arrayAdapter.notifyDataSetChanged()
                 }
             }
     }
 
-    private fun selectFilterOption(
+    private fun unselectOptions(
         option: Int,
-        view: View,
-        parent: AdapterView<*>,
-        checkBox: CheckBox
+        parent: AdapterView<*>
     ) {
-        checkBox.isChecked = true
-        view.findViewById<TextView>(R.id.filterItem)
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         for (i in 0 until parent.count) {
             if (i == option) continue
             parent.getChildAt(i).apply {
@@ -313,6 +300,7 @@ class ProfileFragment : Fragment() {
         profileMoviesAdapter.apply {
             clearMovies()
             addItems(items = itemsList)
+            selectFilterOption(getSavedFilter())
             notifyDataSetChanged()
         }
         binding.tvMoviesCount.text = itemsList.count().toString()
@@ -325,6 +313,34 @@ class ProfileFragment : Fragment() {
                 binding.profileBottomSheet.switchAdultContent.isChecked
             )
             apply()
+        }
+    }
+
+    private fun saveFilterSetting(ordinal: Int) {
+        mSettings.edit().apply {
+            putInt(
+                APP_PREFERENCE_FILTERING_OPTION,
+                ordinal
+            )
+            apply()
+        }
+    }
+
+    private fun getSavedFilter() =
+        mSettings.getInt(APP_PREFERENCE_FILTERING_OPTION, STANDARD_FILTER_OPTION)
+
+    private fun selectFilterOption(option: Int) {
+        when (option) {
+            0 -> profileMoviesAdapter.alphabetFiler()
+            1 -> profileMoviesAdapter.releaseFilter()
+            2 -> profileMoviesAdapter.ratingFilter()
+            3 -> profileMoviesAdapter.dateFilter()
+        }
+
+        binding.filterBottomSheet.optionList.getChildAt(option).apply {
+            findViewById<CheckBox>(R.id.checkBox).isChecked = true
+            findViewById<TextView>(R.id.filterItem)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
     }
 }
