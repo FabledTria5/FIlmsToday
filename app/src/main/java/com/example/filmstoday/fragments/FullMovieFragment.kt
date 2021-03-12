@@ -30,7 +30,7 @@ import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.utils.*
 import com.example.filmstoday.viewmodels.FullMovieViewModel
-import com.example.filmstoday.viewmodels.FullMovieViewModelFactory
+import com.example.filmstoday.viewmodels.factories.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
@@ -122,7 +122,7 @@ class FullMovieFragment : Fragment() {
     private fun disableActorBottomSheet() {
         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         moviesBottomSheetBehavior.isDraggable = true
-        unselectedMapLink(
+        unselectText(
             binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
             requireContext()
         )
@@ -208,7 +208,7 @@ class FullMovieFragment : Fragment() {
         binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth.apply {
             paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener {
-                selectMapLink(
+                selectText(
                     binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
                     requireContext()
                 )
@@ -260,7 +260,7 @@ class FullMovieFragment : Fragment() {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                         actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        unselectedMapLink(
+                        unselectText(
                             binding.movieBottomSheet.actorBottomSheet.tvPlaceOfBirth,
                             requireContext()
                         )

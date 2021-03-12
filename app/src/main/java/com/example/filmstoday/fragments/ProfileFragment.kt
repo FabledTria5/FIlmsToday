@@ -7,8 +7,7 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -47,6 +46,8 @@ class ProfileFragment : Fragment() {
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
     private lateinit var binding: FragmentProfileBinding
     private lateinit var profileBottomSheet: View
+    private lateinit var filterBottomSheet: View
+    private lateinit var filterBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var profileBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
 
@@ -71,11 +72,24 @@ class ProfileFragment : Fragment() {
     private fun doInitialization(view: View) {
         profileBottomSheet = view.findViewById(R.id.profileBottomSheet)
         profileBottomSheetBehavior = BottomSheetBehavior.from(profileBottomSheet)
+
+        filterBottomSheet = view.findViewById(R.id.filterBottomSheet)
+        filterBottomSheetBehavior = BottomSheetBehavior.from(filterBottomSheet)
+
         mSettings = requireActivity().getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE)
 
         binding.profileBottomSheet.switchAdultContent.apply {
             if (mSettings.getBoolean(APP_PREFERENCE_ADULT_CONTENT, true)) isChecked = true
         }
+
+        val arrayAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.filter_list_item,
+            R.id.filterItem,
+            resources.getStringArray(R.array.Filter_Options)
+        )
+        binding.filterBottomSheet.optionList.adapter = arrayAdapter
+        addListListener(arrayAdapter)
     }
 
     private fun setupBottomSheets() {
@@ -220,7 +234,11 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnFilter.setOnClickListener {
-            showFilerDialog()
+            enableFilerBottomSheet()
+        }
+
+        binding.filterBottomSheet.btnSaveFilter.setOnClickListener {
+            filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
@@ -239,41 +257,47 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun showFilerDialog() {
-        val builder = AlertDialog.Builder(
-            requireContext(),
-            R.style.MyDialogTheme
-        )
-        val view = layoutInflater.inflate(R.layout.filter_dialog, null).also { view ->
-            builder.setView(view)
-            view.setOnClickListener {
-                when (it.id) {
-                    R.id.btnAlphabetOrder -> Toast.makeText(
-                        requireContext(),
-                        "alphabetOrderBtn",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    R.id.btnDateAddedOrder -> Toast.makeText(
-                        requireContext(),
-                        "dateAddedOrder",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    R.id.btnReleaseDateOrder -> Toast.makeText(
-                        requireContext(),
-                        "releaseDateOrder",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    R.id.btnRatingOrder -> Toast.makeText(
-                        requireContext(),
-                        "ratingOrder",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+    private fun enableFilerBottomSheet() {
+        when (binding.tabLayout.selectedTabPosition) {
+            0 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.want_title)
+            1 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.watched_title)
+            2 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.actors_title)
         }
 
-        val dialog = builder.create()
-        dialog.show()
+        filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun addListListener(arrayAdapter: ArrayAdapter<String>) {
+        binding.filterBottomSheet.optionList.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                run {
+                    when (position) {
+                        0 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                        1 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                        2 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                        3 -> Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                    view.findViewById<CheckBox>(R.id.checkBox).apply {
+                        when (isChecked) {
+                            true -> {
+                                isChecked = false
+                                view.findViewById<TextView>(R.id.filterItem).setTextColor(
+                                    ContextCompat.getColor(
+                                        context,
+                                        R.color.lightGray
+                                    )
+                                )
+                            }
+                            else -> {
+                                isChecked = true
+                                view.findViewById<TextView>(R.id.filterItem)
+                                    .setTextColor(ContextCompat.getColor(context, R.color.white))
+                            }
+                        }
+                    }
+                    arrayAdapter.notifyDataSetChanged()
+                }
+            }
     }
 
     private fun selectItems(itemsList: List<Any>) {

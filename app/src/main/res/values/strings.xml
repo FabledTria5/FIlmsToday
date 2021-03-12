@@ -34,14 +34,21 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="persons">Persons</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="want_title">Sort Want Movies By</string>
+    <string name="watched_title">Sort Watched Movies By</string>
+    <string name="actors_title">Sort Actors By</string>
+
+    <string-array name="Filter_Options">
+        <item>A - B</item>
+        <item>Release Date</item>
+        <item>TMDB Rating</item>
+        <item>Date Added</item>
+    </string-array>
 
     <string-array name="Languages">
         <item>English</item>
         <item>Russian</item>
     </string-array>
-    <string name="title_activity_maps">Map</string>
-    <string name="a_b">A - B</string>
-    <string name="release_date">Release Date</string>
-    <string name="tmdb_rating">TMDB Rating</string>
-    <string name="date_added">Date Added</string>
 </resources>

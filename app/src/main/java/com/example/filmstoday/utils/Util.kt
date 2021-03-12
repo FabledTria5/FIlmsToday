@@ -29,10 +29,10 @@ fun View.hide() {
     visibility = View.INVISIBLE
 }
 
-fun selectMapLink(textView: TextView, context: Context) =
+fun selectText(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.white))
 
-fun unselectedMapLink(textView: TextView, context: Context) =
+fun unselectText(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.actorBirthText))
 
 fun observeFavorite(imageView: ImageView, favorite: Boolean) {
