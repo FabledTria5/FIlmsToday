@@ -40,10 +40,15 @@
     <string name="watched_title">Sort Watched Movies By</string>
     <string name="actors_title">Sort Actors By</string>
 
-    <string-array name="Filter_Options">
+    <string-array name="movie_filter_options">
         <item>A - B</item>
+        <item>Date Added</item>
         <item>Release Date</item>
         <item>TMDB Rating</item>
+    </string-array>
+
+    <string-array name="actor_filter_options">
+        <item>A - B</item>
         <item>Date Added</item>
     </string-array>
 

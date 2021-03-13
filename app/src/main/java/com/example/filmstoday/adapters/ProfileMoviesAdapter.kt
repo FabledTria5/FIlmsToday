@@ -78,12 +78,20 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
     fun isReverted() = isReverted
 
     fun alphabetFiler() {
-        itemsList.apply {
-            sortWith { item1, item2 ->
-                (item1 as SimpleMovie).movieTitle.compareTo((item2 as SimpleMovie).movieTitle)
+        if (itemsList[0] is SimpleMovie) {
+            itemsList.apply {
+                sortWith { item1, item2 ->
+                    (item1 as SimpleMovie).movieTitle.compareTo((item2 as SimpleMovie).movieTitle)
+                }
             }
-            notifyItemRangeChanged(0, count())
+        } else if (itemsList[0] is FavoriteActor) {
+            itemsList.apply {
+                sortWith { item1, item2 ->
+                    (item1 as FavoriteActor).actorName.compareTo((item2 as FavoriteActor).actorName)
+                }
+            }
         }
+        notifyItemRangeChanged(0, itemsList.count())
     }
 
     fun releaseFilter() {
@@ -105,11 +113,19 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
     }
 
     fun dateFilter() {
-        itemsList.apply {
-            sortWith { item1, item2 ->
-                ((item1 as SimpleMovie).order.compareTo((item2 as SimpleMovie).order))
+        if (itemsList[0] is SimpleMovie) {
+            itemsList.apply {
+                sortWith { item1, item2 ->
+                    ((item1 as SimpleMovie).order.compareTo((item2 as SimpleMovie).order))
+                }
             }
-            notifyItemRangeChanged(0, count())
+        } else if (itemsList[0] is FavoriteActor) {
+            itemsList.apply {
+                sortWith { item1, item2 ->
+                    ((item1 as FavoriteActor).id.compareTo((item2 as FavoriteActor).id))
+                }
+            }
         }
+        notifyItemRangeChanged(0, itemsList.count())
     }
 }

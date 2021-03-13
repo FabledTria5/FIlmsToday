@@ -46,6 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:fontFamily="@font/karla_bold"
         android:text="@string/save"
         android:textAllCaps="false"
@@ -53,7 +54,6 @@
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/optionList" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

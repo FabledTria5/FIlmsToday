@@ -33,6 +33,7 @@ import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import java.util.*
 
 class ProfileFragment : Fragment() {
 
@@ -46,6 +47,7 @@ class ProfileFragment : Fragment() {
     private lateinit var favoriteActors: List<FavoriteActor>
 
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
+    private lateinit var filterAdapter: ArrayAdapter<String>
     private lateinit var binding: FragmentProfileBinding
     private lateinit var profileBottomSheet: View
     private lateinit var filterBottomSheet: View
@@ -84,14 +86,14 @@ class ProfileFragment : Fragment() {
             if (mSettings.getBoolean(APP_PREFERENCE_ADULT_CONTENT, true)) isChecked = true
         }
 
-        val arrayAdapter = ArrayAdapter(
+        filterAdapter = ArrayAdapter(
             requireContext(),
             R.layout.filter_list_item,
             R.id.filterItem,
-            resources.getStringArray(R.array.Filter_Options)
+            resources.getStringArray(R.array.movie_filter_options).toCollection(mutableListOf())
         )
-        binding.filterBottomSheet.optionList.adapter = arrayAdapter
-        addListListener(arrayAdapter)
+        binding.filterBottomSheet.optionList.adapter = filterAdapter
+        addListListener(filterAdapter)
     }
 
     private fun setupRecyclerView() {
@@ -322,7 +324,12 @@ class ProfileFragment : Fragment() {
         profileMoviesAdapter.apply {
             clearMovies()
             addItems(items = itemsList)
-            if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) selectFilterOption(getSavedFilter())
+            if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) {
+                fillFilterList(resources.getStringArray(R.array.movie_filter_options))
+                selectFilterOption(getSavedFilter())
+            } else if (itemsList.isNotEmpty() && itemsList[0] is FavoriteActor) {
+                fillFilterList(resources.getStringArray(R.array.actor_filter_options))
+            }
             notifyDataSetChanged()
         }
         binding.tvMoviesCount.text = itemsList.count().toString()
@@ -335,6 +342,14 @@ class ProfileFragment : Fragment() {
                 binding.profileBottomSheet.switchAdultContent.isChecked
             )
             apply()
+        }
+    }
+
+    private fun fillFilterList(stringArray: Array<String>) {
+        filterAdapter.apply {
+            clear()
+            addAll(stringArray.toCollection(mutableListOf()))
+            notifyDataSetChanged()
         }
     }
 
@@ -360,9 +375,9 @@ class ProfileFragment : Fragment() {
 
         when (option) {
             0 -> profileMoviesAdapter.alphabetFiler()
-            1 -> profileMoviesAdapter.releaseFilter()
-            2 -> profileMoviesAdapter.ratingFilter()
-            3 -> profileMoviesAdapter.dateFilter()
+            1 -> profileMoviesAdapter.dateFilter()
+            2 -> profileMoviesAdapter.releaseFilter()
+            3 -> profileMoviesAdapter.ratingFilter()
         }
     }
 }
