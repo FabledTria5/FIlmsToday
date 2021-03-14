@@ -78,53 +78,30 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
     fun isReverted() = isReverted
 
     fun alphabetFiler() {
-        if (itemsList[0] is SimpleMovie) {
-            itemsList.apply {
-                sortWith { item1, item2 ->
-                    (item1 as SimpleMovie).movieTitle.compareTo((item2 as SimpleMovie).movieTitle)
-                }
-            }
-        } else if (itemsList[0] is FavoriteActor) {
-            itemsList.apply {
-                sortWith { item1, item2 ->
-                    (item1 as FavoriteActor).actorName.compareTo((item2 as FavoriteActor).actorName)
-                }
-            }
+        itemsList.sortWith { item1, item2 ->
+            (item1 as SimpleMovie).movieTitle.compareTo((item2 as SimpleMovie).movieTitle)
         }
         notifyItemRangeChanged(0, itemsList.count())
     }
 
     fun releaseFilter() {
-        itemsList.apply {
-            sortWith { item1, item2 ->
-                ((item1 as SimpleMovie).movieReleaseDate.compareTo((item2 as SimpleMovie).movieReleaseDate))
-            }
-            notifyItemRangeChanged(0, count())
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).movieReleaseDate.compareTo((item2 as SimpleMovie).movieReleaseDate))
         }
+        notifyItemRangeChanged(0, itemsList.count())
+
     }
 
     fun ratingFilter() {
-        itemsList.apply {
-            sortWith { item1, item2 ->
-                ((item1 as SimpleMovie).movieRating.compareTo((item2 as SimpleMovie).movieRating))
-            }
-            notifyItemRangeChanged(0, count())
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).movieRating.compareTo((item2 as SimpleMovie).movieRating))
         }
+        notifyItemRangeChanged(0, itemsList.count())
     }
 
     fun dateFilter() {
-        if (itemsList[0] is SimpleMovie) {
-            itemsList.apply {
-                sortWith { item1, item2 ->
-                    ((item1 as SimpleMovie).order.compareTo((item2 as SimpleMovie).order))
-                }
-            }
-        } else if (itemsList[0] is FavoriteActor) {
-            itemsList.apply {
-                sortWith { item1, item2 ->
-                    ((item1 as FavoriteActor).id.compareTo((item2 as FavoriteActor).id))
-                }
-            }
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).order.compareTo((item2 as SimpleMovie).order))
         }
         notifyItemRangeChanged(0, itemsList.count())
     }

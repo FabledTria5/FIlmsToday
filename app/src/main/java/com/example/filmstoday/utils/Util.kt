@@ -26,7 +26,7 @@ fun View.show() {
 }
 
 fun View.hide() {
-    visibility = View.INVISIBLE
+    visibility = View.GONE
 }
 
 fun selectText(textView: TextView, context: Context) =

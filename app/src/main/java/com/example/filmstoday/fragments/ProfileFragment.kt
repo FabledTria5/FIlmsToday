@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -189,18 +191,18 @@ class ProfileFragment : Fragment() {
                 when (tab?.position) {
                     0 -> {
                         selectItems(convertWantToMovie(wantMovies))
-                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.isActorListOpen = false
                         binding.tvDataType.text = getString(R.string.movies)
                     }
                     1 -> {
                         selectItems(convertWatchedToMovie(watchedMovies))
-                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.isActorListOpen = false
                         binding.tvDataType.text = getString(R.string.movies)
                     }
                     2 -> {
                         listLayoutManager?.spanCount = 1
                         selectItems(favoriteActors)
-                        binding.btnChangeRecyclerViewLayout.hide()
+                        binding.isActorListOpen = true
                         binding.tvDataType.text = getString(R.string.persons)
                     }
                 }
@@ -325,10 +327,7 @@ class ProfileFragment : Fragment() {
             clearMovies()
             addItems(items = itemsList)
             if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) {
-                fillFilterList(resources.getStringArray(R.array.movie_filter_options))
                 selectFilterOption(getSavedFilter())
-            } else if (itemsList.isNotEmpty() && itemsList[0] is FavoriteActor) {
-                fillFilterList(resources.getStringArray(R.array.actor_filter_options))
             }
             notifyDataSetChanged()
         }
@@ -342,14 +341,6 @@ class ProfileFragment : Fragment() {
                 binding.profileBottomSheet.switchAdultContent.isChecked
             )
             apply()
-        }
-    }
-
-    private fun fillFilterList(stringArray: Array<String>) {
-        filterAdapter.apply {
-            clear()
-            addAll(stringArray.toCollection(mutableListOf()))
-            notifyDataSetChanged()
         }
     }
 
@@ -373,11 +364,13 @@ class ProfileFragment : Fragment() {
                 .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
 
-        when (option) {
-            0 -> profileMoviesAdapter.alphabetFiler()
-            1 -> profileMoviesAdapter.dateFilter()
-            2 -> profileMoviesAdapter.releaseFilter()
-            3 -> profileMoviesAdapter.ratingFilter()
+        profileMoviesAdapter.apply {
+            when (option) {
+                0 -> alphabetFiler()
+                1 -> dateFilter()
+                2 -> releaseFilter()
+                3 -> ratingFilter()
+            }
         }
     }
 }
