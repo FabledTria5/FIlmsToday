@@ -14,7 +14,8 @@ fun convertWantToMovie(list: List<WantMovie>): List<SimpleMovie> {
     list.forEach {
         movies.add(
             SimpleMovie(
-                movieId = it.id,
+                order = it.id,
+                movieId = it.movieId,
                 posterPath = it.posterPath,
                 movieTitle = it.movieTitle,
                 movieReleaseDate = it.movieReleaseDate,
@@ -32,7 +33,8 @@ fun convertWatchedToMovie(list: List<WatchedMovie>): List<SimpleMovie> {
     list.forEach {
         movies.add(
             SimpleMovie(
-                movieId = it.id,
+                order = it.id,
+                movieId = it.movieId,
                 posterPath = it.posterPath,
                 movieTitle = it.movieTitle,
                 movieReleaseDate = it.movieReleaseDate,

@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
         binding.actorBottomSheet.tvPlaceOfBirth.apply {
             paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener {
-                selectMapLink(this, requireContext())
+                selectText(this, requireContext())
                 Intent(activity, MapsActivity::class.java).also {
                     it.putExtra(Constants.ACTOR_PLACE_OF_BIRTH, currentActor.placeOfBirth)
                     it.putExtra(Constants.ACTOR_NAME, currentActor.name)
@@ -194,7 +194,7 @@ class SearchFragment : Fragment() {
 
     private fun setCurrentActor(actor: ActorFullInfoModel) {
         currentActor = actor
-        unselectedMapLink(binding.actorBottomSheet.tvPlaceOfBirth, requireContext())
+        unselectText(binding.actorBottomSheet.tvPlaceOfBirth, requireContext())
     }
 
     private fun removeFocus(view: View) {

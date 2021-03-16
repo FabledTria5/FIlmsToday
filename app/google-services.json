@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "821551330650",
+    "project_id": "films-today",
+    "storage_bucket": "films-today.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821551330650:android:57cd2479ccbf2995f76f63",
+        "android_client_info": {
+          "package_name": "com.example.filmstoday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821551330650-pluachbhc9vaam5ct3ivkihcbtem70ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAvO5Qjxn9GgUFyelVd0Q4Lesl7v1_qJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821551330650-pluachbhc9vaam5ct3ivkihcbtem70ka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

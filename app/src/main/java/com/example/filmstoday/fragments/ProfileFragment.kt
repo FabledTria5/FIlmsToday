@@ -4,13 +4,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,16 +25,17 @@ import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.data.WantMovie
 import com.example.filmstoday.data.WatchedMovie
 import com.example.filmstoday.databinding.FragmentProfileBinding
+import com.example.filmstoday.models.movie.SimpleMovie
+import com.example.filmstoday.utils.*
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
-import com.example.filmstoday.utils.convertWantToMovie
-import com.example.filmstoday.utils.convertWatchedToMovie
-import com.example.filmstoday.utils.hide
-import com.example.filmstoday.utils.show
+import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_FILTERING_OPTION
+import com.example.filmstoday.utils.Constants.Companion.STANDARD_FILTER_OPTION
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import java.util.*
 
 class ProfileFragment : Fragment() {
 
@@ -46,8 +49,11 @@ class ProfileFragment : Fragment() {
     private lateinit var favoriteActors: List<FavoriteActor>
 
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
+    private lateinit var filterAdapter: ArrayAdapter<String>
     private lateinit var binding: FragmentProfileBinding
     private lateinit var profileBottomSheet: View
+    private lateinit var filterBottomSheet: View
+    private lateinit var filterBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var profileBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
 
@@ -61,34 +67,35 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(profileViewModel)
-        doInitialization(view)
-        setupBottomSheets()
+        doInitialization(view = view)
+        setBackButtonBehavior(view = view)
+        setupListeners()
         setupRecyclerView()
         setupTouchHelper()
-        setupListeners()
         startObserve()
     }
 
     private fun doInitialization(view: View) {
         profileBottomSheet = view.findViewById(R.id.profileBottomSheet)
         profileBottomSheetBehavior = BottomSheetBehavior.from(profileBottomSheet)
+
+        filterBottomSheet = view.findViewById(R.id.filterBottomSheet)
+        filterBottomSheetBehavior = BottomSheetBehavior.from(filterBottomSheet)
+
         mSettings = requireActivity().getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE)
 
         binding.profileBottomSheet.switchAdultContent.apply {
             if (mSettings.getBoolean(APP_PREFERENCE_ADULT_CONTENT, true)) isChecked = true
         }
-    }
 
-    private fun setupBottomSheets() {
-        binding.btnProfileImage.setOnClickListener {
-            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        binding.profileBottomSheet.btnSaveSettings.setOnClickListener {
-            saveAdultContentSetting()
-            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            Toast.makeText(context, "Settings were saved", Toast.LENGTH_SHORT).show()
-        }
+        filterAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.filter_list_item,
+            R.id.filterItem,
+            resources.getStringArray(R.array.movie_filter_options).toCollection(mutableListOf())
+        )
+        binding.filterBottomSheet.optionList.adapter = filterAdapter
+        addListListener(filterAdapter)
     }
 
     private fun setupRecyclerView() {
@@ -184,18 +191,18 @@ class ProfileFragment : Fragment() {
                 when (tab?.position) {
                     0 -> {
                         selectItems(convertWantToMovie(wantMovies))
-                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.isActorListOpen = false
                         binding.tvDataType.text = getString(R.string.movies)
                     }
                     1 -> {
                         selectItems(convertWatchedToMovie(watchedMovies))
-                        binding.btnChangeRecyclerViewLayout.show()
+                        binding.isActorListOpen = false
                         binding.tvDataType.text = getString(R.string.movies)
                     }
                     2 -> {
                         listLayoutManager?.spanCount = 1
                         selectItems(favoriteActors)
-                        binding.btnChangeRecyclerViewLayout.hide()
+                        binding.isActorListOpen = true
                         binding.tvDataType.text = getString(R.string.persons)
                     }
                 }
@@ -219,6 +226,25 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        binding.btnFilter.setOnClickListener {
+            enableFilerBottomSheet()
+        }
+
+        binding.filterBottomSheet.btnSaveFilter.setOnClickListener {
+            filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.btnProfileImage.setOnClickListener {
+            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.profileBottomSheet.btnSaveSettings.setOnClickListener {
+            saveAdultContentSetting()
+            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            Toast.makeText(context, "Settings were saved", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun startObserve() {
@@ -236,10 +262,73 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    private fun setBackButtonBehavior(view: View) {
+        view.apply {
+            isFocusableInTouchMode = true
+            requestFocus()
+            setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (profileBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        this.requestFocus()
+                        return@OnKeyListener true
+                    } else if (filterBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        this.requestFocus()
+                        return@OnKeyListener true
+                    }
+                }
+                return@OnKeyListener false
+            })
+        }
+    }
+
+    private fun enableFilerBottomSheet() {
+        when (binding.tabLayout.selectedTabPosition) {
+            0 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.want_title)
+            1 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.watched_title)
+            2 -> binding.filterBottomSheet.tvTitle.text = getString(R.string.actors_title)
+        }
+        filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun addListListener(arrayAdapter: ArrayAdapter<String>) {
+        binding.filterBottomSheet.optionList.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
+                run {
+                    selectFilterOption(option = position)
+                    saveFilterSetting(settingId = position)
+                    unselectOptions(option = position, parent = parent)
+                    arrayAdapter.notifyDataSetChanged()
+                }
+            }
+    }
+
+    private fun unselectOptions(
+        option: Int,
+        parent: AdapterView<*>
+    ) {
+        for (i in 0 until parent.count) {
+            if (i == option) continue
+            parent.getChildAt(i).apply {
+                findViewById<TextView>(R.id.filterItem).setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.lightGray
+                    )
+                )
+                findViewById<CheckBox>(R.id.checkBox).isChecked = false
+            }
+        }
+    }
+
     private fun selectItems(itemsList: List<Any>) {
         profileMoviesAdapter.apply {
             clearMovies()
             addItems(items = itemsList)
+            if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) {
+                selectFilterOption(getSavedFilter())
+            }
             notifyDataSetChanged()
         }
         binding.tvMoviesCount.text = itemsList.count().toString()
@@ -252,6 +341,36 @@ class ProfileFragment : Fragment() {
                 binding.profileBottomSheet.switchAdultContent.isChecked
             )
             apply()
+        }
+    }
+
+    private fun saveFilterSetting(settingId: Int) {
+        mSettings.edit().apply {
+            putInt(
+                APP_PREFERENCE_FILTERING_OPTION,
+                settingId
+            )
+            apply()
+        }
+    }
+
+    private fun getSavedFilter() =
+        mSettings.getInt(APP_PREFERENCE_FILTERING_OPTION, STANDARD_FILTER_OPTION)
+
+    private fun selectFilterOption(option: Int) {
+        binding.filterBottomSheet.optionList.getChildAt(option).apply {
+            findViewById<CheckBox>(R.id.checkBox).isChecked = true
+            findViewById<TextView>(R.id.filterItem)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        }
+
+        profileMoviesAdapter.apply {
+            when (option) {
+                0 -> alphabetFiler()
+                1 -> dateFilter()
+                2 -> releaseFilter()
+                3 -> ratingFilter()
+            }
         }
     }
 }

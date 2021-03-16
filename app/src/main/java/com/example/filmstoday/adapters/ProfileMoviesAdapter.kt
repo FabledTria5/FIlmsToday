@@ -77,4 +77,32 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
 
     fun isReverted() = isReverted
 
+    fun alphabetFiler() {
+        itemsList.sortWith { item1, item2 ->
+            (item1 as SimpleMovie).movieTitle.compareTo((item2 as SimpleMovie).movieTitle)
+        }
+        notifyItemRangeChanged(0, itemsList.count())
+    }
+
+    fun releaseFilter() {
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).movieReleaseDate.compareTo((item2 as SimpleMovie).movieReleaseDate))
+        }
+        notifyItemRangeChanged(0, itemsList.count())
+
+    }
+
+    fun ratingFilter() {
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).movieRating.compareTo((item2 as SimpleMovie).movieRating))
+        }
+        notifyItemRangeChanged(0, itemsList.count())
+    }
+
+    fun dateFilter() {
+        itemsList.sortWith { item1, item2 ->
+            ((item1 as SimpleMovie).order.compareTo((item2 as SimpleMovie).order))
+        }
+        notifyItemRangeChanged(0, itemsList.count())
+    }
 }
