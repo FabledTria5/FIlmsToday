@@ -37,4 +37,5 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     fun getFavorite(actorId: Int) = movieDao.getFavorite(actorId = actorId)
 
+    fun triggerFavoriteActor(actorId: Int) = movieDao.triggerFavoriteActor(actorId = actorId)
 }

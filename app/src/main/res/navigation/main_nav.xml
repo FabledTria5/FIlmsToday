@@ -14,6 +14,9 @@
             app:destination="@id/fullMovieFragment"
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/openActorFromSearch"
+            app:destination="@id/actorDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/profile_nav"
@@ -23,6 +26,9 @@
         <action
             android:id="@+id/action_profile_nav_to_fullMovieFragment"
             app:destination="@id/fullMovieFragment" />
+        <action
+            android:id="@+id/openActorFromProfile"
+            app:destination="@id/actorDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/movies_nav"
@@ -41,6 +47,17 @@
         android:label="FullMovieFragment" >
         <argument
             android:name="movieId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/openActorFromMovie"
+            app:destination="@id/actorDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/actorDialogFragment"
+        android:name="com.example.filmstoday.fragments.ActorDialogFragment"
+        android:label="ActorDialogFragment" >
+        <argument
+            android:name="actorId"
             app:argType="integer" />
     </fragment>
 </navigation>

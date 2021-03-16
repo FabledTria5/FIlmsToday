@@ -41,4 +41,7 @@ interface MovieDao {
 
     @Query(value = "DELETE FROM favorite_actors WHERE actorId = :actorId")
     suspend fun removeActor(actorId: Int)
+
+    @Query(value = "")
+    suspend fun triggerFavoriteActor(actorId: Int)
 }
