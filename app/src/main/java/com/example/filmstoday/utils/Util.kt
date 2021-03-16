@@ -21,14 +21,6 @@ fun getCountry(countries: List<ProductionCountries>): String {
     return countries.first().name
 }
 
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.GONE
-}
-
 fun selectText(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.white))
 

@@ -5,6 +5,8 @@ class Constants {
         const val BASE_URL = "https://api.themoviedb.org/"
         const val POSTERS_BASE_URL = "https://image.tmdb.org/t/p/w500"
         const val POSTERS_BASE_URL_SMALL = "https://image.tmdb.org/t/p/w400"
+        const val YOUTUBE_BASE_URL = "http://www.youtube.com/watch?v="
+
         const val APP_PREFERENCE = "mySettings"
         const val APP_PREFERENCE_ADULT_CONTENT = "adultContent"
         const val APP_PREFERENCE_FILTERING_OPTION = "filterOption"

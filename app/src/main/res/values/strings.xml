@@ -47,11 +47,6 @@
         <item>TMDB Rating</item>
     </string-array>
 
-    <string-array name="actor_filter_options">
-        <item>A - B</item>
-        <item>Date Added</item>
-    </string-array>
-
     <string-array name="Languages">
         <item>English</item>
         <item>Russian</item>

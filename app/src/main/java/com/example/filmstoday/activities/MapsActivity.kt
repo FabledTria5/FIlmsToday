@@ -14,8 +14,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val MAX_ADDRESSES = 1
-    private val ZOOM = 5.0f
+    companion object {
+        const val MAX_ADDRESSES = 1
+        const val ZOOM = 5.0f
+    }
 
     private val coder: Geocoder by lazy { Geocoder(this) }
 

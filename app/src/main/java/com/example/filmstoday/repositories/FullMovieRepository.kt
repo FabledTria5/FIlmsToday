@@ -5,6 +5,7 @@ import com.example.filmstoday.BuildConfig
 import com.example.filmstoday.api.ApiService
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
+import com.example.filmstoday.models.videos.VideosBase
 import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.CastResponse
 import retrofit2.Call
@@ -41,17 +42,30 @@ class FullMovieRepository {
             })
     }
 
-    fun getActorInfo(actorId: Int, observer: MutableLiveData<ActorFullInfoModel>) {
-        apiService.getActor(actorId, BuildConfig.MOVIES_API_KEY)
+    fun getActorInfo(actorId: Int, _observingActor: MutableLiveData<ActorFullInfoModel>) {
+        apiService.getActor(id = actorId, BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<ActorFullInfoModel> {
                 override fun onResponse(
                     call: Call<ActorFullInfoModel>,
                     response: Response<ActorFullInfoModel>
                 ) {
-                    observer.value = response.body()
+                    _observingActor.value = response.body()
                 }
 
                 override fun onFailure(call: Call<ActorFullInfoModel>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
+    }
+
+    fun getVideos(movieId: Int, _observingVideos: MutableLiveData<VideosBase>) {
+        apiService.getVideos(id = movieId, BuildConfig.MOVIES_API_KEY)
+            .enqueue(object : retrofit2.Callback<VideosBase> {
+                override fun onResponse(call: Call<VideosBase>, response: Response<VideosBase>) {
+                    _observingVideos.value = response.body()
+                }
+
+                override fun onFailure(call: Call<VideosBase>, t: Throwable) {
                     t.printStackTrace()
                 }
             })

@@ -8,6 +8,7 @@ import com.example.filmstoday.interactors.StringInteractor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.models.movie.ProductionCountries
+import com.example.filmstoday.models.videos.VideosBase
 import com.example.filmstoday.repositories.FullMovieRepository
 import com.example.filmstoday.responses.CastResponse
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
     private val _observingMovie = MutableLiveData<MovieFullModel>()
     private val _observingCast = MutableLiveData<CastResponse>()
     private val _observingActor = MutableLiveData<ActorFullInfoModel>()
+    private val _observingVideos = MutableLiveData<VideosBase>()
 
     private val fullMovieRepository: FullMovieRepository
     private val movieRepository: MovieRepository
@@ -33,10 +35,12 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
     fun getObservedMovie() = _observingMovie
     fun getCast() = _observingCast
     fun getObservingActor() = _observingActor
+    fun getObservingVideos() = _observingVideos
 
     fun getReceivedMovieInfo(movieId: Int) = fullMovieRepository.apply {
         getMovieInfo(_observingMovie = _observingMovie, id = movieId)
         getCast(_observingActors = _observingCast, id = movieId)
+        getVideos(movieId, _observingVideos)
     }
 
     fun getComment(movieId: Int) = movieRepository.getCommentary(id = movieId)
@@ -76,7 +80,7 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
     }
 
     fun getActorInfo(actorId: Int) =
-        fullMovieRepository.getActorInfo(actorId = actorId, observer = _observingActor)
+        fullMovieRepository.getActorInfo(actorId = actorId, _observingActor = _observingActor)
 
     fun getCountry(countries: List<ProductionCountries>): String {
         if (countries.count() == 0) return stringInteractor.textUnknown

@@ -3,6 +3,7 @@ package com.example.filmstoday.fragments
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -28,7 +29,9 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
+import com.example.filmstoday.models.videos.VideosBase
 import com.example.filmstoday.utils.*
+import com.example.filmstoday.utils.Constants.Companion.YOUTUBE_BASE_URL
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.example.filmstoday.viewmodels.factories.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -135,32 +138,50 @@ class FullMovieFragment : Fragment() {
     }
 
     private fun startObserve() {
-        fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner, {
+        fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner) {
             fillMovieInfo(movie = it)
             currentMovie = it
             checkButtons(it.id)
-        })
+        }
 
-        fullMovieViewModel.getCast().observe(viewLifecycleOwner, {
+        fullMovieViewModel.getCast().observe(viewLifecycleOwner) {
             actorsAdapter.apply {
                 addItems(actors = it.cast)
                 notifyDataSetChanged()
             }
-        })
+        }
 
-        fullMovieViewModel.getObservingActor().observe(viewLifecycleOwner, {
+        fullMovieViewModel.getObservingActor().observe(viewLifecycleOwner) {
             currentActor = it
             observeFavoriteActor()
             fillActorInfo(actor = it)
             actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        })
+        }
 
-        fullMovieViewModel.getComment(args.movieId).observe(viewLifecycleOwner, {
+        fullMovieViewModel.getComment(args.movieId).observe(viewLifecycleOwner) {
             it?.let {
                 binding.movieBottomSheet.tvComment.text = it.text
                 binding.movieBottomSheet.btnAddComment.visibility = View.INVISIBLE
             }
-        })
+        }
+
+        fullMovieViewModel.getObservingVideos().observe(viewLifecycleOwner) {
+            enableVideoButton(it)
+        }
+    }
+
+    private fun enableVideoButton(videosList: VideosBase) {
+        binding.apply {
+            isVideosAvailable = videosList.results.isNotEmpty()
+            btnOpenVideo.setOnClickListener {
+                requireContext().startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("$YOUTUBE_BASE_URL${videosList.results[0].key}")
+                    )
+                )
+            }
+        }
     }
 
     private fun checkButtons(id: Int) {

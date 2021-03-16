@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="isVideosAvailable"
+            type="Boolean" />
+        <import type="android.view.View" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,10 +31,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/btnOpenVideo"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:alpha="0.5"
+                android:src="@color/black"
+                android:visibility="@{isVideosAvailable ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/ivPosterFull"
+                app:layout_constraintStart_toStartOf="@+id/ivPosterFull"
+                app:layout_constraintTop_toTopOf="@+id/ivPosterFull"
+                app:riv_corner_radius="40dip"
+                app:riv_oval="true" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_play"
+                android:visibility="@{isVideosAvailable ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="@+id/btnOpenVideo"
+                app:layout_constraintEnd_toEndOf="@+id/btnOpenVideo"
+                app:layout_constraintStart_toStartOf="@+id/btnOpenVideo"
+                app:layout_constraintTop_toTopOf="@+id/btnOpenVideo" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-                android:id="@+id/movieBottomSheet"
+            android:id="@+id/movieBottomSheet"
             layout="@layout/movie_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
