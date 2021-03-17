@@ -188,7 +188,7 @@ class SearchFragment : Fragment() {
     private fun observeFavoriteActor() {
         searchViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
             isFavoriteActor = favorite
-            observeFavorite(binding.actorBottomSheet.btnAddToFavorite, favorite)
+            observeFavoriteIcon(binding.actorBottomSheet.btnAddToFavorite, favorite)
         })
     }
 

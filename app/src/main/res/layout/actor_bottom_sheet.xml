@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="currentActor"
             type="com.example.filmstoday.models.cast.ActorFullInfoModel" />
+
         <variable
             name="isFavorite"
             type="Boolean" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -32,7 +35,8 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:url="@{currentActor.photo}" />
 
             <ImageView
                 android:id="@+id/btnCLose"
@@ -53,9 +57,9 @@
                 android:letterSpacing="0.05"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_15sdp"
+                android:text="@{currentActor.name}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_17ssp"
-                android:text="@{currentActor.name}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivActorFullPhoto"
                 tools:ignore="RtlSymmetry" />
@@ -66,8 +70,8 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_5sdp"
-                android:textColor="@color/actorBirthText"
                 android:text="@{currentActor.birthday}"
+                android:textColor="@color/actorBirthText"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="@+id/tvActorFullName"
                 app:layout_constraintTop_toBottomOf="@+id/tvActorFullName"
@@ -80,9 +84,9 @@
                 android:maxWidth="@dimen/_160sdp"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_5sdp"
+                android:text="@{currentActor.placeOfBirth}"
                 android:textColor="@color/actorBirthText"
                 android:textSize="@dimen/_14ssp"
-                android:text="@{currentActor.birthday}"
                 app:layout_constraintStart_toEndOf="@+id/tvBirthday"
                 app:layout_constraintTop_toBottomOf="@+id/tvActorFullName"
                 tools:ignore="RtlSymmetry" />
@@ -94,7 +98,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:padding="@dimen/_10sdp"
-                android:src="@{isFavorite ? @drawable/ic_add_to_favorite : @drawable/ic_favorite}"
+                android:src="@{isFavorite ? @drawable/ic_favorite : @drawable/ic_add_to_favorite}"
                 app:layout_constraintBottom_toBottomOf="@+id/tvBirthday"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvActorFullName" />

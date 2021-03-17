@@ -52,12 +52,12 @@
             android:id="@+id/openActorFromMovie"
             app:destination="@id/actorDialogFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/actorDialogFragment"
         android:name="com.example.filmstoday.fragments.ActorDialogFragment"
         android:label="ActorDialogFragment" >
         <argument
             android:name="actorId"
             app:argType="integer" />
-    </fragment>
+    </dialog>
 </navigation>

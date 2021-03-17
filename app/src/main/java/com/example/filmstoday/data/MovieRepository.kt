@@ -36,6 +36,4 @@ class MovieRepository(private val movieDao: MovieDao) {
     suspend fun removeActor(actorId: Int) = movieDao.removeActor(actorId = actorId)
 
     fun getFavorite(actorId: Int) = movieDao.getFavorite(actorId = actorId)
-
-    fun triggerFavoriteActor(actorId: Int) = movieDao.triggerFavoriteActor(actorId = actorId)
 }

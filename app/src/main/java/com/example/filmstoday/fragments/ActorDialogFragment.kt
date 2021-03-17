@@ -1,18 +1,21 @@
 package com.example.filmstoday.fragments
 
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.filmstoday.R
+import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.databinding.ActorBottomSheetBinding
-import com.example.filmstoday.interactors.StringInteractorImpl
 import com.example.filmstoday.utils.Constants
+import com.example.filmstoday.utils.observeFavoriteIcon
+import com.example.filmstoday.utils.selectText
 import com.example.filmstoday.viewmodels.ActorViewModel
-import com.example.filmstoday.viewmodels.factories.ActorViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 
@@ -21,11 +24,8 @@ class ActorDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: ActorBottomSheetBinding
 
     private val args: ActorDialogFragmentArgs by navArgs()
-    private val actorViewModel: ActorViewModel by viewModels {
-        ActorViewModelFactory(
-            stringInteractor = StringInteractorImpl(requireContext()),
-            application = requireActivity().application
-        )
+    private val actorViewModel: ActorViewModel by lazy {
+        ViewModelProvider(this).get(ActorViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -50,7 +50,6 @@ class ActorDialogFragment : BottomSheetDialogFragment() {
     private fun startObserve() {
         actorViewModel.getObservedActor().observe(viewLifecycleOwner) {
             binding.currentActor = it
-            setActorPhoto(it.photo)
         }
 
         actorViewModel.getFavorite(args.actorId).observe(viewLifecycleOwner) {
@@ -60,12 +59,33 @@ class ActorDialogFragment : BottomSheetDialogFragment() {
 
     private fun addListeners() {
         binding.btnAddToFavorite.setOnClickListener {
-            actorViewModel.triggerFavorite(args.actorId)
+            actorViewModel.apply {
+                when (binding.isFavorite) {
+                    true -> binding.currentActor?.id?.let { it1 -> removeActorFromFavorite(it1) }
+                    else -> binding.currentActor?.let { addActorToFavorite(it) }
+                }
+            }
+        }
+
+        binding.tvPlaceOfBirth.apply {
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            setOnClickListener {
+                selectText(
+                    binding.tvPlaceOfBirth,
+                    requireContext()
+                )
+                Intent(activity, MapsActivity::class.java).also {
+                    it.putExtra(Constants.ACTOR_PLACE_OF_BIRTH, binding.currentActor?.placeOfBirth)
+                    it.putExtra(Constants.ACTOR_NAME, binding.currentActor?.name)
+                    it.putExtra(Constants.ACTOR_PHOTO, binding.currentActor?.photo)
+                    context.startActivity(it)
+                }
+            }
         }
     }
 
-    private fun setActorPhoto(photo: String?) =
-        Picasso.get().load("${Constants.POSTERS_BASE_URL}${photo}")
-            .placeholder(R.drawable.photo_placeholder)
-            .into(binding.ivActorFullPhoto)
+//    private fun setActorPhoto(photo: String?) =
+//        Picasso.get().load("${Constants.POSTERS_BASE_URL}${photo}")
+//            .placeholder(R.drawable.photo_placeholder)
+//            .into(binding.ivActorFullPhoto)
 }

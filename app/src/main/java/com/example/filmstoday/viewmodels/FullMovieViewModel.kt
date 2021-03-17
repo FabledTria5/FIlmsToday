@@ -34,7 +34,6 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
 
     fun getObservedMovie() = _observingMovie
     fun getCast() = _observingCast
-    fun getObservingActor() = _observingActor
     fun getObservingVideos() = _observingVideos
 
     fun getReceivedMovieInfo(movieId: Int) = fullMovieRepository.apply {
@@ -44,8 +43,6 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
     }
 
     fun getComment(movieId: Int) = movieRepository.getCommentary(id = movieId)
-
-    fun getFavorite(actorId: Int) = movieRepository.getFavorite(actorId = actorId)
 
     fun addMovieToWant(movieFullModel: MovieFullModel) = viewModelScope.launch {
         movieRepository.addMovieToWant(movieFullModel = movieFullModel)
@@ -59,31 +56,11 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
         movieRepository.saveComment(id = id, text = text)
     }
 
-    fun addActorToFavorite(actorFullInfoModel: ActorFullInfoModel) = viewModelScope.launch {
-        movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
-    }
-
-    fun removeActorFromFavorite(actorId: Int) = viewModelScope.launch {
-        movieRepository.removeActor(actorId = actorId)
-    }
-
     fun checkWantBtn(id: Int) = runBlocking {
         movieRepository.isMovieInWant(id = id)
     }
 
     fun checkWatchedBtn(id: Int) = runBlocking {
         movieRepository.isMovieInWatched(id = id)
-    }
-
-    fun getDescription(description: String?): String {
-        description?.let { return description } ?: return stringInteractor.textNoDescription
-    }
-
-    fun getActorInfo(actorId: Int) =
-        fullMovieRepository.getActorInfo(actorId = actorId, _observingActor = _observingActor)
-
-    fun getCountry(countries: List<ProductionCountries>): String {
-        if (countries.count() == 0) return stringInteractor.textUnknown
-        return countries.first().name
     }
 }

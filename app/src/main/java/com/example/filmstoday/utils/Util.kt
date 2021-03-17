@@ -27,7 +27,7 @@ fun selectText(textView: TextView, context: Context) =
 fun unselectText(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.actorBirthText))
 
-fun observeFavorite(imageView: ImageView, favorite: Boolean) {
+fun observeFavoriteIcon(imageView: ImageView, favorite: Boolean) {
     imageView.apply {
         when {
             favorite -> setImageResource(R.drawable.ic_favorite)

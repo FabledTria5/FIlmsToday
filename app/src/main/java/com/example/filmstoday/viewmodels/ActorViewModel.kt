@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.filmstoday.data.MovieRepository
 import com.example.filmstoday.data.MoviesDatabase
-import com.example.filmstoday.interactors.StringInteractor
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.repositories.ActorRepository
+import kotlinx.coroutines.launch
 
-class ActorViewModel(application: Application, private val stringInteractor: StringInteractor) :
+class ActorViewModel(application: Application) :
     AndroidViewModel(application), LifecycleObserver {
 
     private val _observingActor = MutableLiveData<ActorFullInfoModel>()
@@ -28,5 +28,11 @@ class ActorViewModel(application: Application, private val stringInteractor: Str
 
     fun getFavorite(actorId: Int) = movieRepository.getFavorite(actorId = actorId)
 
-    fun triggerFavorite(actorId: Int) = movieRepository.triggerFavoriteActor(actorId)
+    fun addActorToFavorite(actorFullInfoModel: ActorFullInfoModel) = viewModelScope.launch {
+        movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
+    }
+
+    fun removeActorFromFavorite(actorId: Int) = viewModelScope.launch {
+        movieRepository.removeActor(actorId = actorId)
+    }
 }
