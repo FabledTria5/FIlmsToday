@@ -20,7 +20,6 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
 
     private val _observingMovie = MutableLiveData<MovieFullModel>()
     private val _observingCast = MutableLiveData<CastResponse>()
-    private val _observingActor = MutableLiveData<ActorFullInfoModel>()
     private val _observingVideos = MutableLiveData<VideosBase>()
 
     private val fullMovieRepository: FullMovieRepository
@@ -42,18 +41,12 @@ class FullMovieViewModel(application: Application, private val stringInteractor:
         getVideos(movieId, _observingVideos)
     }
 
-    fun getComment(movieId: Int) = movieRepository.getCommentary(id = movieId)
-
-    fun addMovieToWant(movieFullModel: MovieFullModel) = viewModelScope.launch {
+    fun addMovieToWant(movieFullModel: MovieFullModel?) = viewModelScope.launch {
         movieRepository.addMovieToWant(movieFullModel = movieFullModel)
     }
 
-    fun addMovieToWatched(movieFullModel: MovieFullModel) = viewModelScope.launch {
+    fun addMovieToWatched(movieFullModel: MovieFullModel?) = viewModelScope.launch {
         movieRepository.addMovieToWatched(movieFullModel = movieFullModel)
-    }
-
-    fun saveComment(id: Int, text: String) = viewModelScope.launch {
-        movieRepository.saveComment(id = id, text = text)
     }
 
     fun checkWantBtn(id: Int) = runBlocking {

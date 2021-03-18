@@ -1,6 +1,5 @@
 package com.example.filmstoday.fragments
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,14 +26,11 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.models.videos.VideosBase
-import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.utils.Constants.Companion.YOUTUBE_BASE_URL
 import com.example.filmstoday.utils.getDuration
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.example.filmstoday.viewmodels.factories.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.textfield.TextInputEditText
-import com.squareup.picasso.Picasso
 
 class FullMovieFragment : Fragment() {
 
@@ -58,7 +53,6 @@ class FullMovieFragment : Fragment() {
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var moviesBottomSheet: View
     private lateinit var moviesBottomSheetBehavior: BottomSheetBehavior<View>
-    private lateinit var currentMovie: MovieFullModel
 
     private val args: FullMovieFragmentArgs by navArgs()
 
@@ -114,7 +108,6 @@ class FullMovieFragment : Fragment() {
     private fun startObserve() {
         fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner) {
             fillMovieInfo(movie = it)
-            currentMovie = it
             binding.currentMovie = it
             checkButtons(it.id)
         }
@@ -123,13 +116,6 @@ class FullMovieFragment : Fragment() {
             actorsAdapter.apply {
                 addItems(actors = it.cast)
                 notifyDataSetChanged()
-            }
-        }
-
-        fullMovieViewModel.getComment(args.movieId).observe(viewLifecycleOwner) {
-            it?.let {
-                binding.movieBottomSheet.tvComment.text = it.text
-                binding.movieBottomSheet.btnAddComment.visibility = View.INVISIBLE
             }
         }
 
@@ -174,45 +160,17 @@ class FullMovieFragment : Fragment() {
 
     private fun addListeners() {
         binding.movieBottomSheet.btnWant.setOnClickListener {
-            fullMovieViewModel.addMovieToWant(currentMovie)
+            fullMovieViewModel.addMovieToWant(binding.currentMovie)
             it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
 
         binding.movieBottomSheet.btnWatched.setOnClickListener {
-            fullMovieViewModel.addMovieToWatched(currentMovie)
+            fullMovieViewModel.addMovieToWatched(binding.currentMovie)
             it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
-
-        binding.movieBottomSheet.btnAddComment.setOnClickListener {
-            openDialog()
-        }
-    }
-
-    private fun openDialog() {
-        val customView = layoutInflater.inflate(R.layout.custom_dialog_layout, null)
-        val builder =
-            AlertDialog.Builder(context, R.style.MaterialAlertDialog_MaterialComponents_Title_Icon)
-                .setView(customView)
-                .setCancelable(false)
-                .setTitle(R.string.leave_a_comment)
-                .setPositiveButton(getString(R.string.save)) { _, _ ->
-                    run {
-                        val editText = customView.findViewById<TextInputEditText>(R.id.commentField)
-                        fullMovieViewModel.saveComment(currentMovie.id, editText.text.toString())
-                    }
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-
-        val alertDialog = builder.create()
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     private fun fillMovieInfo(movie: MovieFullModel) {
-        binding.movieBottomSheet.currentMovie = movie
         binding.movieBottomSheet.tvDuration.text = getDuration(movie.runtime)
         setGenres(genres = movie.genres)
     }

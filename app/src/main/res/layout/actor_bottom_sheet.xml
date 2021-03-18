@@ -38,16 +38,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:url="@{currentActor.photo}" />
 
-            <ImageView
-                android:id="@+id/btnCLose"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_baseline_close_24"
-                app:layout_constraintEnd_toEndOf="@+id/ivActorFullPhoto"
-                app:layout_constraintTop_toTopOf="@+id/ivActorFullPhoto"
-                app:tint="@color/lightGray" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                app:cardBackgroundColor="@color/carViewBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvActorFullName"

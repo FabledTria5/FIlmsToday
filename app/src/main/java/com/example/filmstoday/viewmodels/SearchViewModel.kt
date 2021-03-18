@@ -17,7 +17,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
 
     private val _observingMovies = MutableLiveData<MoviesResponse>()
     private val _observingActors = MutableLiveData<ActorsResponse>()
-    private val _observingActor = MutableLiveData<ActorFullInfoModel>()
 
     init {
         val movieDao = MoviesDatabase.getDatabase(application).movieDao()
@@ -27,7 +26,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
 
     fun getMovies() = _observingMovies
     fun getActors() = _observingActors
-    fun getActor() = _observingActor
 
     fun textChanged(query: String, searchAdultContent: Boolean) {
         if (query == "") {
@@ -39,17 +37,5 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
             searchAdultContent
         )
         searchRepository.searchActors(query = query, observer = _observingActors)
-    }
-
-    fun searchActor(id: Int) = searchRepository.searchActor(id = id, observer = _observingActor)
-
-    fun getFavorite(actorId: Int) = movieRepository.getFavorite(actorId = actorId)
-
-    fun addActorToFavorite(actorFullInfoModel: ActorFullInfoModel) = viewModelScope.launch {
-        movieRepository.saveActor(actorFullInfoModel = actorFullInfoModel)
-    }
-
-    fun removeActorFromFavorite(actorId: Int) = viewModelScope.launch {
-        movieRepository.removeActor(actorId = actorId)
     }
 }
