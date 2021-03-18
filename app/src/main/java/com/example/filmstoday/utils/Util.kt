@@ -23,15 +23,3 @@ fun getCountry(countries: List<ProductionCountries>): String {
 
 fun selectText(textView: TextView, context: Context) =
     textView.setTextColor(ContextCompat.getColor(context, R.color.white))
-
-fun unselectText(textView: TextView, context: Context) =
-    textView.setTextColor(ContextCompat.getColor(context, R.color.actorBirthText))
-
-fun observeFavoriteIcon(imageView: ImageView, favorite: Boolean) {
-    imageView.apply {
-        when {
-            favorite -> setImageResource(R.drawable.ic_favorite)
-            else -> setImageResource(R.drawable.ic_add_to_favorite)
-        }
-    }
-}
