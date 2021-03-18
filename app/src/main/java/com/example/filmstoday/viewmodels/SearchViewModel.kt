@@ -1,14 +1,14 @@
 package com.example.filmstoday.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import com.example.filmstoday.data.MovieRepository
 import com.example.filmstoday.data.MoviesDatabase
-import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.repositories.SearchRepository
 import com.example.filmstoday.responses.ActorsResponse
 import com.example.filmstoday.responses.MoviesResponse
-import kotlinx.coroutines.launch
 
 class SearchViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
 

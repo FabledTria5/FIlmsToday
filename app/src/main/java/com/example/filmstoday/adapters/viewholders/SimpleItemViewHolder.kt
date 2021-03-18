@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
+import com.example.filmstoday.adapters.listeners.OnSimpleMovieClickListener
 import com.example.filmstoday.models.movie.SimpleMovie
 import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.utils.getDuration
@@ -25,7 +26,7 @@ class SimpleItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         LayoutInflater.from(parent.context).inflate(R.layout.simple_item, parent, false)
     )
 
-    fun bind(movieFullModel: SimpleMovie) {
+    fun bind(movieFullModel: SimpleMovie, onSimpleMovieClickListener: OnSimpleMovieClickListener) {
         Picasso.get().load("${Constants.POSTERS_BASE_URL_SMALL}${movieFullModel.posterPath}")
             .placeholder(R.drawable.ic_poster_placeholder)
             .into(poster)
@@ -35,6 +36,10 @@ class SimpleItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         movieReleaseCountry.text = movieFullModel.movieReleaseCountry
         movieDuration.text = getDuration(movieFullModel.movieRuntime)
         movieRating.text = movieFullModel.movieRating.toInt().toString()
+
+        itemView.setOnClickListener {
+            onSimpleMovieClickListener.onItemCLick(movie = movieFullModel)
+        }
 
     }
 }
