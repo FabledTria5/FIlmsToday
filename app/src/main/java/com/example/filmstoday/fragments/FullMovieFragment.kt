@@ -115,6 +115,7 @@ class FullMovieFragment : Fragment() {
         fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner) {
             fillMovieInfo(movie = it)
             currentMovie = it
+            binding.currentMovie = it
             checkButtons(it.id)
         }
 
