@@ -2,11 +2,8 @@ package com.example.filmstoday.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Paint
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +16,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
-import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.adapters.ActorsAdapter
 import com.example.filmstoday.adapters.SearchMovieAdapter
 import com.example.filmstoday.adapters.listeners.OnActorCLickListener
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
-import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieModel
 import com.example.filmstoday.utils.*
 import com.example.filmstoday.viewmodels.SearchViewModel
@@ -48,23 +43,20 @@ class SearchFragment : Fragment() {
 
     private val actorsAdapter = ActorsAdapter(object : OnActorCLickListener {
         override fun onItemCLick(actor: Actor) {
-            enableActorBottomSheet(actor = actor)
-            binding.actorBottomSheet.btnCLose.setOnClickListener {
-                actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            SearchFragmentDirections.openActorFromSearch(actor.id).also {
+                requireView().findNavController().navigate(it)
             }
         }
     })
-
-    private val actorsBottomSheetBinder: ActorsBottomSheetBinder by lazy { ActorsBottomSheetBinder() }
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var actorsBottomSheet: View
     private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
-    private lateinit var currentActor: ActorFullInfoModel
 
-    private var isFavoriteActor: Boolean = false
-    private var searchAdultContent: Boolean = true
+    private val searchAdultContent: Boolean by lazy {
+        mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, true)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,32 +78,8 @@ class SearchFragment : Fragment() {
         setupSearchField()
         setupRecyclers()
         startObserving()
-        setBackButtonBehavior(view)
-        addListeners()
 
         mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, false)
-    }
-
-    private fun addListeners() {
-        binding.actorBottomSheet.tvPlaceOfBirth.apply {
-            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
-            setOnClickListener {
-                selectText(this, requireContext())
-                Intent(activity, MapsActivity::class.java).also {
-                    it.putExtra(Constants.ACTOR_PLACE_OF_BIRTH, currentActor.placeOfBirth)
-                    it.putExtra(Constants.ACTOR_NAME, currentActor.name)
-                    it.putExtra(Constants.ACTOR_PHOTO, currentActor.photo)
-                    context.startActivity(it)
-                }
-            }
-        }
-
-        binding.actorBottomSheet.btnAddToFavorite.setOnClickListener {
-            when {
-                isFavoriteActor -> searchViewModel.removeActorFromFavorite(currentActor.id)
-                else -> searchViewModel.addActorToFavorite(actorFullInfoModel = currentActor)
-            }
-        }
     }
 
     private fun initBottomSheets(view: View) {
@@ -125,7 +93,6 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchField.doAfterTextChanged { editable ->
-            searchAdultContent = mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, true)
             searchViewModel.textChanged(editable.toString(), searchAdultContent)
         }
     }
@@ -153,10 +120,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun enableActorBottomSheet(actor: Actor) {
-        searchViewModel.searchActor(id = actor.id)
-    }
-
     private fun startObserving() {
         searchViewModel.getMovies().observe(viewLifecycleOwner, {
             searchMovieAdapter.apply {
@@ -164,7 +127,7 @@ class SearchFragment : Fragment() {
                 addItems(movieModels = it.results)
                 notifyDataSetChanged()
             }
-            binding.textView2.visibility = View.VISIBLE
+            binding.foundMovies = it.results.isNotEmpty()
         })
 
         searchViewModel.getActors().observe(viewLifecycleOwner, {
@@ -173,56 +136,7 @@ class SearchFragment : Fragment() {
                 addItems(actors = it.results)
                 notifyDataSetChanged()
             }
-            binding.textView3.visibility = View.VISIBLE
+            binding.foundActors = it.results.isNotEmpty()
         })
-
-        searchViewModel.getActor().observe(viewLifecycleOwner, {
-            setCurrentActor(it)
-            observeFavoriteActor()
-            fillActorInfo(actor = it)
-            removeFocus(binding.searchField)
-            actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        })
-    }
-
-    private fun observeFavoriteActor() {
-        searchViewModel.getFavorite(currentActor.id).observe(viewLifecycleOwner, { favorite ->
-            isFavoriteActor = favorite
-            observeFavorite(binding.actorBottomSheet.btnAddToFavorite, favorite)
-        })
-    }
-
-    private fun setCurrentActor(actor: ActorFullInfoModel) {
-        currentActor = actor
-        unselectText(binding.actorBottomSheet.tvPlaceOfBirth, requireContext())
-    }
-
-    private fun removeFocus(view: View) {
-        view.clearFocus()
-        requireView().requestFocus()
-    }
-
-    private fun setBackButtonBehavior(view: View) {
-        view.apply {
-            isFocusableInTouchMode = true
-            requestFocus()
-            setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (actorsBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                        actorsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        this.requestFocus()
-                        return@OnKeyListener true
-                    }
-                }
-                return@OnKeyListener false
-            })
-        }
-    }
-
-    private fun fillActorInfo(actor: ActorFullInfoModel) {
-        actorsBottomSheetBinder.bindActor(
-            actorBottomSheet = binding.actorBottomSheet,
-            actor = actor
-        )
     }
 }

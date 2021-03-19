@@ -3,6 +3,8 @@ package com.example.filmstoday.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.filmstoday.adapters.listeners.OnFavoriteActorClickListener
+import com.example.filmstoday.adapters.listeners.OnSimpleMovieClickListener
 import com.example.filmstoday.adapters.viewholders.DoubleGridViewHolder
 import com.example.filmstoday.adapters.viewholders.FavoriteActorViewHolder
 import com.example.filmstoday.adapters.viewholders.SimpleItemViewHolder
@@ -10,7 +12,11 @@ import com.example.filmstoday.adapters.viewholders.TripleGridViewHolder
 import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.models.movie.SimpleMovie
 
-class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null) :
+class ProfileMoviesAdapter(
+    private val layoutManager: GridLayoutManager? = null,
+    private val onFavoriteActorClickListener: OnFavoriteActorClickListener,
+    private val onSimpleMovieClickListener: OnSimpleMovieClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isReverted = false
@@ -35,10 +41,10 @@ class ProfileMoviesAdapter(private val layoutManager: GridLayoutManager? = null)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is SimpleItemViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie)
-            is DoubleGridViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie)
-            is TripleGridViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie)
-            is FavoriteActorViewHolder -> holder.bind(favoriteActor = itemsList[position] as FavoriteActor)
+            is SimpleItemViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie, onSimpleMovieClickListener)
+            is DoubleGridViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie, onSimpleMovieClickListener)
+            is TripleGridViewHolder -> holder.bind(movieFullModel = itemsList[position] as SimpleMovie, onSimpleMovieClickListener)
+            is FavoriteActorViewHolder -> holder.bind(favoriteActor = itemsList[position] as FavoriteActor, onFavoriteActorClickListener)
         }
     }
 

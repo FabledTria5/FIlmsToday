@@ -6,7 +6,15 @@
         <variable
             name="searching"
             type="Boolean" />
-        
+
+        <variable
+            name="foundMovies"
+            type="Boolean" />
+
+        <variable
+            name="foundActors"
+            type="Boolean" />
+
         <import type="android.view.View" />
     </data>
 
@@ -68,7 +76,7 @@
                 android:text="@string/movies"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp"
-                android:visibility="invisible"
+                android:visibility="@{foundMovies ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
@@ -92,7 +100,7 @@
                 android:text="@string/names"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp"
-                android:visibility="invisible"
+                android:visibility="@{foundActors ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvMoviesSearchResult" />

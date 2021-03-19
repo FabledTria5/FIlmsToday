@@ -7,6 +7,10 @@
             name="isVideosAvailable"
             type="Boolean" />
         <import type="android.view.View" />
+
+        <variable
+            name="currentMovie"
+            type="com.example.filmstoday.models.movie.MovieFullModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,6 +31,7 @@
                 android:paddingEnd="@dimen/_30sdp"
                 android:paddingBottom="@dimen/_40sdp"
                 android:scaleType="centerCrop"
+                app:url="@{currentMovie.poster_path}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +65,8 @@
 
         <include
             android:id="@+id/movieBottomSheet"
-            layout="@layout/movie_bottom_sheet" />
+            layout="@layout/movie_bottom_sheet"
+            app:currentMovie="@{currentMovie}"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

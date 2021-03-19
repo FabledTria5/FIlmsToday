@@ -14,11 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.ProfileMoviesAdapter
+import com.example.filmstoday.adapters.listeners.OnFavoriteActorClickListener
+import com.example.filmstoday.adapters.listeners.OnSimpleMovieClickListener
 import com.example.filmstoday.data.FavoriteActor
 import com.example.filmstoday.data.WantMovie
 import com.example.filmstoday.data.WatchedMovie
@@ -98,7 +101,20 @@ class ProfileFragment : Fragment() {
 
     private fun setupRecyclerView() {
         listLayoutManager = GridLayoutManager(context, 1)
-        profileMoviesAdapter = ProfileMoviesAdapter(listLayoutManager)
+
+        profileMoviesAdapter =
+            ProfileMoviesAdapter(listLayoutManager, object : OnFavoriteActorClickListener {
+                override fun onItemCLick(actor: FavoriteActor) {
+                    ProfileFragmentDirections.openActorFromProfile(actor.actorId).also {
+                        requireView().findNavController().navigate(it)
+                    }
+                }
+            }, object : OnSimpleMovieClickListener {
+                override fun onItemCLick(movie: SimpleMovie) {
+                    Toast.makeText(context, "In development", Toast.LENGTH_SHORT).show()
+                }
+            })
+
         binding.moviesList.apply {
             layoutManager = listLayoutManager
             adapter = profileMoviesAdapter
@@ -117,7 +133,6 @@ class ProfileFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.apply {
-//                    profileViewModel.deleteMovie(profileMoviesAdapter.getItemItemAt(this))
                     profileMoviesAdapter.deleteItem(this)
                 }
             }

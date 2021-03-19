@@ -15,20 +15,17 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     val readFavoriteActors: LiveData<List<FavoriteActor>> = movieDao.readFavoriteActors()
 
-    suspend fun addMovieToWant(movieFullModel: MovieFullModel) =
-        movieDao.addMovieToWant(covertFullMovieToWant(movieFull = movieFullModel))
+    suspend fun addMovieToWant(movieFullModel: MovieFullModel?) = movieFullModel?.let {
+        movieDao.addMovieToWant(covertFullMovieToWant(movieFull = it))
+    }
 
-    suspend fun addMovieToWatched(movieFullModel: MovieFullModel) =
-        movieDao.addMovieToWatched(covertFullMovieToWatched(movieFull = movieFullModel))
+    suspend fun addMovieToWatched(movieFullModel: MovieFullModel?) = movieFullModel?.let {
+        movieDao.addMovieToWatched(covertFullMovieToWatched(movieFull = it))
+    }
 
     suspend fun isMovieInWant(id: Int) = movieDao.isMovieInWant(id = id)
 
     suspend fun isMovieInWatched(id: Int) = movieDao.isMovieInWatched(id = id)
-
-    fun getCommentary(id: Int) = movieDao.getCommentary(movieId = id)
-
-    suspend fun saveComment(id: Int, text: String) =
-        movieDao.saveComment(Commentary(0, movieId = id, text = text))
 
     suspend fun saveActor(actorFullInfoModel: ActorFullInfoModel) =
         movieDao.saveActor(convertFullActorToFavorite(actorFullInfoModel = actorFullInfoModel))
@@ -36,5 +33,4 @@ class MovieRepository(private val movieDao: MovieDao) {
     suspend fun removeActor(actorId: Int) = movieDao.removeActor(actorId = actorId)
 
     fun getFavorite(actorId: Int) = movieDao.getFavorite(actorId = actorId)
-
 }

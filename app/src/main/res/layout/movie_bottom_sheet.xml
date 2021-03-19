@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="currentMovie"
+            type="com.example.filmstoday.models.movie.MovieFullModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,6 +41,7 @@
                 android:fontFamily="@font/sfprodisplay_medium"
                 android:maxWidth="@dimen/_220sdp"
                 android:textColor="@color/white"
+                android:text="@{currentMovie.title}"
                 android:textSize="@dimen/_17ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +62,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:fontFamily="@font/sfprodisplay_medium"
                 android:textColor="@color/white"
+                android:text="@{Double.toString(currentMovie.vote_average)}"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieName"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/_5sdp"
                 android:textColor="@color/actorBirthText"
+                android:text="@{currentMovie.release_date.substring(0, 4)}"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="@+id/tvMovieName"
                 app:layout_constraintTop_toBottomOf="@+id/tvMovieName" />
@@ -76,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
+                android:text="@{currentMovie.production_countries[0].name}"
                 android:textColor="@color/actorBirthText"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toEndOf="@+id/tvReleaseYear"
@@ -124,6 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:padding="@dimen/_10sdp"
+                android:text="@{currentMovie.overview}"
                 android:textColor="@color/descriptionText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,51 +187,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/sfprodisplay_regular"
-                android:text="@string/commentary"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvGenres" />
-
-            <TextView
-                android:id="@+id/tvComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/sfprodisplay_regular"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:text="@string/no_comments"
-                android:textColor="@color/grayText"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:fontFamily="@font/sfprodisplay_regular"
-                android:text="@string/leave_a_comment"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvComment" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/actorBottomSheet"
-            layout="@layout/actor_bottom_sheet" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

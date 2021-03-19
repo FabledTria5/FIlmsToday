@@ -3,6 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="currentActor"
+            type="com.example.filmstoday.models.cast.ActorFullInfoModel" />
+
+        <variable
+            name="isFavorite"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,18 +35,18 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:url="@{currentActor.photo}" />
 
-            <ImageView
-                android:id="@+id/btnCLose"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_baseline_close_24"
-                app:layout_constraintEnd_toEndOf="@+id/ivActorFullPhoto"
-                app:layout_constraintTop_toTopOf="@+id/ivActorFullPhoto"
-                app:tint="@color/lightGray" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                app:cardBackgroundColor="@color/carViewBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvActorFullName"
@@ -43,6 +56,7 @@
                 android:letterSpacing="0.05"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_15sdp"
+                android:text="@{currentActor.name}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_17ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_5sdp"
+                android:text="@{currentActor.birthday}"
                 android:textColor="@color/actorBirthText"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="@+id/tvActorFullName"
@@ -68,6 +83,7 @@
                 android:maxWidth="@dimen/_160sdp"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_5sdp"
+                android:text="@{currentActor.placeOfBirth}"
                 android:textColor="@color/actorBirthText"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toEndOf="@+id/tvBirthday"
@@ -81,6 +97,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:padding="@dimen/_10sdp"
+                android:src="@{isFavorite ? @drawable/ic_favorite : @drawable/ic_add_to_favorite}"
                 app:layout_constraintBottom_toBottomOf="@+id/tvBirthday"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvActorFullName" />
@@ -91,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_10sdp"
+                android:text="@{currentActor.biography}"
                 android:textColor="@color/descriptionText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
