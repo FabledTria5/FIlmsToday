@@ -13,11 +13,9 @@ import com.example.filmstoday.R
 import com.example.filmstoday.activities.MapsActivity
 import com.example.filmstoday.databinding.ActorBottomSheetBinding
 import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.observeFavoriteIcon
 import com.example.filmstoday.utils.selectText
 import com.example.filmstoday.viewmodels.ActorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.squareup.picasso.Picasso
 
 class ActorDialogFragment : BottomSheetDialogFragment() {
 
@@ -83,9 +81,4 @@ class ActorDialogFragment : BottomSheetDialogFragment() {
             }
         }
     }
-
-//    private fun setActorPhoto(photo: String?) =
-//        Picasso.get().load("${Constants.POSTERS_BASE_URL}${photo}")
-//            .placeholder(R.drawable.photo_placeholder)
-//            .into(binding.ivActorFullPhoto)
 }
