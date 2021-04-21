@@ -1,5 +1,6 @@
 package com.example.filmstoday.data
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -35,6 +36,9 @@ interface MovieDao {
 
     @Query(value = "SELECT * FROM watched_table ORDER BY id ASC")
     fun readWatchedMovies(): LiveData<List<WatchedMovie>>
+
+    @Query(value = "SELECT userPhoto FROM user_table")
+    fun readUserPhoto(): LiveData<Bitmap>
 
     @Query(value = "SELECT EXISTS (SELECT * FROM want_table WHERE movieId = :id)")
     suspend fun isMovieInWant(id: Int): Boolean

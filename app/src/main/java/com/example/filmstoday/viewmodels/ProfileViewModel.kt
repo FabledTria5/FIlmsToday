@@ -1,6 +1,7 @@
 package com.example.filmstoday.viewmodels
 
 import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
@@ -12,6 +13,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     var readWantMovies: LiveData<List<WantMovie>>
     var readWatchMovies: LiveData<List<WatchedMovie>>
     var readFavoriteActors: LiveData<List<FavoriteActor>>
+    var readUserPhoto: LiveData<Bitmap>
     private val repository: MovieRepository
 
     init {
@@ -20,5 +22,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         readWantMovies = repository.readWantMovies
         readWatchMovies = repository.readWatchedMovies
         readFavoriteActors = repository.readFavoriteActors
+        readUserPhoto = repository.readUserPhoto
     }
 }

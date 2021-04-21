@@ -38,14 +38,14 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/btnProfileImage"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/_25sdp"
-                android:src="@drawable/ic_profile"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView" />
+                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:riv_corner_radius="@dimen/_30sdp" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"

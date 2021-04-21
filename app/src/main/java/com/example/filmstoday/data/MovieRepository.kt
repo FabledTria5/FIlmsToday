@@ -1,5 +1,6 @@
 package com.example.filmstoday.data
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
@@ -16,6 +17,8 @@ class MovieRepository(private val movieDao: MovieDao) {
     val readFavoriteActors: LiveData<List<FavoriteActor>> = movieDao.readFavoriteActors()
 
     val readUserData: LiveData<User> = movieDao.readUserData()
+
+    val readUserPhoto: LiveData<Bitmap> = movieDao.readUserPhoto()
 
     suspend fun saveUserData(user: User) = movieDao.saveUserData(user = user)
 

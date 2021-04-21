@@ -254,6 +254,11 @@ class ProfileFragment : Fragment() {
         profileViewModel.readFavoriteActors.observe(viewLifecycleOwner, {
             favoriteActors = it
         })
+
+        profileViewModel.readUserPhoto.observe(viewLifecycleOwner) {
+            if (it != null) binding.btnProfileImage.setImageBitmap(it)
+            else binding.btnProfileImage.setImageResource(R.drawable.ic_profile)
+        }
     }
 
     private fun setBackButtonBehavior(view: View) {
