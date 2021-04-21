@@ -115,9 +115,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include
-            android:id="@+id/actorBottomSheet"
-            layout="@layout/actor_bottom_sheet" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

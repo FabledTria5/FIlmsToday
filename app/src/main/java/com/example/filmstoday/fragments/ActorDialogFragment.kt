@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.filmstoday.R
 import com.example.filmstoday.activities.MapsActivity
-import com.example.filmstoday.databinding.ActorBottomSheetBinding
+import com.example.filmstoday.databinding.FragmentActorBinding
 import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.utils.selectText
 import com.example.filmstoday.viewmodels.ActorViewModel
@@ -19,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ActorDialogFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: ActorBottomSheetBinding
+    private lateinit var binding: FragmentActorBinding
 
     private val args: ActorDialogFragmentArgs by navArgs()
     private val actorViewModel: ActorViewModel by lazy {
@@ -32,7 +32,7 @@ class ActorDialogFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil
-            .inflate(inflater, R.layout.actor_bottom_sheet, container, false)
+            .inflate(inflater, R.layout.fragment_actor, container, false)
         return binding.root
     }
 

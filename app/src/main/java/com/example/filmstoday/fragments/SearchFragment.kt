@@ -23,9 +23,8 @@ import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentSearchBinding
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.movie.MovieModel
-import com.example.filmstoday.utils.*
+import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.viewmodels.SearchViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class SearchFragment : Fragment() {
 
@@ -50,8 +49,6 @@ class SearchFragment : Fragment() {
     })
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var actorsBottomSheet: View
-    private lateinit var actorsBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
 
     private val searchAdultContent: Boolean by lazy {
@@ -74,17 +71,11 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycle.addObserver(searchViewModel)
-        initBottomSheets(view = view)
         setupSearchField()
         setupRecyclers()
         startObserving()
 
         mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, false)
-    }
-
-    private fun initBottomSheets(view: View) {
-        actorsBottomSheet = view.findViewById(R.id.actorBottomSheet)
-        actorsBottomSheetBehavior = BottomSheetBehavior.from(actorsBottomSheet)
     }
 
     private fun setupSearchField() {

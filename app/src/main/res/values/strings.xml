@@ -39,6 +39,8 @@
     <string name="want_title">Sort Want Movies By</string>
     <string name="watched_title">Sort Watched Movies By</string>
     <string name="actors_title">Sort Actors By</string>
+    <string name="default_user_name">No username</string>
+    <string name="no_image">noImage</string>
 
     <string-array name="movie_filter_options">
         <item>A - B</item>

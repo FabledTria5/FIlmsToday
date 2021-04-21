@@ -10,6 +10,9 @@ class Constants {
         const val APP_PREFERENCE = "mySettings"
         const val APP_PREFERENCE_ADULT_CONTENT = "adultContent"
         const val APP_PREFERENCE_FILTERING_OPTION = "filterOption"
+        const val APP_PREFERENCE_USER_NAME = "username"
+        const val APP_PREFERENCE_USER_IMAGE = "userImage"
+
         const val ACTOR_PLACE_OF_BIRTH = "ActorPlaceOfBirth"
         const val ACTOR_NAME = "ActorName"
         const val ACTOR_PHOTO = "PhotoPath"

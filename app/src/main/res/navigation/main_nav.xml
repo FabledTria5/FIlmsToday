@@ -29,6 +29,13 @@
         <action
             android:id="@+id/openActorFromProfile"
             app:destination="@id/actorDialogFragment" />
+        <action
+            android:id="@+id/openSettings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_in_top" />
     </fragment>
     <fragment
         android:id="@+id/movies_nav"
@@ -60,4 +67,8 @@
             android:name="actorId"
             app:argType="integer" />
     </dialog>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.filmstoday.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

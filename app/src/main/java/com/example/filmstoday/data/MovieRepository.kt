@@ -15,6 +15,12 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     val readFavoriteActors: LiveData<List<FavoriteActor>> = movieDao.readFavoriteActors()
 
+    val readUserData: LiveData<User> = movieDao.readUserData()
+
+    suspend fun saveUserData(user: User) = movieDao.saveUserData(user = user)
+
+    suspend fun insertUser(user: User) = movieDao.addUser(user = user)
+
     suspend fun addMovieToWant(movieFullModel: MovieFullModel?) = movieFullModel?.let {
         movieDao.addMovieToWant(covertFullMovieToWant(movieFull = it))
     }

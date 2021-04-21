@@ -18,6 +18,15 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveActor(favoriteActor: FavoriteActor)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addUser(user: User)
+
+    @Update
+    suspend fun saveUserData(user: User)
+
+    @Query(value = "SELECT * FROM user_table")
+    fun readUserData(): LiveData<User>
+
     @Query(value = "SELECT * FROM favorite_actors")
     fun readFavoriteActors(): LiveData<List<FavoriteActor>>
 

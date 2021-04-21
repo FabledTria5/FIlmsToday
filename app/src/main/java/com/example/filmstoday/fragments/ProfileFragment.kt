@@ -52,10 +52,8 @@ class ProfileFragment : Fragment() {
     private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
     private lateinit var filterAdapter: ArrayAdapter<String>
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var profileBottomSheet: View
     private lateinit var filterBottomSheet: View
     private lateinit var filterBottomSheetBehavior: BottomSheetBehavior<View>
-    private lateinit var profileBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mSettings: SharedPreferences
 
     override fun onCreateView(
@@ -77,17 +75,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun doInitialization(view: View) {
-        profileBottomSheet = view.findViewById(R.id.profileBottomSheet)
-        profileBottomSheetBehavior = BottomSheetBehavior.from(profileBottomSheet)
-
         filterBottomSheet = view.findViewById(R.id.filterBottomSheet)
         filterBottomSheetBehavior = BottomSheetBehavior.from(filterBottomSheet)
 
         mSettings = requireActivity().getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE)
-
-        binding.profileBottomSheet.switchAdultContent.apply {
-            if (mSettings.getBoolean(APP_PREFERENCE_ADULT_CONTENT, true)) isChecked = true
-        }
 
         filterAdapter = ArrayAdapter(
             requireContext(),
@@ -249,14 +240,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnProfileImage.setOnClickListener {
-            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-
-        binding.profileBottomSheet.btnSaveSettings.setOnClickListener {
-            saveAdultContentSetting()
-            profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            Toast.makeText(context, "Settings were saved", Toast.LENGTH_SHORT).show()
+            requireView().findNavController().navigate(R.id.openSettings)
         }
     }
 
@@ -281,11 +265,7 @@ class ProfileFragment : Fragment() {
             requestFocus()
             setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (profileBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                        profileBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        this.requestFocus()
-                        return@OnKeyListener true
-                    } else if (filterBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    if (filterBottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                         filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                         this.requestFocus()
                         return@OnKeyListener true
@@ -347,16 +327,6 @@ class ProfileFragment : Fragment() {
         binding.tvMoviesCount.text = itemsList.count().toString()
     }
 
-    private fun saveAdultContentSetting() {
-        mSettings.edit().apply {
-            putBoolean(
-                APP_PREFERENCE_ADULT_CONTENT,
-                binding.profileBottomSheet.switchAdultContent.isChecked
-            )
-            apply()
-        }
-    }
-
     private fun saveFilterSetting(settingId: Int) {
         mSettings.edit().apply {
             putInt(
@@ -371,11 +341,11 @@ class ProfileFragment : Fragment() {
         mSettings.getInt(APP_PREFERENCE_FILTERING_OPTION, STANDARD_FILTER_OPTION)
 
     private fun selectFilterOption(option: Int) {
-        binding.filterBottomSheet.optionList.getChildAt(option).apply {
-            findViewById<CheckBox>(R.id.checkBox).isChecked = true
-            findViewById<TextView>(R.id.filterItem)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        }
+//        binding.filterBottomSheet.optionList.getChildAt(option).apply {
+//            findViewById<CheckBox>(R.id.checkBox).isChecked = true
+//            findViewById<TextView>(R.id.filterItem)
+//                .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+//        }
 
         profileMoviesAdapter.apply {
             when (option) {

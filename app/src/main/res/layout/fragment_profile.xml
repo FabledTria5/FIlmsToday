@@ -157,10 +157,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/profileBottomSheet"
-            layout="@layout/profile_bottom_sheet" />
-
-        <include
             android:id="@+id/filterBottomSheet"
             layout="@layout/filter_dialog" />
 
