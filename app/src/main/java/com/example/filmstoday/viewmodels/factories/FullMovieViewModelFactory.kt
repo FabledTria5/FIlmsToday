@@ -16,7 +16,6 @@ class FullMovieViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FullMovieViewModel::class.java)) {
             return FullMovieViewModel(
-                stringInteractor = stringInteractor,
                 application = application) as T
         }
         throw IllegalArgumentException("ViewModel not found")

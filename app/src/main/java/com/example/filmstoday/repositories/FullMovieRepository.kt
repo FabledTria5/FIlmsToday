@@ -42,22 +42,6 @@ class FullMovieRepository {
             })
     }
 
-    fun getActorInfo(actorId: Int, _observingActor: MutableLiveData<ActorFullInfoModel>) {
-        apiService.getActor(id = actorId, BuildConfig.MOVIES_API_KEY)
-            .enqueue(object : retrofit2.Callback<ActorFullInfoModel> {
-                override fun onResponse(
-                    call: Call<ActorFullInfoModel>,
-                    response: Response<ActorFullInfoModel>
-                ) {
-                    _observingActor.value = response.body()
-                }
-
-                override fun onFailure(call: Call<ActorFullInfoModel>, t: Throwable) {
-                    t.printStackTrace()
-                }
-            })
-    }
-
     fun getVideos(movieId: Int, _observingVideos: MutableLiveData<VideosBase>) {
         apiService.getVideos(id = movieId, BuildConfig.MOVIES_API_KEY)
             .enqueue(object : retrofit2.Callback<VideosBase> {

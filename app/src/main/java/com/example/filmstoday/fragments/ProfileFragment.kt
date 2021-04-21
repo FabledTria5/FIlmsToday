@@ -29,7 +29,6 @@ import com.example.filmstoday.databinding.FragmentProfileBinding
 import com.example.filmstoday.models.movie.SimpleMovie
 import com.example.filmstoday.utils.*
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
-import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_FILTERING_OPTION
 import com.example.filmstoday.utils.Constants.Companion.STANDARD_FILTER_OPTION
 import com.example.filmstoday.viewmodels.ProfileViewModel
@@ -57,7 +56,7 @@ class ProfileFragment : Fragment() {
     private lateinit var mSettings: SharedPreferences
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_profile, container, false)
@@ -117,7 +116,7 @@ class ProfileFragment : Fragment() {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+                target: RecyclerView.ViewHolder,
             ): Boolean {
                 return false
             }
@@ -135,7 +134,7 @@ class ProfileFragment : Fragment() {
                 dX: Float,
                 dY: Float,
                 actionState: Int,
-                isCurrentlyActive: Boolean
+                isCurrentlyActive: Boolean,
             ) {
                 super.onChildDraw(
                     c,
@@ -212,13 +211,8 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
         })
 
         binding.btnRevertList.setOnClickListener {
@@ -232,7 +226,10 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnFilter.setOnClickListener {
-            enableFilerBottomSheet()
+            if (filterBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                enableFilerBottomSheet()
+            else
+                filterBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         binding.filterBottomSheet.btnSaveFilter.setOnClickListener {
@@ -299,7 +296,7 @@ class ProfileFragment : Fragment() {
 
     private fun unselectOptions(
         option: Int,
-        parent: AdapterView<*>
+        parent: AdapterView<*>,
     ) {
         for (i in 0 until parent.count) {
             if (i == option) continue

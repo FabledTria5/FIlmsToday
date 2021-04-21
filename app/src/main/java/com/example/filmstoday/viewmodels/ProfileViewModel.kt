@@ -1,9 +1,10 @@
 package com.example.filmstoday.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
 import com.example.filmstoday.data.*
-import com.example.filmstoday.models.movie.SimpleMovie
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application),
     LifecycleObserver {

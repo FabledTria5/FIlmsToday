@@ -4,17 +4,14 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.filmstoday.data.MovieRepository
 import com.example.filmstoday.data.MoviesDatabase
-import com.example.filmstoday.interactors.StringInteractor
-import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.models.movie.MovieFullModel
-import com.example.filmstoday.models.movie.ProductionCountries
 import com.example.filmstoday.models.videos.VideosBase
 import com.example.filmstoday.repositories.FullMovieRepository
 import com.example.filmstoday.responses.CastResponse
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class FullMovieViewModel(application: Application, private val stringInteractor: StringInteractor) :
+class FullMovieViewModel(application: Application) :
     AndroidViewModel(application),
     LifecycleObserver {
 

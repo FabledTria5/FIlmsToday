@@ -48,18 +48,4 @@ class SearchRepository {
             })
     }
 
-    fun searchActor(id: Int, observer: MutableLiveData<ActorFullInfoModel>) {
-        apiService.getActor(id = id, BuildConfig.MOVIES_API_KEY).enqueue(object :
-            retrofit2.Callback<ActorFullInfoModel> {
-            override fun onResponse(
-                call: Call<ActorFullInfoModel>,
-                response: Response<ActorFullInfoModel>
-            ) {
-                observer.value = response.body()
-            }
-
-            override fun onFailure(call: Call<ActorFullInfoModel>, t: Throwable) =
-                t.printStackTrace()
-        })
-    }
 }

@@ -28,10 +28,7 @@
     <string name="save_settings">Save Settings</string>
     <string name="change_name">Change name</string>
     <string name="no_comments">No comments</string>
-    <string name="commentary">My Comment</string>
-    <string name="leave_a_comment">Leave a comment</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="persons">Persons</string>
     <string name="title_activity_maps">Map</string>
@@ -40,7 +37,6 @@
     <string name="watched_title">Sort Watched Movies By</string>
     <string name="actors_title">Sort Actors By</string>
     <string name="default_user_name">No username</string>
-    <string name="no_image">noImage</string>
 
     <string-array name="movie_filter_options">
         <item>A - B</item>

@@ -4,13 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +19,10 @@ import com.example.filmstoday.databinding.FragmentSettingsBinding
 import com.example.filmstoday.utils.Constants
 import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
 import com.example.filmstoday.viewmodels.SettingsViewModel
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 
 class SettingsFragment : Fragment() {
-
-    companion object {
-        const val IMAGE_REQUEST_CODE = 1
-    }
 
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var mSettings: SharedPreferences
@@ -55,18 +48,14 @@ class SettingsFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE && data != null) {
-            binding.rivUserImage.setImageBitmap(data.data?.let { getCapturedImage(it) })
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+                binding.rivUserImage.setImageURI(result.uri)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                throw result.error
+            }
         }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun getCapturedImage(data: Uri): Bitmap {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ImageDecoder.decodeBitmap(
-                ImageDecoder.createSource(requireActivity().contentResolver, data)
-            )
-        } else MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, data)
     }
 
     private fun addListeners() {
@@ -85,14 +74,10 @@ class SettingsFragment : Fragment() {
         }
 
         binding.rivUserImage.setOnClickListener {
-            changeUserImage()
+            CropImage.activity()
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .start(requireContext(), this)
         }
-    }
-
-    private fun changeUserImage() {
-        startActivityForResult(Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "image/"
-        }, IMAGE_REQUEST_CODE)
     }
 
     private fun doInitialization() {

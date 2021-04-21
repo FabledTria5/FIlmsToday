@@ -124,4 +124,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
+    // Image Crop
+    //noinspection GradleDynamicVersion
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
 }
