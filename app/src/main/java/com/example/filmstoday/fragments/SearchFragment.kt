@@ -1,12 +1,12 @@
 package com.example.filmstoday.fragments
 
-import android.annotation.SuppressLint
-import android.content.Context
+ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -88,7 +88,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+
     private fun setupRecyclers() {
         binding.rvMoviesSearchResult.apply {
             adapter = searchMovieAdapter
@@ -96,12 +96,11 @@ class SearchFragment : Fragment() {
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-        dividerItemDecoration.setDrawable(
-            resources.getDrawable(
-                R.drawable.separator,
-                context?.theme
+        ResourcesCompat.getDrawable(resources, R.drawable.separator, requireActivity().theme)?.let {
+            dividerItemDecoration.setDrawable(
+                it
             )
-        )
+        }
         binding.rvMoviesSearchResult.addItemDecoration(dividerItemDecoration)
 
         binding.rvActorsSearchResults.apply {
