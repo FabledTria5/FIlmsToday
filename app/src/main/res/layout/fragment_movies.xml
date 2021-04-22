@@ -105,14 +105,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progressBar"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_25sdp"
-                app:layout_constraintEnd_toEndOf="@+id/rvMoviesList"
-                app:layout_constraintStart_toStartOf="@id/rvMoviesList"
-                app:layout_constraintTop_toTopOf="@+id/rvMoviesList" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/lightGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

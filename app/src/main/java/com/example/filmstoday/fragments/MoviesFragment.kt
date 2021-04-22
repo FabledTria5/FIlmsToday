@@ -15,8 +15,6 @@ import com.example.filmstoday.adapters.MainMoviesAdapter
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentMoviesBinding
 import com.example.filmstoday.models.movie.MovieModel
-import com.example.filmstoday.utils.hide
-import com.example.filmstoday.utils.show
 import com.example.filmstoday.viewmodels.MoviesViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -58,7 +56,8 @@ class MoviesFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentPage = 1
-                tab?.let { getFilms() }
+                mainMoviesAdapter.clearItems()
+                tab?.let { getFilms(selectedPosition = tab.position) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
@@ -82,12 +81,13 @@ class MoviesFragment : Fragment() {
                 }
             })
         }
+        binding.tabLayout.getTabAt(moviesViewModel.getLastPosition())?.select()
         getFilms()
     }
 
-    private fun getFilms() {
+    private fun getFilms(selectedPosition: Int = 0) {
         binding.progressBar.show()
-        moviesViewModel.getObservedMovies(currentPage, binding.tabLayout.selectedTabPosition)
+        moviesViewModel.getObservedMovies(currentPage, selectedPosition)
             .observe(viewLifecycleOwner, {
                 if (mainMoviesAdapter.itemCount > 0) {
                     mainMoviesAdapter.addItems(movieModels = it.results)
@@ -99,9 +99,5 @@ class MoviesFragment : Fragment() {
                 }
                 binding.progressBar.hide()
             })
-
-        moviesViewModel.getPosition().observe(viewLifecycleOwner, {
-            binding.tabLayout.getTabAt(it)?.select()
-        })
     }
 }
