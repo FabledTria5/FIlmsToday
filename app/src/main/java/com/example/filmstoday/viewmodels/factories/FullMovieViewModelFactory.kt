@@ -3,13 +3,11 @@ package com.example.filmstoday.viewmodels.factories
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.filmstoday.interactors.StringInteractor
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
 class FullMovieViewModelFactory(
-    private val stringInteractor: StringInteractor,
     private val application: Application
 ) : ViewModelProvider.Factory {
 
