@@ -36,7 +36,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:url="@{currentActor.photo}" />
+                app:url="@{currentActor.photo}"
+                android:contentDescription="@string/actor" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -100,7 +101,8 @@
                 android:src="@{isFavorite ? @drawable/ic_favorite : @drawable/ic_add_to_favorite}"
                 app:layout_constraintBottom_toBottomOf="@+id/tvBirthday"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvActorFullName" />
+                app:layout_constraintTop_toTopOf="@+id/tvActorFullName"
+                android:contentDescription="@string/like" />
 
             <TextView
                 android:id="@+id/tvActorBiography"

@@ -3,7 +3,6 @@ package com.example.filmstoday.repositories
 import androidx.lifecycle.MutableLiveData
 import com.example.filmstoday.BuildConfig
 import com.example.filmstoday.api.ApiService
-import com.example.filmstoday.models.cast.ActorFullInfoModel
 import com.example.filmstoday.network.RetrofitInstance
 import com.example.filmstoday.responses.ActorsResponse
 import com.example.filmstoday.responses.MoviesResponse

@@ -4,14 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="isLoading"
             type="Boolean" />
-        <variable
-            name="viewModel"
-            type="com.example.filmstoday.viewmodels.MoviesViewModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -91,41 +89,32 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.factor.bouncy.BouncyNestedScrollView
-            android:id="@+id/content"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMoviesList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvMoviesList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingStart="@dimen/_15sdp"
-                    android:paddingEnd="@dimen/_15sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/lightGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:visibility="@{isLoading ? View.VISIBLE : View.GONE, default=gone}"
-                    app:layout_constraintEnd_toEndOf="@+id/rvMoviesList"
-                    app:layout_constraintStart_toStartOf="@id/rvMoviesList"
-                    app:layout_constraintTop_toTopOf="@+id/rvMoviesList" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.factor.bouncy.BouncyNestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

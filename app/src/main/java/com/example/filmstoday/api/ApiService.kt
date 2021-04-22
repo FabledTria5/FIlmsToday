@@ -14,16 +14,28 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(value = "/3/movie/popular")
-    fun getPopular(@Query("api_key") key: String): Call<MoviesResponse>
+    fun getPopular(
+        @Query("api_key") key: String,
+        @Query(value = "page") page: Int
+    ): Call<MoviesResponse>
 
     @GET(value = "/3/movie/now_playing")
-    fun getNowPlaying(@Query("api_key") key: String): Call<MoviesResponse>
+    fun getNowPlaying(
+        @Query("api_key") key: String,
+        @Query(value = "page") page: Int
+    ): Call<MoviesResponse>
 
     @GET(value = "/3/movie/upcoming")
-    fun getUpcoming(@Query("api_key") key: String): Call<MoviesResponse>
+    fun getUpcoming(
+        @Query("api_key") key: String,
+        @Query(value = "page") page: Int
+    ): Call<MoviesResponse>
 
     @GET(value = "/3/movie/top_rated")
-    fun getTop(@Query("api_key") key: String): Call<MoviesResponse>
+    fun getTop(
+        @Query("api_key") key: String,
+        @Query(value = "page") page: Int
+    ): Call<MoviesResponse>
 
     @GET(value = "/3/search/movie")
     fun searchMoviesByName(
@@ -48,18 +60,18 @@ interface ApiService {
     fun getMovieCast(
         @Path("movie_id") id: Int,
         @Query("api_key") query: String
-    ) : Call<CastResponse>
+    ): Call<CastResponse>
 
     @GET(value = "/3/person/{person_id}")
     fun getActor(
         @Path("person_id") id: Int,
         @Query("api_key") query: String
-    ) : Call<ActorFullInfoModel>
+    ): Call<ActorFullInfoModel>
 
     @GET(value = "/3/movie/{movie_id}/videos")
     fun getVideos(
         @Path(value = "movie_id") id: Int,
         @Query("api_key") query: String
-    ) : Call<VideosBase>
+    ): Call<VideosBase>
 
 }

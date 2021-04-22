@@ -13,10 +13,8 @@
     <string name="searchView_hint">Movies, Actors…</string>
     <string name="names">Names</string>
     <string name="cast_crew"><![CDATA[Cast & Crew]]></string>
-    <string name="no_description">No description</string>
     <string name="want">Want</string>
     <string name="watched">Watched</string>
-    <string name="unknown">Unknown</string>
     <string name="genres">Genres</string>
     <string name="people">People</string>
     <string name="my_movies">My Movies</string>
@@ -27,7 +25,6 @@
     <string name="choose_language">Choose language</string>
     <string name="save_settings">Save Settings</string>
     <string name="change_name">Change name</string>
-    <string name="no_comments">No comments</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="persons">Persons</string>
@@ -37,6 +34,16 @@
     <string name="watched_title">Sort Watched Movies By</string>
     <string name="actors_title">Sort Actors By</string>
     <string name="default_user_name">No username</string>
+    <string name="poster">poster</string>
+    <string name="actor">actor</string>
+    <string name="like">like</string>
+    <string name="play">play</string>
+    <string name="filter">filter</string>
+    <string name="revert">revert</string>
+    <string name="change_list_style">change_list_style</string>
+    <string name="profile_photo">profile_photo</string>
+    <string name="star">star</string>
+    <string name="background">background</string>
 
     <string-array name="movie_filter_options">
         <item>A - B</item>

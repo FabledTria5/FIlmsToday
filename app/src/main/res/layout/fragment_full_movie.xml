@@ -34,7 +34,8 @@
                 app:url="@{currentMovie.poster_path}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/poster" />
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/btnOpenVideo"
@@ -59,7 +60,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btnOpenVideo"
                 app:layout_constraintEnd_toEndOf="@+id/btnOpenVideo"
                 app:layout_constraintStart_toStartOf="@+id/btnOpenVideo"
-                app:layout_constraintTop_toTopOf="@+id/btnOpenVideo" />
+                app:layout_constraintTop_toTopOf="@+id/btnOpenVideo"
+                android:contentDescription="@string/play" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

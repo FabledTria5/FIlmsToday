@@ -21,7 +21,6 @@ import com.example.filmstoday.adapters.ActorsAdapter
 import com.example.filmstoday.adapters.GenresAdapter
 import com.example.filmstoday.adapters.listeners.OnActorCLickListener
 import com.example.filmstoday.databinding.FragmentFullMovieBinding
-import com.example.filmstoday.interactors.StringInteractorImpl
 import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
@@ -44,7 +43,6 @@ class FullMovieFragment : Fragment() {
 
     private val fullMovieViewModel: FullMovieViewModel by viewModels {
         FullMovieViewModelFactory(
-            stringInteractor = StringInteractorImpl(requireContext()),
             application = requireActivity().application
         )
     }

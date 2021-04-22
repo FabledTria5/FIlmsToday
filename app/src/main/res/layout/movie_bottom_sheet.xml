@@ -53,7 +53,8 @@
                 android:src="@drawable/ic_star"
                 app:layout_constraintBottom_toBottomOf="@+id/tvRating"
                 app:layout_constraintEnd_toStartOf="@+id/tvRating"
-                app:layout_constraintTop_toTopOf="@+id/tvRating" />
+                app:layout_constraintTop_toTopOf="@+id/tvRating"
+                android:contentDescription="@string/star" />
 
             <TextView
                 android:id="@+id/tvRating"

@@ -116,7 +116,8 @@
                 android:visibility="@{isActorListOpen ? View.GONE : View.VISIBLE, default=visible}"
                 app:layout_constraintBottom_toBottomOf="@+id/btnFilter"
                 app:layout_constraintEnd_toStartOf="@+id/btnRevertList"
-                app:layout_constraintTop_toTopOf="@+id/btnFilter" />
+                app:layout_constraintTop_toTopOf="@+id/btnFilter"
+                android:contentDescription="@string/change_list_style" />
 
             <ImageView
                 android:id="@+id/btnRevertList"
@@ -128,7 +129,8 @@
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintBottom_toBottomOf="@+id/btnFilter"
                 app:layout_constraintEnd_toStartOf="@+id/btnFilter"
-                app:layout_constraintTop_toTopOf="@+id/btnFilter" />
+                app:layout_constraintTop_toTopOf="@+id/btnFilter"
+                android:contentDescription="@string/revert" />
 
             <ImageView
                 android:id="@+id/btnFilter"
@@ -141,7 +143,8 @@
                 android:visibility="@{isActorListOpen ? View.GONE : View.VISIBLE, default=visible}"
                 app:layout_constraintBottom_toBottomOf="@+id/tvDataType"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvDataType" />
+                app:layout_constraintTop_toTopOf="@+id/tvDataType"
+                android:contentDescription="@string/filter" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/moviesList"
