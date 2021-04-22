@@ -10,28 +10,25 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
     private var currentPosition = 0
 
     private val _observingTabPosition = MutableLiveData<Int>()
-    private val _observingMovies = MutableLiveData<MoviesResponse>()
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun init() = changeTab(currentPosition)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun orientationChanged() {
         _observingTabPosition.value = currentPosition
     }
 
-    fun getObservedMovies() = _observingMovies
+    fun getObservedMovies(currentPage: Int, selectedTabPosition: Int) =
+        changeSource(selectedTabPosition, currentPage)
+
     fun getPosition() = _observingTabPosition
 
-    fun changeTab(position: Int) {
-        if (position == currentPosition && _observingMovies.value != null) return
-        when (position) {
-            0 -> moviesRepository.getPopularMovies(observer = _observingMovies)
-            1 -> moviesRepository.getNowPlayingMovies(observer = _observingMovies)
-            2 -> moviesRepository.getUpcomingMovies(observer = _observingMovies)
-            3 -> moviesRepository.getTopMovies(observer = _observingMovies)
-        }
+    private fun changeSource(position: Int, currentPage: Int): LiveData<MoviesResponse> {
         currentPosition = position
+        return when (position) {
+            0 -> moviesRepository.getPopularMovies(currentPage)
+            1 -> moviesRepository.getNowPlayingMovies(currentPage)
+            2 -> moviesRepository.getUpcomingMovies(currentPage)
+            3 -> moviesRepository.getTopMovies(currentPage)
+            else -> return moviesRepository.getPopularMovies(currentPage)
+        }
     }
-
 }
