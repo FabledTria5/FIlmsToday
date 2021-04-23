@@ -39,7 +39,7 @@ class MoviesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movies, container, false)
@@ -82,7 +82,7 @@ class MoviesFragment : Fragment() {
             })
         }
         binding.tabLayout.getTabAt(moviesViewModel.getLastPosition())?.select()
-        getFilms()
+        if (mainMoviesAdapter.itemCount == 0) getFilms()
     }
 
     private fun getFilms(selectedPosition: Int = 0) {
