@@ -115,6 +115,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_54sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:alpha="0.7"
+                android:elevation="@dimen/_5sdp"
+                app:cornerRadius="@dimen/_35sdp"
+                app:icon="@drawable/ic_arrow_up"
+                app:iconSize="@dimen/_20sdp"
+                app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+                app:layout_constraintBottom_toBottomOf="@+id/rvMoviesList"
+                app:layout_constraintEnd_toEndOf="@+id/rvMoviesList" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

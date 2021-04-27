@@ -15,6 +15,7 @@ import com.example.filmstoday.adapters.MainMoviesAdapter
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.databinding.FragmentMoviesBinding
 import com.example.filmstoday.models.movie.MovieModel
+import com.example.filmstoday.utils.show
 import com.example.filmstoday.viewmodels.MoviesViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -28,6 +29,8 @@ class MoviesFragment : Fragment() {
 
     private var currentPage = 1
     private val totalAvailablePages = 1000
+    private val highPriority = 1
+    private val lowPriority = 0
 
     private val mainMoviesAdapter = MainMoviesAdapter(object : OnMovieClickListener {
         override fun onItemClick(movieModel: MovieModel) {
@@ -50,6 +53,7 @@ class MoviesFragment : Fragment() {
         lifecycle.addObserver(moviesViewModel)
         doInitialization()
         setupTabListener()
+        setupListeners()
     }
 
     private fun setupTabListener() {
@@ -57,12 +61,26 @@ class MoviesFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentPage = 1
                 mainMoviesAdapter.clearItems()
+                mainMoviesAdapter.notifyDataSetChanged()
+                binding.appbar.show()
                 tab?.let { getFilms(selectedPosition = tab.position) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
-            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
+            override fun onTabReselected(tab: TabLayout.Tab?) = setListUp(priority = highPriority)
         })
+    }
+
+    private fun setupListeners() {
+        binding.btnUp.setOnClickListener {
+            setListUp(priority = lowPriority)
+        }
+    }
+
+    private fun setListUp(priority: Int) {
+        if (priority == lowPriority) binding.rvMoviesList.smoothScrollToPosition(0)
+        else binding.rvMoviesList.scrollToPosition(0)
+        binding.appbar.show()
     }
 
     private fun doInitialization() {
