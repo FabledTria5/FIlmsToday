@@ -1,6 +1,6 @@
 package com.example.filmstoday.fragments
 
- import android.content.Context
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,7 +40,7 @@ class SearchFragment : Fragment() {
         }
     })
 
-    private val actorsAdapter = ActorsAdapter(object : OnActorCLickListener {
+    private val searchActorsAdapter = ActorsAdapter(object : OnActorCLickListener {
         override fun onItemCLick(actor: Actor) {
             SearchFragmentDirections.openActorFromSearch(actor.id).also {
                 requireView().findNavController().navigate(it)
@@ -50,6 +50,9 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mSettings: SharedPreferences
+
+    private var actorsCurrentPage = 1
+    private var moviesCurrentPage = 1
 
     private val searchAdultContent: Boolean by lazy {
         mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, true)
@@ -62,7 +65,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_search, container, false)
@@ -73,8 +76,6 @@ class SearchFragment : Fragment() {
         lifecycle.addObserver(searchViewModel)
         setupSearchField()
         setupRecyclers()
-        startObserving()
-
         mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, false)
     }
 
@@ -84,7 +85,10 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchField.doAfterTextChanged { editable ->
-            searchViewModel.textChanged(editable.toString(), searchAdultContent)
+            searchActorsAdapter.clearItems()
+            searchMovieAdapter.clearItems()
+            getActors(editable.toString())
+            getMovies(editable.toString())
         }
     }
 
@@ -94,39 +98,70 @@ class SearchFragment : Fragment() {
             adapter = searchMovieAdapter
             layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            val dividerItemDecoration =
+                DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
+            ResourcesCompat.getDrawable(resources, R.drawable.separator, requireActivity().theme)
+                ?.let {
+                    dividerItemDecoration.setDrawable(
+                        it
+                    )
+                }
+            addItemDecoration(dividerItemDecoration)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!canScrollHorizontally(RecyclerView.LAYOUT_DIRECTION_RTL)) {
+                        moviesCurrentPage += 1
+                        getMovies("")
+                    }
+                }
+            })
         }
-        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-        ResourcesCompat.getDrawable(resources, R.drawable.separator, requireActivity().theme)?.let {
-            dividerItemDecoration.setDrawable(
-                it
-            )
-        }
-        binding.rvMoviesSearchResult.addItemDecoration(dividerItemDecoration)
 
         binding.rvActorsSearchResults.apply {
-            adapter = actorsAdapter
+            adapter = searchActorsAdapter
             layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!canScrollHorizontally(RecyclerView.LAYOUT_DIRECTION_RTL)) {
+                        moviesCurrentPage += 1
+                        getActors("")
+                    }
+                }
+            })
         }
     }
 
-    private fun startObserving() {
-        searchViewModel.getMovies().observe(viewLifecycleOwner, {
-            searchMovieAdapter.apply {
-                clearItems()
-                addItems(movieModels = it.results)
-                notifyDataSetChanged()
-            }
-            binding.foundMovies = it.results.isNotEmpty()
-        })
-
-        searchViewModel.getActors().observe(viewLifecycleOwner, {
-            actorsAdapter.apply {
-                clearItems()
-                addItems(actors = it.results)
-                notifyDataSetChanged()
+    private fun getActors(query: String) {
+        searchViewModel.getActors(actorsCurrentPage, query).observe(viewLifecycleOwner, {
+            searchActorsAdapter.apply {
+                if (itemCount > 0) {
+                    addItems(actors = it.results)
+                    notifyItemRangeChanged(0, itemCount)
+                } else {
+                    addItems(actors = it.results)
+                    notifyDataSetChanged()
+                }
             }
             binding.foundActors = it.results.isNotEmpty()
         })
+    }
+
+    private fun getMovies(query: String) {
+        searchViewModel.getMovies(moviesCurrentPage, query, searchAdultContent)
+            .observe(viewLifecycleOwner, {
+                searchMovieAdapter.apply {
+                    if (itemCount > 0) {
+                        addItems(movieModels = it.results)
+                        notifyItemRangeChanged(0, itemCount)
+                    } else {
+                        addItems(movieModels = it.results)
+                        notifyDataSetChanged()
+                    }
+                }
+                binding.foundMovies = it.results.isNotEmpty()
+            })
     }
 }

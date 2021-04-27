@@ -15,36 +15,42 @@ class SearchRepository {
 
     fun searchMovies(
         query: String,
-        observer: MutableLiveData<MoviesResponse>,
-        searchAdultContent: Boolean
-    ) {
-        apiService.searchMoviesByName(key = BuildConfig.MOVIES_API_KEY, query = query, searchAdultContent)
+        searchAdultContent: Boolean,
+        page: Int,
+    ): MutableLiveData<MoviesResponse> {
+        val data = MutableLiveData<MoviesResponse>()
+        apiService.searchMoviesByName(key = BuildConfig.MOVIES_API_KEY,
+            query = query,
+            include_adult = searchAdultContent,
+            page = page)
             .enqueue(object : retrofit2.Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
+                    response: Response<MoviesResponse>,
                 ) {
-                    observer.value = response.body()
+                    data.value = response.body()
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) =
                     t.printStackTrace()
             })
+        return data
     }
 
-    fun searchActors(query: String, observer: MutableLiveData<ActorsResponse>) {
-        apiService.searchActorsByName(key = BuildConfig.MOVIES_API_KEY, query = query)
+    fun searchActors(query: String, page: Int): MutableLiveData<ActorsResponse> {
+        val data = MutableLiveData<ActorsResponse>()
+        apiService.searchActorsByName(key = BuildConfig.MOVIES_API_KEY, query = query, page = page)
             .enqueue(object : retrofit2.Callback<ActorsResponse> {
                 override fun onResponse(
                     call: Call<ActorsResponse>,
-                    response: Response<ActorsResponse>
+                    response: Response<ActorsResponse>,
                 ) {
-                    observer.value = response.body()
+                    data.value = response.body()
                 }
 
                 override fun onFailure(call: Call<ActorsResponse>, t: Throwable) =
                     t.printStackTrace()
             })
+        return data
     }
-
 }

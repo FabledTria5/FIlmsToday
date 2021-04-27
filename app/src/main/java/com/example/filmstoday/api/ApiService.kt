@@ -41,13 +41,15 @@ interface ApiService {
     fun searchMoviesByName(
         @Query("api_key") key: String,
         @Query("query") query: String,
-        @Query("include_adult") include_adult: Boolean
+        @Query("include_adult") include_adult: Boolean,
+        @Query("page") page: Int
     ): Call<MoviesResponse>
 
     @GET(value = "/3/search/person")
     fun searchActorsByName(
         @Query("api_key") key: String,
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("page") page: Int
     ): Call<ActorsResponse>
 
     @GET(value = "/3/movie/{id}")

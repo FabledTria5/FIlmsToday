@@ -15,8 +15,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
     private val searchRepository: SearchRepository
     private val movieRepository: MovieRepository
 
-    private val _observingMovies = MutableLiveData<MoviesResponse>()
-    private val _observingActors = MutableLiveData<ActorsResponse>()
+    private var currentMoviesQuery = ""
+    private var currentActorsQuery = ""
 
     init {
         val movieDao = MoviesDatabase.getDatabase(application).movieDao()
@@ -24,18 +24,40 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
         movieRepository = MovieRepository(movieDao = movieDao)
     }
 
-    fun getMovies() = _observingMovies
-    fun getActors() = _observingActors
-
-    fun textChanged(query: String, searchAdultContent: Boolean) {
-        if (query == "") {
-            return
+    fun getMovies(
+        moviesCurrentPage: Int,
+        query: String,
+        searchAdultContent: Boolean,
+    ): MutableLiveData<MoviesResponse> {
+        return if (query != "") {
+            currentMoviesQuery = query
+            searchRepository.searchMovies(
+                query = query,
+                searchAdultContent = searchAdultContent,
+                page = moviesCurrentPage
+            )
+        } else {
+            searchRepository.searchMovies(
+                query = currentMoviesQuery,
+                searchAdultContent = searchAdultContent,
+                page = moviesCurrentPage
+            )
         }
-        searchRepository.searchMovies(
-            query = query,
-            observer = _observingMovies,
-            searchAdultContent
-        )
-        searchRepository.searchActors(query = query, observer = _observingActors)
+    }
+
+
+    fun getActors(actorsCurrentPage: Int, query: String): MutableLiveData<ActorsResponse> {
+        return if (query != "") {
+            currentActorsQuery = query
+            searchRepository.searchActors(
+                query = query,
+                page = actorsCurrentPage
+            )
+        } else {
+            searchRepository.searchActors(
+                query = currentActorsQuery,
+                page = actorsCurrentPage
+            )
+        }
     }
 }
