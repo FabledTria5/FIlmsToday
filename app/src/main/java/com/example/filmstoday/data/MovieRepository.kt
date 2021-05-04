@@ -26,15 +26,17 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     suspend fun addMovieToWant(movieFullModel: MovieFullModel?) = movieFullModel?.let {
         movieDao.addMovieToWant(covertFullMovieToWant(movieFull = it))
+        movieDao.deleteMovieFromWatched(it.id)
     }
 
     suspend fun addMovieToWatched(movieFullModel: MovieFullModel?) = movieFullModel?.let {
         movieDao.addMovieToWatched(covertFullMovieToWatched(movieFull = it))
+        movieDao.deleteMovieFromWant(it.id)
     }
 
-    suspend fun isMovieInWant(id: Int) = movieDao.isMovieInWant(id = id)
+    fun isMovieInWant(id: Int) = movieDao.isMovieInWant(id = id)
 
-    suspend fun isMovieInWatched(id: Int) = movieDao.isMovieInWatched(id = id)
+    fun isMovieInWatched(id: Int) = movieDao.isMovieInWatched(id = id)
 
     suspend fun saveActor(actorFullInfoModel: ActorFullInfoModel) =
         movieDao.saveActor(convertFullActorToFavorite(actorFullInfoModel = actorFullInfoModel))

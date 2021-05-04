@@ -28,9 +28,9 @@ import com.example.filmstoday.data.WatchedMovie
 import com.example.filmstoday.databinding.FragmentProfileBinding
 import com.example.filmstoday.models.movie.SimpleMovie
 import com.example.filmstoday.utils.*
-import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE
-import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_FILTERING_OPTION
-import com.example.filmstoday.utils.Constants.Companion.STANDARD_FILTER_OPTION
+import com.example.filmstoday.utils.Constants.APP_PREFERENCE
+import com.example.filmstoday.utils.Constants.APP_PREFERENCE_FILTERING_OPTION
+import com.example.filmstoday.utils.Constants.STANDARD_FILTER_OPTION
 import com.example.filmstoday.viewmodels.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -219,8 +219,8 @@ class ProfileFragment : Fragment() {
             profileMoviesAdapter.apply {
                 revertList()
                 when {
-                    isReverted() -> (it as ImageView).setImageResource(R.drawable.ic_arrow_up)
-                    else -> (it as ImageView).setImageResource(R.drawable.ic_arrow_down)
+                    isReverted() -> (it as ImageView).setImageResource(R.drawable.ic_arrows_up)
+                    else -> (it as ImageView).setImageResource(R.drawable.ic_arrows_down)
                 }
             }
         }
@@ -244,20 +244,46 @@ class ProfileFragment : Fragment() {
     private fun startObserve() {
         profileViewModel.readWantMovies.observe(viewLifecycleOwner, {
             wantMovies = it
-            selectItems(convertWantToMovie(it))
+            applyItems(wantMovies)
         })
 
         profileViewModel.readWatchMovies.observe(viewLifecycleOwner, {
             watchedMovies = it
+            applyItems(watchedMovies)
         })
 
         profileViewModel.readFavoriteActors.observe(viewLifecycleOwner, {
             favoriteActors = it
+            applyItems(favoriteActors)
         })
 
         profileViewModel.readUserPhoto.observe(viewLifecycleOwner) {
             if (it != null) binding.btnProfileImage.setImageBitmap(it)
             else binding.btnProfileImage.setImageResource(R.drawable.ic_profile)
+        }
+    }
+
+    private fun selectItems(itemsList: List<Any>) {
+        profileMoviesAdapter.apply {
+            clearMovies()
+            addItems(items = itemsList)
+            if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) {
+                selectFilterOption(getSavedFilter())
+            }
+            notifyDataSetChanged()
+        }
+        binding.tvMoviesCount.text = itemsList.count().toString()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun applyItems(itemsList: List<Any>) {
+        if (itemsList.isEmpty()) return
+        if (binding.tabLayout.selectedTabPosition == 0 && itemsList.first() is WantMovie) {
+            selectItems(itemsList = convertWantToMovie(itemsList as List<WantMovie>))
+        } else if (binding.tabLayout.selectedTabPosition == 1 && itemsList.first() is WatchedMovie) {
+            selectItems(itemsList = convertWatchedToMovie(itemsList as List<WatchedMovie>))
+        } else if (binding.tabLayout.selectedTabPosition == 2 && itemsList.first() is FavoriteActor) {
+            selectItems(itemsList = itemsList)
         }
     }
 
@@ -317,18 +343,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun selectItems(itemsList: List<Any>) {
-        profileMoviesAdapter.apply {
-            clearMovies()
-            addItems(items = itemsList)
-            if (itemsList.isNotEmpty() && itemsList[0] is SimpleMovie) {
-                selectFilterOption(getSavedFilter())
-            }
-            notifyDataSetChanged()
-        }
-        binding.tvMoviesCount.text = itemsList.count().toString()
-    }
-
     private fun saveFilterSetting(settingId: Int) {
         mSettings.edit().apply {
             putInt(
@@ -343,12 +357,6 @@ class ProfileFragment : Fragment() {
         mSettings.getInt(APP_PREFERENCE_FILTERING_OPTION, STANDARD_FILTER_OPTION)
 
     private fun selectFilterOption(option: Int) {
-//        binding.filterBottomSheet.optionList.getChildAt(option).apply {
-//            findViewById<CheckBox>(R.id.checkBox).isChecked = true
-//            findViewById<TextView>(R.id.filterItem)
-//                .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-//        }
-
         profileMoviesAdapter.apply {
             when (option) {
                 0 -> alphabetFiler()

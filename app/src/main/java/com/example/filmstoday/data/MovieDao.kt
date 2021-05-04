@@ -41,10 +41,10 @@ interface MovieDao {
     fun readUserPhoto(): LiveData<Bitmap>
 
     @Query(value = "SELECT EXISTS (SELECT * FROM want_table WHERE movieId = :id)")
-    suspend fun isMovieInWant(id: Int): Boolean
+    fun isMovieInWant(id: Int): LiveData<Boolean>
 
     @Query(value = "SELECT EXISTS (SELECT * FROM watched_table WHERE movieId = :id)")
-    suspend fun isMovieInWatched(id: Int): Boolean
+    fun isMovieInWatched(id: Int): LiveData<Boolean>
 
     @Query(value = "SELECT * FROM comments_table WHERE movieId = :movieId")
     fun getCommentary(movieId: Int): LiveData<Commentary>
@@ -54,4 +54,10 @@ interface MovieDao {
 
     @Query(value = "DELETE FROM favorite_actors WHERE actorId = :actorId")
     suspend fun removeActor(actorId: Int)
+
+    @Query(value = "DELETE FROM want_table WHERE movieId = :id")
+    suspend fun deleteMovieFromWant(id: Int)
+
+    @Query(value = "DELETE FROM watched_table WHERE movieId = :id")
+    suspend fun deleteMovieFromWatched(id: Int)
 }

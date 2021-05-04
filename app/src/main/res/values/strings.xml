@@ -44,6 +44,7 @@
     <string name="profile_photo">profile_photo</string>
     <string name="star">star</string>
     <string name="background">background</string>
+    <string name="connection_established">Connection established</string>
 
     <string-array name="movie_filter_options">
         <item>A - B</item>

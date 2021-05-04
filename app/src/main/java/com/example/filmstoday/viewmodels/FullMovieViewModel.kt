@@ -38,19 +38,15 @@ class FullMovieViewModel(application: Application) :
         getVideos(movieId, _observingVideos)
     }
 
+    fun observeWantBtn(id: Int) = movieRepository.isMovieInWant(id = id)
+
+    fun observeWatchedBtn(id: Int) = movieRepository.isMovieInWatched(id = id)
+
     fun addMovieToWant(movieFullModel: MovieFullModel?) = viewModelScope.launch {
         movieRepository.addMovieToWant(movieFullModel = movieFullModel)
     }
 
     fun addMovieToWatched(movieFullModel: MovieFullModel?) = viewModelScope.launch {
         movieRepository.addMovieToWatched(movieFullModel = movieFullModel)
-    }
-
-    fun checkWantBtn(id: Int) = runBlocking {
-        movieRepository.isMovieInWant(id = id)
-    }
-
-    fun checkWatchedBtn(id: Int) = runBlocking {
-        movieRepository.isMovieInWatched(id = id)
     }
 }

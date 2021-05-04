@@ -25,11 +25,12 @@ import com.example.filmstoday.models.cast.Actor
 import com.example.filmstoday.models.movie.GenresModel
 import com.example.filmstoday.models.movie.MovieFullModel
 import com.example.filmstoday.models.videos.VideosBase
-import com.example.filmstoday.utils.Constants.Companion.YOUTUBE_BASE_URL
+import com.example.filmstoday.utils.Constants.YOUTUBE_BASE_URL
 import com.example.filmstoday.utils.getDuration
 import com.example.filmstoday.viewmodels.FullMovieViewModel
 import com.example.filmstoday.viewmodels.factories.FullMovieViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.button.MaterialButton
 
 class FullMovieFragment : Fragment() {
 
@@ -57,7 +58,7 @@ class FullMovieFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_full_movie, container, false)
@@ -107,7 +108,14 @@ class FullMovieFragment : Fragment() {
         fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner) {
             fillMovieInfo(movie = it)
             binding.currentMovie = it
-            checkButtons(it.id)
+        }
+
+        fullMovieViewModel.observeWantBtn(args.movieId).observe(viewLifecycleOwner) {
+            toggleBtn(button = binding.movieBottomSheet.btnWant, it)
+        }
+
+        fullMovieViewModel.observeWatchedBtn(args.movieId).observe(viewLifecycleOwner) {
+            toggleBtn(button = binding.movieBottomSheet.btnWatched, it)
         }
 
         fullMovieViewModel.getCast().observe(viewLifecycleOwner) {
@@ -120,6 +128,22 @@ class FullMovieFragment : Fragment() {
         fullMovieViewModel.getObservingVideos().observe(viewLifecycleOwner) {
             enableVideoButton(it)
         }
+    }
+
+    private fun toggleBtn(button: MaterialButton, isActive: Boolean) {
+        if (isActive) button.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        )
+        else
+            button.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elementsColor
+                )
+            )
     }
 
     private fun enableVideoButton(videosList: VideosBase) {
@@ -136,35 +160,13 @@ class FullMovieFragment : Fragment() {
         }
     }
 
-    private fun checkButtons(id: Int) {
-        if (fullMovieViewModel.checkWantBtn(id = id)) {
-            binding.movieBottomSheet.btnWant.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.red
-                )
-            )
-        }
-
-        if (fullMovieViewModel.checkWatchedBtn(id = id)) {
-            binding.movieBottomSheet.btnWatched.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.red
-                )
-            )
-        }
-    }
-
     private fun addListeners() {
         binding.movieBottomSheet.btnWant.setOnClickListener {
             fullMovieViewModel.addMovieToWant(binding.currentMovie)
-            it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
 
         binding.movieBottomSheet.btnWatched.setOnClickListener {
             fullMovieViewModel.addMovieToWatched(binding.currentMovie)
-            it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
     }
 

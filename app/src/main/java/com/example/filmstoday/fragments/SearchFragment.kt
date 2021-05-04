@@ -34,9 +34,9 @@ class SearchFragment : Fragment() {
 
     private val searchMovieAdapter = SearchMovieAdapter(object : OnMovieClickListener {
         override fun onItemClick(movieModel: MovieModel) {
-            val action =
-                SearchFragmentDirections.openFullMovie(movieModel.id)
-            requireView().findNavController().navigate(action)
+            SearchFragmentDirections.openFullMovie(movieModel.id).also {
+                requireView().findNavController().navigate(it)
+            }
         }
     })
 
@@ -73,20 +73,19 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        lifecycle.addObserver(searchViewModel)
         setupSearchField()
         setupRecyclers()
         mSettings.getBoolean(Constants.APP_PREFERENCE_ADULT_CONTENT, false)
     }
 
     private fun setupSearchField() {
-        binding.searchField.setOnFocusChangeListener { _, _ ->
-            binding.searching = true
-        }
-
         binding.searchField.doAfterTextChanged { editable ->
+            moviesCurrentPage = 1
+            actorsCurrentPage = 1
+
             searchActorsAdapter.clearItems()
             searchMovieAdapter.clearItems()
+
             getActors(editable.toString())
             getMovies(editable.toString())
         }

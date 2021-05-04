@@ -4,7 +4,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -14,6 +14,7 @@ import com.example.filmstoday.R
 import com.example.filmstoday.databinding.MainActivityBinding
 import com.example.filmstoday.receivers.NetworkReceiver
 import com.example.filmstoday.repositories.MainActivityRepository
+import com.example.filmstoday.utils.toast
 import com.example.filmstoday.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -45,8 +46,17 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.movies_nav, R.id.search_nav, R.id.profile_nav ->
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                else -> binding.bottomNavigationView.visibility = View.GONE
+            }
+        }
     }
 
+    @Suppress("DEPRECATION")
     private fun setupConnectionListener() {
         val filterNetwork = IntentFilter()
         MainActivityRepository.instance().addDataSource(networkReceiver.getData())
@@ -54,14 +64,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(networkReceiver, filterNetwork)
 
         mainActivityViewModel.getData().observe(this, {
-            if (it) showMessage(getString(R.string.connection_lost))
+            if (it) toast(message = getString(R.string.connection_lost))
         })
-    }
-
-    private fun showMessage(message: String) {
-        val toast =
-            Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.TOP, 0, 60)
-        toast.show()
     }
 }

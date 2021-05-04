@@ -1,7 +1,7 @@
 package com.example.filmstoday.network
 
 import com.example.filmstoday.api.ApiService
-import com.example.filmstoday.utils.Constants.Companion.BASE_URL
+import com.example.filmstoday.utils.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
