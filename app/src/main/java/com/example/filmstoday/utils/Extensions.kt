@@ -1,5 +1,7 @@
 package com.example.filmstoday.utils
 
+import android.content.Context
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity

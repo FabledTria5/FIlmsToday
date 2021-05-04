@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:background="@color/bottomSheetBackground"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/_135sdp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:ignore="Overdraw">
 

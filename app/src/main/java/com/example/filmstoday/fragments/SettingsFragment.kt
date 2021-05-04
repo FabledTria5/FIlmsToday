@@ -17,7 +17,7 @@ import com.example.filmstoday.R
 import com.example.filmstoday.data.User
 import com.example.filmstoday.databinding.FragmentSettingsBinding
 import com.example.filmstoday.utils.Constants
-import com.example.filmstoday.utils.Constants.Companion.APP_PREFERENCE_ADULT_CONTENT
+import com.example.filmstoday.utils.Constants.APP_PREFERENCE_ADULT_CONTENT
 import com.example.filmstoday.viewmodels.SettingsViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmstoday.R
 import com.example.filmstoday.adapters.listeners.OnMovieClickListener
 import com.example.filmstoday.models.movie.MovieModel
-import com.example.filmstoday.utils.Constants.Companion.POSTERS_BASE_URL_SMALL
+import com.example.filmstoday.utils.Constants.POSTERS_BASE_URL_SMALL
 import com.squareup.picasso.Picasso
 
 class SearchMovieAdapter(private val OnMovieClickListener: OnMovieClickListener) :

@@ -3,6 +3,8 @@ package com.example.filmstoday.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,6 +110,7 @@ class FullMovieFragment : Fragment() {
         fullMovieViewModel.getObservedMovie().observe(viewLifecycleOwner) {
             fillMovieInfo(movie = it)
             binding.currentMovie = it
+            setBottomSheetHeight()
         }
 
         fullMovieViewModel.observeWantBtn(args.movieId).observe(viewLifecycleOwner) {
@@ -128,6 +131,13 @@ class FullMovieFragment : Fragment() {
         fullMovieViewModel.getObservingVideos().observe(viewLifecycleOwner) {
             enableVideoButton(it)
         }
+    }
+
+    private fun setBottomSheetHeight() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            val bottom = binding.movieBottomSheet.btnWant.bottom
+            moviesBottomSheetBehavior.peekHeight = bottom + 20
+        }, 100)
     }
 
     private fun toggleBtn(button: MaterialButton, isActive: Boolean) {
